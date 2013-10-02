@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="template" client="site">
+	<name>bootstrapbase</name>
+	<creationDate>2013-10-02</creationDate>
+	<author>John Doe</author>
+    <authorEmail>webmaster@knowledgearc.com</authorEmail>
+	<authorUrl>http://www.knowledgearc.com</authorUrl>
+	<copyright>KnowledgeARC Ltd</copyright>
+	<license>GNU/GPL</license>
+	<version>1.0.0</version>
+	<description>TPL_BOOTSTRAPBASE_XML_DESCRIPTION</description>
+	<files>
+		<filename>component.php</filename>
+		<filename>error.php</filename>
+		<filename>index.html</filename>
+		<filename>index.php</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>variables.php</filename>
+		<folder>css</folder>
+		<folder>fonts</folder>
+		<folder>html</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+		<folder>language</folder>
+		<folder>less</folder>
+	</files>
+	
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.tpl_bootstrapbase.ini</language>
+		<language tag="en-GB">en-GB/en-GB.tpl_bootstrapbase.sys.ini</language>
+	</languages>
+
+	<positions>
+		<position>header</position>		
+		<position>hero</position>
+		<position>top</position>
+		<position>above-content</position>
+		<position>breadcrumb</position>
+		<position>component</position>
+		<position>below-content</position>
+		<position>bottom</position>
+		<position>left</position>
+		<position>right</position>
+		<position>footer</position>
+	</positions>
+</extension>
