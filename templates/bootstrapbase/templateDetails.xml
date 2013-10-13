@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.0" type="template" client="site">
+<!DOCTYPE install PUBLIC "-//Joomla! 3.1//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/2.5/template-install.dtd">
+<extension version="3.1" type="template" client="site">
 	<name>bootstrapbase</name>
 	<creationDate>2013-10-02</creationDate>
-	<author>John Doe</author>
-    <authorEmail>webmaster@knowledgearc.com</authorEmail>
+	<author>KnowledgeARC</author>
+    <authorEmail>development@knowledgearc.com</authorEmail>
 	<authorUrl>http://www.knowledgearc.com</authorUrl>
-	<copyright>KnowledgeARC Ltd</copyright>
+	<copyright>Copyright (C) 2013 KnowledgeARC Ltd. All rights reserved.</copyright>
 	<license>GNU/GPL</license>
 	<version>1.0.0</version>
 	<description>TPL_BOOTSTRAPBASE_XML_DESCRIPTION</description>
