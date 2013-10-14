@@ -4,6 +4,8 @@ defined('_JEXEC') or die;
 $application = JFactory::getApplication();
 $document = JFactory::getDocument();
 
+$params = $application->getTemplate(true)->params;
+
 $option = $application->input->getCmd('option', '');
 $view = $application->input->getCmd('view', '');
 $layout = $application->input->getCmd('layout', '');
@@ -21,3 +23,16 @@ $bodyClass = ' '.$option.' view-'. $view.
 	($layout ? ' layout-' . $layout : ' no-layout').
 	($task ? ' task-' . $task : ' no-task').
 	($itemid ? ' itemid-' . $itemid : '');
+
+// unload mootools if specified.
+if ($params->get('mootools_load') != 1) {
+	$headers = $this->getHeadData();
+	
+	$scripts = JArrayHelper::getValue($headers, 'scripts');
+	
+	foreach (preg_grep('/.*mootools.*\.js$/',array_keys($scripts)) as $item) {
+		unset($headers['scripts'][$item]);
+	}
+	
+	$this->setHeadData($headers);
+}

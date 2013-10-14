@@ -4,6 +4,7 @@ defined('_JEXEC') or die;
 require_once (JPATH_ROOT.'/templates/'.$this->template.'/variables.php');
 
 JHtml::_('bootstrap.framework');
+$this->addStylesheet(JURI::base().'/templates/'.$this->template.'/css/template.min.css');
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">

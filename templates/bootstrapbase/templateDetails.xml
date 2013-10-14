@@ -46,10 +46,16 @@
 	
 	<config>
 		<fields name="params">
-			<fieldset name="TPL_BOOTSTRAPBASE_FIELDSET_BASIC">
-				<field name="jquery_load" type="bool" default="1" label="TPL_BOOTSTRAPBASE_JQUERYLOAD_LABEL" description="TPL_BOOTSTRAPBASE_JQUERYLOAD_DESC">
-					<option value="0">TPL_BOOTSTRAPBASE_JQUERYLOAD_CORE</option>
-					<option value="1">TPL_BOOTSTRAPBASE_JQUERYLOAD_TEMPLATE</option>
+			<fieldset name="advanced" label="TPL_BOOTSTRAPBASE_FIELDSET_ADVANCED">
+				<field 
+					name="mootools_load" 
+					type="radio" 
+					default="0" 
+					label="TPL_BOOTSTRAPBASE_MOOTOOLSLOAD_LABEL" 
+					description="TPL_BOOTSTRAPBASE_MOOTOOLSLOAD_DESC"
+					class="btn-group btn-group-yesno">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 			</fieldset>
 		</fields>
