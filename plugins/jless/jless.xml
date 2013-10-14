@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.2" type="plugin" group="system" method="upgrade">
+	<name>plg_system_jless</name>
+	<author>KnowledgeARC</author>
+	<creationDate>2013-10-14</creationDate>
+	<copyright>Copyright (C) 2013 KnowledgeARC Ltd. All rights reserved.</copyright>
+	<license>GNU General Public License v3</license>
+	<authorEmail>development@knowledgearc.com</authorEmail>
+	<authorUrl>www.knowledgearc.com</authorUrl>
+	<version>1.0.0</version>
+	<description>PLG_SYSTEM_JLESS_XML_DESC</description>
+	<files>
+		<file plugin="jless">jless.php</file>
+		<filename>lessc.php</filename>
+    	<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_system_jless.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_system_jless.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="template" type="sql" label="PLG_SYSTEM_JLESS_BASIC_TEMPLATE" query="SELECT `template` FROM `#__template_styles` WHERE `client_id` = 0 GROUP BY `template`" key_field="template" value_field="template"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
