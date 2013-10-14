@@ -14,17 +14,16 @@ $this->addStylesheet(JURI::base().'/templates/'.$this->template.'/css/template.m
 	</head>
 
 	<body class="<?php $bodyClass; ?>">
-		<jdoc:include type="module" name="mainmenu" title="Scrolling Main Menu" />
+		<jdoc:include type="module" name="menu" title="Main Menu" />
 		<jdoc:include type="message" />
 		
 		<jdoc:include type="modules" name="header" />
 		<jdoc:include type="module" name="hero" title="Hero" />
 		<jdoc:include type="modules" name="top" />
+		
 		<jdoc:include type="modules" name="above-content" />
-		<jdoc:include type="module" name="breadcrumb" title="Breadcrumbs" />
-		
-		<jdoc:include type="component" />
-		
+		<jdoc:include type="module" name="breadcrumbs" title="Breadcrumbs" />		
+		<jdoc:include type="component" />		
 		<jdoc:include type="modules" name="below-content" />
 		
 		<jdoc:include type="modules" name="left" />
