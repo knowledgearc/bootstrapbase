@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install PUBLIC "-//Joomla! 3.1//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/2.5/template-install.dtd">
-<extension version="3.1" type="template" client="site">
+<extension version="3.2" type="template" client="site">
 	<name>bootstrapbase</name>
 	<creationDate>2013-10-02</creationDate>
 	<author>KnowledgeARC</author>
@@ -44,4 +43,15 @@
 		<position>right</position>
 		<position>footer</position>
 	</positions>
+	
+	<config>
+		<fields name="params">
+			<fieldset name="TPL_BOOTSTRAPBASE_FIELDSET_BASIC">
+				<field name="jquery_load" type="bool" default="1" label="TPL_BOOTSTRAPBASE_JQUERYLOAD_LABEL" description="TPL_BOOTSTRAPBASE_JQUERYLOAD_DESC">
+					<option value="0">TPL_BOOTSTRAPBASE_JQUERYLOAD_CORE</option>
+					<option value="1">TPL_BOOTSTRAPBASE_JQUERYLOAD_TEMPLATE</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 </extension>
