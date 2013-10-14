@@ -1,5 +1,14 @@
 #Joomla! Bootstrap Template Framework.
 
+## Installation
+
+1. Install BootstrapBase template and JLess system plugin using the extension manager,
+2. Browse to Template Manager and set default site template to BootstrapBase. Alternatively, click on BootstrapBase and use the Menus Assignment to assign the BootstrapBase template to specific pages,
+3. Browse to Plugin Manager, locate System - JLess and select it,
+4. Select the appropriate template from the template dropdown (this should be BootstrapBase or a derivative) then select Enable. Save the plugin.
+
+Load your web site home page (if BootstrapBase is the default) or browse to a menu item which is assigned BootstrapBase as its style. When the page loads it will create the appropriate CSS files using the BootstrapBase LESS styles.
+
 ## Templates
 All templates are located in the /templates directory.
 
