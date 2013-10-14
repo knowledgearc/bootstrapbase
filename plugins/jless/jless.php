@@ -19,7 +19,7 @@ if (!class_exists('lessc'))
  * Plugin checks and compiles updated .less files on page load. No need to manually compile your .less files again.
  * Less compiler lessphp; see http://leafo.net/lessphp/
  */
-class plgSystemJLess extends JPlugin
+class PlgSystemJLess extends JPlugin
 {
 	/**
 	 * Compile .less files on change
