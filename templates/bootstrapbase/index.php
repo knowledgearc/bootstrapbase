@@ -16,7 +16,7 @@ $this->addStylesheet(JURI::base().'/templates/'.$this->template.'/css/template.m
 	<body<?php $bodyClass ? ' class="'.$bodyClass.'"' : ''; ?>>
 		<div class="container">
 			<header>
-				<jdoc:include type="module" name="menu" title="Main Menu" />
+				<jdoc:include type="modules" name="navbar" />
 				<jdoc:include type="message" />
 			
 				<jdoc:include type="modules" name="header" />

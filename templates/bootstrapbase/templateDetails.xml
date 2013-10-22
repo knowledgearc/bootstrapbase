@@ -31,7 +31,8 @@
 	</languages>
 
 	<positions>
-		<position>header</position>		
+		<position>navbar</position>
+		<position>header</position>	
 		<position>hero</position>
 		<position>top</position>
 		<position>above-content</position>
