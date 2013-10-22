@@ -1,3 +1,6 @@
+/**
+General layout styles.
+**/
 #content {
 	.make-row();
 	
@@ -31,5 +34,16 @@
 	
 	aside#sidebar2 {
 		.make-sm-column(@sidebar2-sm-columns);
+	}
+}
+
+/**
+mod_login
+**/
+form#login-form > .userdata {
+	.make-row();	
+	
+	.form-group {
+		.make-lg-column(12);
 	}
 }
