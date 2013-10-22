@@ -36,3 +36,15 @@ if ($params->get('mootools_load') != 1) {
 	
 	$this->setHeadData($headers);
 }
+
+// adjust main content depending on whether right or left modules are being 
+//shown.
+if ($this->countModules('left') > 0 && $this->countModules('right') > 0) {
+	$mainClass = 'both-sidebars';
+} elseif ($this->countModules('left') > 0) {
+	$mainClass = 'left-sidebar';
+} elseif ($this->countModules('right') > 0) {
+	$mainClass = 'right-sidebar';
+} else {
+	$mainClass = 'no-sidebars';
+}

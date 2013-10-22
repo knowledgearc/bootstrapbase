@@ -1,13 +1,35 @@
-main {
+#content {
 	.make-row();
 	
-	#mainComponent {
-		.make-sm-column(6);
+	main {
 		.make-xs-column(12);
-	}	
+	}
+		
+	main.no-sidebars {		
+		.make-sm-column(12);
+	}
+
+	main.left-sidebar {
+		.make-sm-column(12 - @sidebar1-sm-columns);
+	}
+
+	main.right-sidebar {
+		.make-sm-column(12 - @sidebar2-sm-columns);
+	}
+
+	main.both-sidebars {
+		.make-sm-column(12 - (@sidebar1-sm-columns + @sidebar2-sm-columns));
+	}
 
 	aside.sidebar {
-		.make-sm-column(3);
-		.make-xs-column(12);
+		.make-xs-column(@sidebar-xs-columns);
+	}
+	
+	aside#sidebar1 {
+		.make-sm-column(@sidebar1-sm-columns);
+	}
+	
+	aside#sidebar2 {
+		.make-sm-column(@sidebar2-sm-columns);
 	}
 }
