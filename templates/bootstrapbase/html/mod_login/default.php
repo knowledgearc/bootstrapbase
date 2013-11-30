@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 	</div>
 	<?php endif; ?>
 
-	<div class="userdata">
+	<div class="login-panel">
 		<div id="form-login-username" class="form-group">
 			<?php if (!$params->get('usetext')) : ?>
 			<div class="input-group">
