@@ -1,10 +1,14 @@
 <?php
 defined('_JEXEC') or die;
 
-require_once (JPATH_ROOT.'/templates/'.$this->template.'/variables.php');
+require_once (JPATH_ROOT.'/templates/'.$this->template.'/initialize.php');
 
 JHtml::_('bootstrap.framework');
 $this->addStylesheet(JURI::base().'/templates/'.$this->template.'/css/template.min.css');
+
+if ($googleFont) {
+	$this->addStylesheet('http://fonts.googleapis.com/css?'.implode('&', $googleFont));
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">

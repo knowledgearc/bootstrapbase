@@ -37,6 +37,27 @@ if ($params->get('mootools_load') != 1) {
 	$this->setHeadData($headers);
 }
 
+// setup google fonts if required.
+$googleFont = null;
+
+if ($params->get('googlefonts_load') == 1) {
+	$googleFont = array();
+	
+	if (trim($params->get('googlefonts_load_family'))) {
+		$googleFont[] = 'family='.$params->get('googlefonts_load_family');
+		
+		if (trim($params->get('googlefonts_load_subsets'))) {
+			$googleFont[] = 'subset='.$params->get('googlefonts_load_subsets');
+		} elseif (trim($params->get('googlefonts_load_text'))) {
+			$googleFont[] = 'text='.$params->get('googlefonts_load_text');
+		}
+
+		if (trim($params->get('googlefonts_load_effect'))) {
+			$googleFont[] = 'effect='.$params->get('googlefonts_load_effect');
+		}
+	}
+}
+
 // adjust main content depending on whether right or left modules are being 
 //shown.
 if ($this->countModules('left') > 0 && $this->countModules('right') > 0) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.2" type="template" client="site">
+<extension version="3.2" type="template" client="site" method="upgrade">
 	<name>bootstrapbase</name>
 	<creationDate>2013-10-02</creationDate>
 	<author>KnowledgeARC</author>
@@ -14,8 +14,8 @@
 		<filename>error.php</filename>
 		<filename>index.html</filename>
 		<filename>index.php</filename>
+		<filename>initialize.php</filename>
 		<filename>templateDetails.xml</filename>
-		<filename>variables.php</filename>
 		<folder>css</folder>
 		<folder>fonts</folder>
 		<folder>html</folder>
@@ -58,6 +58,32 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+				<field 
+					name="googlefonts_load" 
+					type="radio" 
+					default="0" 
+					label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_LABEL" 
+					description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_DESC"
+					class="btn-group btn-group-yesno">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="googlefonts_load_family"  type="text" default="ABeeZee|Abel"
+					label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_FAMILY_LABEL"
+					description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_FAMILY_DESC"
+					filter="string"/>
+				<field name="googlefonts_load_subsets"  type="text" default=""
+					label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_SUBSETS_LABEL"
+					description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_SUBSETS_DESC"
+					filter="string"/>
+				<field name="googlefonts_load_text"  type="text" default=""
+					label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_TEXT_LABEL"
+					description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_TEXT_DESC"
+					filter="string"/>
+				<field name="googlefonts_load_effect"  type="text" default=""
+					label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_EFFECT_LABEL"
+					description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_EFFECT_DESC"
+					filter="string"/>
 			</fieldset>
 		</fields>
 	</config>
