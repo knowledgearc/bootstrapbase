@@ -5,7 +5,7 @@ defined('_JEXEC') or die;
  * Chrome layout with no heading and no container.
  * 
  * @param object $module
- * @param array $params
+ * @param object $params
  * @param array $attribs
  */
 function modChrome_none($module, &$params, &$attribs)
@@ -17,14 +17,15 @@ function modChrome_none($module, &$params, &$attribs)
 }
 
 /**
- * A standard chrome implementing title and content as well as providing all 
- * available CSS class (I.e. both module and header) and HTML tag overrides.
+ * A custom chrome implementing title and content as well as providing all 
+ * available CSS class (I.e. both module and header) and HTML tag overrides 
+ * for complete customization.
  *
  * @param object $module
- * @param array $params
+ * @param object $params
  * @param array $attribs
  */
-function modChrome_standard($module, &$params, &$attribs)
+function modChrome_custom($module, &$params, &$attribs)
 {
 	$moduleTag = $params->get('module_tag', 'div');
 	$modClassSfx = $params->get('moduleclass_sfx', '');
