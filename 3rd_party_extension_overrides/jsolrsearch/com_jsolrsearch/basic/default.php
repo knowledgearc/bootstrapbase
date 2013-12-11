@@ -31,16 +31,13 @@ JHTML::_('behavior.formvalidation');
 
 $form = $this->get('Form');
 ?> 
-<form action="<?php echo JRoute::_("index.php"); ?>" method="get" name="adminForm" class="form-validate jsolr-search-result-form" id="jsolr-search-result-form">
+<form action="<?php echo JRoute::_("index.php"); ?>" method="get" name="adminForm" class="form-inline" id="jsolr-search-result-form">
 	<input type="hidden" name="option" value="com_jsolrsearch"/>
 	<input type="hidden" name="task" value="search"/>
 	
-	<fieldset class="query">
-		<div class="form-search">
-			<?php foreach ($form->getFieldset('query') as $field): ?>
-			<span><?php echo $form->getInput($field->fieldname); ?></span>
-			<?php endforeach;?>			
-			<button type="submit" class="btn btn-primary"><?php echo JText::_("COM_JSOLRSEARCH_BUTTON_SUBMIT"); ?></button>
-		</div>
-	</fieldset>
+	<div class="form-group col-sm-10">
+		<?php echo $form->getInput('q'); ?>
+	</div>
+
+	<button type="submit" class="btn btn-primary"><?php echo JText::_("COM_JSOLRSEARCH_BUTTON_SUBMIT"); ?></button>
 </form>
