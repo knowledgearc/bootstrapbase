@@ -97,7 +97,7 @@ $form = $this->get('Form');
 					<i></i>
 				</button>
 				<ul role="menu">
-					<li><a href="<?php echo JRoute::_($this->get('AdvancedURI')); ?>">Advanced search</a></li>				
+					<li><a href="<?php echo JRoute::_(JSolrSearchFactory::getAdvancedSearchRoute()); ?>">Advanced search</a></li>				
 				</ul>
 			</li>
 			<?php endif; ?>
