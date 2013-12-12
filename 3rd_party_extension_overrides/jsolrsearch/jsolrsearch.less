@@ -1,0 +1,122 @@
+.jsolr-query-form {
+	.form-horizontal;
+	.text-center;
+	
+	.query {
+		.form-group;
+		
+		#q {
+			.form-control;
+		}
+	}
+	
+	button[type=submit] {
+		.btn;
+		.btn-default;
+	}
+}
+
+.jsolr-results-form {
+	.query {
+		.input-group;
+		.make-md-column(6, 0);
+		padding: 15px 0;
+		
+		#q {
+			.form-control;
+			.make-lg-column(12);
+			border-radius: 4px 0 0 4px;
+		}
+		
+		span {
+			.input-group-btn;
+		
+			button[type=submit] {
+				.btn;
+				.btn-primary;
+				.glyphicon;
+				.glyphicon-search;
+				
+				line-height: inherit;
+				top: 0;
+				border-radius: 0 4px 4px 0;
+			}
+		}
+	}
+
+	.extensions {
+		.nav;
+		.nav-tabs;
+		
+		.options {
+			.btn-group; 
+			.pull-right;
+			
+			button {
+				.btn;
+				.btn-default; 
+				.dropdown-toggle;
+				
+				i {
+					.glyphicon;
+					.glyphicon-cog;
+				}
+			}
+				
+			ul {
+				.dropdown-menu;
+			}
+		}
+		
+		.open {
+			ul {
+				display: block;
+			}
+		}
+	}
+
+	.tools {
+		.nav;
+		.nav-pills;
+	}
+}
+
+.jsolrsearch-results {
+	ol {
+		margin: 0;
+		padding: 0;
+		
+		li {
+			list-style: none;			
+		}
+	}
+}
+
+.jsolrsearch-embedded-facets {
+	.make-row(0);
+
+	.jsolrsearch-facets {
+		.make-md-column(4, 0);
+		
+		.jsolr-facet-filter {
+			ul {
+				list-style: none; 
+				padding: 0;
+				
+				li {
+					span {
+						padding-left: 5px;
+					}
+				}
+			}
+		}
+	}
+	
+	ol {
+		.make-md-column(8, 0);		
+	}
+	
+	> footer {
+		.make-md-column-offset(4);
+	}
+}

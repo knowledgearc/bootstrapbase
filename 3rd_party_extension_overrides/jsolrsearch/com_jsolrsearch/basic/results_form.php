@@ -36,7 +36,13 @@ JHTML::_('behavior.formvalidation');
 
 $form = $this->get('Form');
 ?>
-<form action="<?php echo JRoute::_("index.php"); ?>" method="get" name="adminForm" class="form-inline" id="jsolr-search-result-form">
+<form 
+	action="<?php echo JRoute::_("index.php"); ?>" 
+	method="get" 
+	name="adminForm" 
+	id="jsolr-search-form" 
+	class="jsolr-results-form" 
+	role="form">
 	<input type="hidden" name="option" value="com_jsolrsearch"/>
 	<input type="hidden" name="task" value="search"/>
 	
@@ -44,28 +50,32 @@ $form = $this->get('Form');
 	<input type="hidden" name="o" value="<?php echo JFactory::getApplication()->input->get('o'); ?>"/>
 	<?php endif; ?>
 	
-	<div class="form-group col-sm-10">
-		<?php echo $form->getInput('q'); ?>
-	</div>
-		
+	<fieldset>
+		<div class="query">
+		<?php foreach ($this->get('Form')->getFieldset('query') as $field): ?>
+			<?php echo $form->getInput($field->fieldname); ?>
+		<?php endforeach;?>
+			
+			<span>
+				<button type="submit"></button>
+			</span>
+		</div>	
+	</fieldset>
+	
 	<!-- Output the hidden form fields for the various selected facet filters. -->
 	<?php foreach ($this->get('Form')->getFieldset('facets') as $field): ?>
 		<?php if (trim($field->value)) : ?>
 			<?php echo $this->form->getInput($field->fieldname); ?>
 		<?php endif; ?>
-	<?php endforeach;?>
-		
-	<button type="submit" class="btn btn-primary"><?php echo JText::_("COM_JSOLRSEARCH_BUTTON_SUBMIT"); ?></button>
-
-	<a href="<?php echo JRoute::_($this->get('AdvancedURI')); ?>">Advanced search</a>
-
-	<?php $components = $this->get('Extensions'); ?>
+	<?php endforeach;?>	
 
 	<nav>			
-		<ul class="nav nav-tabs">
-			<?php 
+		<ul class="extensions">
+			<?php
+			$components = $this->get('Extensions');
+			
 			for ($i = 0; $i < count($components); ++$i): 
-				$isSelected = ($components[$i]['plugin'] == JFactory::getApplication()->input->get('o')) ? true : false;
+				$isSelected = ($components[$i]['plugin'] == JFactory::getApplication()->input->get('o', null, 'cmd')) ? true : false;
 			
 				echo '<li'.($isSelected ? ' class="active"' : '').'>';
 			
@@ -79,10 +89,22 @@ $form = $this->get('Form');
 				echo '</li>';
         	endfor 
         	?>
+			
+			<!-- Disable advanced search if facets are available (for now). -->
+			<?php if (!$this->items->getFacets()) : ?>
+			<li class="options">
+				<button type="button" data-toggle="dropdown">
+					<i></i>
+				</button>
+				<ul role="menu">
+					<li><a href="<?php echo JRoute::_($this->get('AdvancedURI')); ?>">Advanced search</a></li>				
+				</ul>
+			</li>
+			<?php endif; ?>
 		</ul>
     </nav>
 
-	<ul class="nav nav-pills">
+	<ul class="tools">
 	<?php foreach ($this->get('Form')->getFieldset('tools') as $field): ?>
 		<?php if (strtolower($field->type) != 'jsolr.advancedfilter') : ?>
 		<li class="dropdown"><?php echo $this->form->getInput($field->name); ?></li>

@@ -1,5 +1,11 @@
 <?php
 /**
+ * Default search page.
+ * 
+ * Override to edit the JSolrSearch home page.
+ * 
+ * @package		JSolr
+ * @subpackage	Search
  * @copyright	Copyright (C) 2012 Wijiti Pty Ltd. All rights reserved.
  * @copyright	Copyright (C) 2013 KnowledgeARC Ltd. All rights reserved.
  * @license     This file is part of the JSolrSearch Component for Joomla!.
@@ -30,14 +36,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 JHTML::_('behavior.formvalidation');
 
 $form = $this->get('Form');
-?> 
-<form action="<?php echo JRoute::_("index.php"); ?>" method="get" name="adminForm" class="form-inline" id="jsolr-search-result-form">
+?>
+<form action="<?php echo JRoute::_("index.php"); ?>" method="get" name="adminForm" class="form-validate jsolr-query-form" id="jsolr-search-form">
 	<input type="hidden" name="option" value="com_jsolrsearch"/>
 	<input type="hidden" name="task" value="search"/>
-	
-	<div class="form-group col-sm-10">
-		<?php echo $form->getInput('q'); ?>
+					
+	<div class="query">
+	<?php foreach ($this->get('Form')->getFieldset('query') as $field): ?>
+		<?php echo $form->getInput($field->fieldname); ?>
+	<?php endforeach;?>			
 	</div>
-
-	<button type="submit" class="btn btn-primary"><?php echo JText::_("COM_JSOLRSEARCH_BUTTON_SUBMIT"); ?></button>
+	
+	<button type="submit" class="button"><?php echo JText::_("COM_JSOLRSEARCH_BUTTON_SUBMIT"); ?></button>
 </form>
