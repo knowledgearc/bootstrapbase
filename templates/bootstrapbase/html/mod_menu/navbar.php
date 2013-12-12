@@ -52,11 +52,11 @@ if ($params->get('tag_id') != null) {
 					case 'url':
 					case 'component':
 					case 'heading':
-						require JModuleHelper::getLayoutPath('mod_menu', 'default_'.$item->type);
+						require JModuleHelper::getLayoutPath('mod_menu', 'navbar_'.$item->type);
 						break;
 				
 					default:
-						require JModuleHelper::getLayoutPath('mod_menu', 'default_url');
+						require JModuleHelper::getLayoutPath('mod_menu', 'navbar_url');
 						break;
 				}
 
