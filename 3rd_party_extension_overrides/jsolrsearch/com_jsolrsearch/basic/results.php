@@ -40,7 +40,7 @@ if ($this->items->getFacets() && $this->params->get('facets_embed')) :
 endif;
 ?>
 <section 
-	<?php echo ($this->params->get('o')) ? 'id="'.$this->params->get('o').'"' : ''; ?>
+	<?php echo ($this->params->get('o')) ? 'id="jsolr-'.$this->params->get('o').'"' : ''; ?>
 	class="<?php echo $cssClass; ?>">
 	<header>
 		<?php echo $this->loadTemplate('form'); ?>
