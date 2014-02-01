@@ -8,7 +8,7 @@ defined('_JEXEC') or die;
  * @param object $params
  * @param array $attribs
  */
-function modChrome_none($module, &$params, &$attribs)
+function modChrome_basic($module, &$params, &$attribs)
 {
 	if ($module->content)
 	{
