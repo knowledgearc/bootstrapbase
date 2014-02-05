@@ -19,10 +19,7 @@ $this->direction = $doc->direction;
 	dir="<?php echo $this->direction; ?>">
 <head>
 	<title><?php echo $this->error->getCode(); ?> - <?php echo $this->title; ?></title>
-	<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/system/error.css" type="text/css" />
-	<?php if ($this->direction == 'rtl') : ?>
-	<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/error_rtl.css" type="text/css" />
-	<?php endif; ?>
+	<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/template.min.css" type="text/css"/>
 </head>
 <body>
 	<div class="error">
@@ -30,13 +27,14 @@ $this->direction = $doc->direction;
 			<h1>Oop's, we have a <?php echo $this->error->getCode(); ?></h1>
 			<h2 class="error-type"><?php echo $this->error->getMessage(); ?></h2>
 			<h3><?php echo JText::_('JERROR_LAYOUT_PLEASE_TRY_ONE_OF_THE_FOLLOWING_PAGES'); ?></h3>
-		<div class="home-btn">
-			<a style="color:#000;font-size:18px;" href="<?php echo $this->baseurl; ?>/index.php" title="<?php echo JText::_('JERROR_LAYOUT_GO_TO_THE_HOME_PAGE'); ?>"><?php echo JText::_('JERROR_LAYOUT_HOME_PAGE'); ?></a>
-		</div>
+				<div class="home-btn">
+					<a style="color:#000;font-size:18px;" href="<?php echo $this->baseurl; ?>/index.php" title="<?php echo JText::_('JERROR_LAYOUT_GO_TO_THE_HOME_PAGE'); ?>"><?php echo JText::_('JERROR_LAYOUT_HOME_PAGE'); ?></a>
+				</div>
 			<p> <?php if ($this->debug) : 
 				echo $this->renderBacktrace();
 				endif; ?>
 			</p>
+		</div>
 	</div>
 </body>
 </html>
