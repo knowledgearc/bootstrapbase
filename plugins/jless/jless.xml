@@ -18,10 +18,28 @@
 		<language tag="en-GB">language/en-GB/en-GB.plg_system_jless.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.plg_system_jless.sys.ini</language>
 	</languages>
+	<media destination="plg_system_jless" folder="media">
+		<folder>js</folder>
+	</media>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="template" type="sql" label="PLG_SYSTEM_JLESS_BASIC_TEMPLATE" query="SELECT `template` FROM `#__template_styles` WHERE `client_id` = 0 GROUP BY `template`" key_field="template" value_field="template"/>
+				<field 
+					name="template" 
+					type="sql" 
+					label="PLG_SYSTEM_JLESS_BASIC_TEMPLATE" 
+					query="SELECT `template` FROM `#__template_styles` WHERE `client_id` = 0 GROUP BY `template`" 
+					key_field="template" 
+					value_field="template"/>
+				
+				<field 
+					name="compile"
+					type="list"
+					label="PLG_SYSTEM_JLESS_BASIC_COMPILE"
+					default="0">
+					<option value="0">PLG_SYSTEM_JLESS_COMPILE_SERVER</option>
+					<option value="1">PLG_SYSTEM_JLESS_COMPILE_CLIENT</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
