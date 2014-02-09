@@ -1,11 +1,11 @@
 <?php
 /**
- * @package   System Plugin - automatic Less compiler - for Joomla 2.5 and 3.x
- * @version   0.7.2 Beta
- * @author    Andreas Tasch
- * @copyright (C) 2012-2013 - Andreas Tasch
- * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
- **/
+ * @package     BootstrapBase.Plugin
+ * @subpackage  System
+ *
+ * @copyright   Copyright (C) 2013-2014 KnowledgeARC Ltd. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
 // no direct access
 defined('_JEXEC') or die();
@@ -84,7 +84,7 @@ class PlgSystemJLess extends JPlugin
 		$less->setFormatter($formatter);
 		$less->setPreserveComments(true);
 
-		$this->_cache($less, $src, $dest);		
+		$this->_compile($less, $src, $dest);		
 	}
 
 	/* Produce production version.
@@ -95,10 +95,10 @@ class PlgSystemJLess extends JPlugin
 		
 		$less->setFormatter(new lessc_formatter_compressed());
 			
-		$this->_cache($less, $src, $dest);
+		$this->_compile($less, $src, $dest);
 	}
 	
-	private function _cache($less, $src, $dest)
+	private function _compile($less, $src, $dest)
 	{
 		$cache = JFactory::getCache('jless', '');
 		$cache->setCaching(true);
@@ -112,10 +112,10 @@ class PlgSystemJLess extends JPlugin
 		$currentUpdated = JArrayHelper::getValue($current, "updated");
 		$newUpdated = JArrayHelper::getValue($new, "updated");
 		
-		if (!$current || $newUpdated > $currentUpdated) {
+		if (!JFile::exists($dest) || !$current || $newUpdated > $currentUpdated) {
 			$cache->store($new, $src);
 			JFile::write($dest, JArrayHelper::getValue($new, "compiled"));
-		}		
+		}	
 	}
 	
 	public function onAfterRender()
