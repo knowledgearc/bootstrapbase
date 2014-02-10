@@ -14,6 +14,17 @@ require_once (JPATH_ROOT.'/templates/'.$this->template.'/initialize.php');
 JHtml::_('bootstrap.framework');
 $this->addStylesheet(JURI::base().'/templates/'.$this->template.'/css/template.min.css');
 
+// load tooltips
+$js = <<<JS
+(function ($) {	
+	$(document).ready(function() {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+})(jQuery)
+JS;
+
+$this->addScriptDeclaration($js);
+
 if ($googleFont) {
 	$this->addStylesheet('http://fonts.googleapis.com/css?'.implode('&', $googleFont));
 }

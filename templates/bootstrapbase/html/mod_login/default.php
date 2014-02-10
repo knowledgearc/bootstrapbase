@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 ?>
-<form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form" class="form-horizontal" role="form">
+<form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form" role="form">
 	<?php if ($params->get('pretext')) : ?>
 	<div class="pretext">
 		<p><?php echo $params->get('pretext'); ?></p>
@@ -21,8 +21,8 @@ defined('_JEXEC') or die;
 			<?php if (!$params->get('usetext')) : ?>
 			<div class="input-group">
 				<span class="input-group-addon">
-					<span class="glyphicon glyphicon-user hasTooltip" data-toggle="tooltip" title="<?php echo JText::_('MOD_LOGIN_VALUE_USERNAME') ?>"></span>
-					<label for="modlgn-username" class="sr-only"><?php echo JText::_('MOD_LOGIN_VALUE_USERNAME'); ?></label>
+					<span id="modlgn-username-addons" class="input-addons" data-toggle="tooltip" title="<?php echo JText::_('MOD_LOGIN_VALUE_USERNAME') ?>"></span>
+					<label for="modlgn-username"><?php echo JText::_('MOD_LOGIN_VALUE_USERNAME'); ?></label>
 				</span>
 				<input id="modlgn-username" type="text" name="username" class="form-control" tabindex="0" size="18" placeholder="<?php echo JText::_('MOD_LOGIN_VALUE_USERNAME') ?>" />
 			</div>
@@ -35,8 +35,8 @@ defined('_JEXEC') or die;
 			<?php if (!$params->get('usetext')) : ?>
 			<div class="input-group">
 				<span class="input-group-addon">
-					<span class="glyphicon glyphicon-lock hasTooltip" title="<?php echo JText::_('JGLOBAL_PASSWORD') ?>"></span>
-					<label for="modlgn-passwd" class="sr-only"><?php echo JText::_('JGLOBAL_PASSWORD'); ?></label>
+					<span id="modlgn-passwd-addons" class="input-addons" data-toggle="tooltip" title="<?php echo JText::_('JGLOBAL_PASSWORD') ?>"></span>
+					<label for="modlgn-passwd"><?php echo JText::_('JGLOBAL_PASSWORD'); ?></label>
 				</span>
 				<input id="modlgn-passwd" type="password" name="password" class="form-control" tabindex="0" size="18" placeholder="<?php echo JText::_('JGLOBAL_PASSWORD') ?>" />
 			</div>
@@ -46,7 +46,7 @@ defined('_JEXEC') or die;
 			<?php endif; ?>
 		</div>
 		<?php if (count($twofactormethods) > 1): ?>
-		<div id="form-login-secretkey" class="control-group">
+		<div id="form-login-secretkey" class="form-group">
 			<?php if (!$params->get('usetext')) : ?>
 			<div class="input-group input-prepend input-append">
 				<span class="input-group-addon">

@@ -73,11 +73,34 @@ Pagination; enable bootstrap pagination without changing Joomla paging layout.
 /**
 mod_login
 **/
-form#login-form > .login-panel {
-	.make-row();	
+.login-module {
+	.make-row();
+		
+	form {
+		.form-horizontal; // or form-inline or remove for vertical form.
 	
-	.form-group {
-		.make-lg-column(12);
+		#form-login-password, #form-login-username {
+			label {
+				.sr-only;
+			}
+		}
+	
+		.form-group {
+			.make-md-column(12);
+			
+			.input-addons {
+				.glyphicon;
+				.hasTooltip;				
+			}
+			
+			#modlgn-username-addons {
+				.glyphicon-user;
+			}
+			
+			#modlgn-passwd-addons {
+				.glyphicon-lock;
+			}
+		}
 	}
 }
 
