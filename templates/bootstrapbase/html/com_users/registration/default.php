@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidation');
 ?>
-<div class="com-user registration <?php echo $this->pageclass_sfx?>">
+<div class="com-users registration <?php echo $this->pageclass_sfx?>">
 <?php if ($this->params->get('show_page_heading')) : ?>
 	<div class="page-header">
 		<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
@@ -32,13 +32,13 @@ JHtml::_('behavior.formvalidation');
 			<?php if ($field->hidden):// If the field is hidden, just display the input.?>
 				<?php echo $field->input;?>
 			<?php else:?>
-				<div class="form-group">
+				<div id="<?php echo $field->fieldname; ?>-field" class="form-field">
 					<?php echo $field->label; ?>
 					<?php if (!$field->required && $field->type != 'Spacer') : ?>
 						<span class="optional"><?php echo JText::_('COM_USERS_OPTIONAL');?></span>
 					<?php endif; ?>
 					
-					<div class="control">			
+					<div class="form-field-input">		
 						<?php echo $field->input;?>
 					</div>
 				</div>
@@ -47,14 +47,12 @@ JHtml::_('behavior.formvalidation');
 		</fieldset>
 	<?php endif;?>
 <?php endforeach;?>
-		<div class="form-group">
-			<div class="form-actions">
-				<button type="submit" class="btn btn-primary validate"><?php echo JText::_('JREGISTER');?></button>
-				<a class="btn" href="<?php echo JRoute::_('');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
-				<input type="hidden" name="option" value="com_users" />
-				<input type="hidden" name="task" value="registration.register" />
-				<?php echo JHtml::_('form.token');?>
-			</div>
+		<div id="buttons-field" class="form-field">
+			<button type="submit" class="btn btn-primary validate"><?php echo JText::_('JREGISTER');?></button>
+			<a class="btn" href="<?php echo JRoute::_('');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
+			<input type="hidden" name="option" value="com_users" />
+			<input type="hidden" name="task" value="registration.register" />
+			<?php echo JHtml::_('form.token');?>
 		</div>
 	</form>
 </div>
