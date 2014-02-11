@@ -44,9 +44,8 @@ class PlgSystemJLess extends JPlugin
 	private function _compileClientSide($template)
 	{
 		$document = JFactory::getDocument();
-		
 		$document->addStyleSheet(JURI::base().'templates/'.$template.'/less/template.less');
-		$document->addScript(JURI::base().'media/jless/js/less.min.js');
+		$document->addScript(JURI::base().'media/plg_system_jless/js/less.min.js');
 	}
 	
 	private function _compileServerSide($template)
