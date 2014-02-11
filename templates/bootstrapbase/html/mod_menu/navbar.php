@@ -28,7 +28,7 @@ if (count($brands)) {
 }
 ?>
 <nav<?php echo $tag; ?> class="navbar <?php echo $class_sfx; ?>" role="navigation">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".<?php echo $target; ?>">
 				<span class="sr-only">Toggle navigation</span>
