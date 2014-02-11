@@ -7,6 +7,10 @@ Webmasters/site managers should edit custom.less to further customize the templa
 /**
 General layout styles.
 **/
+.tooltip-inner {
+    min-width: 150px;
+}
+
 #content {
 	.make-row();
 	
@@ -77,55 +81,112 @@ Pagination; enable bootstrap pagination without changing Joomla paging layout.
 
 /**
 mod_login
-**/
-.mod-login {		
-	form {
-		.form-horizontal; // or form-inline or remove for vertical form.
+**/	
+form#mod-login {
+	.form-horizontal; // or form-inline or remove for vertical form.
+		
+	.form-field {
+		margin-bottom: 15px;
+		
+		label {
+			.sr-only;
+			&:extend(.form-horizontal .control-label);
+		}
+		
+		input {
+			&:extend(.input-group .form-control all);
+			&:extend(.form-control all);
+		}
+
+		.form-field-addon {
+			&:extend(.input-group-addon all);
+			
+			.form-field-addon-icon {
+				.glyphicon;
+			}
+		}
+	}
 	
-		#username-field, #password-field {
-			label {
-				.sr-only;	
+	#username-field {
+		.form-field-addon {
+			.form-field-addon-icon {
+				.glyphicon-user;
 			}
 		}
-		
-		.form-field {
-			margin-bottom: 15px;
-			
-			label {
-				.form-horizontal > .control-label;			
-			}
-			
-			input {
-				&:extend(.input-group .form-control all);
-				&:extend(.form-control all);
+	}
+	
+	#password-field {
+		.form-field-addon {
+			.form-field-addon-icon {
+				.glyphicon-lock;
 			}
 		}
+	}
+	
+	#secretkey-field {
+		.form-field-addon {
+			.form-field-addon-icon {
+				.glyphicon-certificate;
+			}
+		}
+	}
+
+	#rememberme {
+		label {			
+			text-align: left;
+			font-weight: normal;
+		}
+	}
+	
+	#buttons {
+		button {
+			.btn;
+			.btn-primary;
+		}
+	}
+	
+	#help-links {
+		.text-right;	
+		list-style: none;
+		padding: 0;
 		
-		#username-field, #password-field {
-			.form-field-addon {
-				&:extend(.input-group-addon all);
-				
-				.form-field-addon-icon {
+		li {
+			padding: 5px 0 0 0;
+		}			
+	}
+}
+
+form#mod-login.compact {
+	
+	.form-field {
+		input {
+			position: relative;
+			border-top-right-radius: @input-border-radius !important;
+			border-bottom-right-radius: @input-border-radius !important;
+		}
+	
+		.form-field-help {
+			position: absolute;
+			right: 0;
+			padding: 8px 10px;
+			
+			.form-field-help-icon {				
+				i {
 					.glyphicon;
+					.glyphicon-question-sign;
 				}
 			}
 		}
-		
-		#username-field {
-			.form-field-addon {
-				.form-field-addon-icon {
-					.glyphicon-user;
-				}
-			}
+	}
+	
+	#buttons {
+		button {
+			.btn-block;
 		}
-		
-		#password-field {
-			.form-field-addon {
-				.form-field-addon-icon {
-					.glyphicon-lock;
-				}
-			}
-		}
+	}
+	
+	.registration-link {
+		.text-center;
 	}
 }
 
@@ -150,11 +211,6 @@ com_users
 
 				input {
 					&:extend(.form-control all);
-				}
-	
-				.form-actions {
-					.make-md-column-offset(2);
-					.make-md-column(8);
 				}
 			}
 			
@@ -190,8 +246,10 @@ com_users
 			
 		#buttons-field {
 			button {
-			@media(min-width: @screen-desktop) {
-				.make-md-column(1); }
+				@media(min-width: @screen-desktop) {
+					.make-md-column(1);
+				}
+				
 				.btn;
 				.btn-primary;
 			}

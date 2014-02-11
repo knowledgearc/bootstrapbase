@@ -62,22 +62,18 @@ JHtml::_('behavior.keepalive');
 			<?php endif; ?>
 
 			<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
-			<div class="form-field">
-				<div id="form-rememberme">
-					<label>			
-						<input id="remember" type="checkbox" name="remember" value="yes"/>
-						<?php echo JText::_('COM_USERS_LOGIN_REMEMBER_ME') ?>
-					</label>
-				</div>
+			<div id="rememberme-field" class="form-field">
+				<label>
+					<input id="remember" type="checkbox" name="remember" value="yes"/>
+					<?php echo JText::_('COM_USERS_LOGIN_REMEMBER_ME') ?>
+				</label>
 			</div>
 			<?php endif; ?>
 
-			<div class="form-field">
-				<div id="form-buttons">
-					<button type="submit">
-						<?php echo JText::_('JLOGIN'); ?>
-					</button>
-				</div>
+			<div id="buttons-field" class="form-field">
+				<button type="submit">
+					<?php echo JText::_('JLOGIN'); ?>
+				</button>
 			</div>
 			
 			<input type="hidden" name="return" value="<?php echo base64_encode($this->params->get('login_redirect_url', $this->form->getValue('return'))); ?>" />
