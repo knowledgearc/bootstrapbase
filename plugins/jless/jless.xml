@@ -11,7 +11,7 @@
 	<description>PLG_SYSTEM_JLESS_XML_DESC</description>
 	<files>
 		<file plugin="jless">jless.php</file>
-		<filename>lessc.php</filename>
+		<folder>compilers</folder>
     	<filename>index.html</filename>
 	</files>
 	<languages>
@@ -36,9 +36,10 @@
 					name="compile"
 					type="list"
 					label="PLG_SYSTEM_JLESS_BASIC_COMPILE"
-					default="0">
-					<option value="0">PLG_SYSTEM_JLESS_COMPILE_SERVER</option>
-					<option value="1">PLG_SYSTEM_JLESS_COMPILE_CLIENT</option>
+					default="gpeasy">
+					<option value="gpeasy">PLG_SYSTEM_JLESS_COMPILE_GPEASY</option>
+					<option value="leafo">PLG_SYSTEM_JLESS_COMPILE_LEAFO</option>
+					<option value="less.js">PLG_SYSTEM_JLESS_COMPILE_LESSJS</option>
 				</field>
 			</fieldset>
 		</fields>

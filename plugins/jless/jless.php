@@ -12,11 +12,6 @@ defined('_JEXEC') or die();
 
 jimport('joomla.log.log');
 
-if (!class_exists('lessc'))
-{
-	require_once('lessc.php');
-}
-
 /**
  * Compile LESS files on-the-fly.
  * Less compiler lessphp; see http://leafo.net/lessphp/
@@ -32,11 +27,15 @@ class PlgSystemJLess extends JPlugin
 		
 		if (JFactory::getApplication()->isSite()) {
 			if ($template = $this->get('params')->get('template')) {
-				if ($this->get('params')->get('compile', 0) == 1) {
+				if (($compiler = $this->get('params')->get('compile', 'gpeasy')) == 'less.js') {
 					$this->_compileClientSide($template);
-				} else {
+				} else {					
+					if (!class_exists('lessc')) {
+						require_once(dirname(__FILE__).'/compilers/'.$compiler.'/lessc.inc.php');
+					}
+					
 					$this->_compileServerSide($template);
-				}
+				}				
 			}
 		}
 	}
