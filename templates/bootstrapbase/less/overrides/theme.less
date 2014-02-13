@@ -290,6 +290,24 @@ com_users
 		#buttons-field {
 			.make-md-column-offset(3);
 		}
+		
+		#recaptcha_area {
+			padding: 2px 2px 9px;
+			border: 1px solid @table-border-color;
+			
+			.recaptcha_theme_clean {
+				border-width: 0 !important;
+				
+ 				#recaptcha_image {
+ 					border-width: 0 !important;
+ 				}
+ 				
+ 				#recaptcha_response_field {
+ 					.form-control;
+ 					border: 1px solid @input-border !important;
+ 				}
+			}
+		}
 	}
 }
 
