@@ -78,7 +78,7 @@ class PlgSystemJLess extends JPlugin
 		$less->setFormatter($formatter);
 		$less->setPreserveComments(true);
 
-		$this->_compile($less);		
+		$this->_compile($less, $this->_getCssUncompressed());		
 	}
 
 	/* Produce production version.
@@ -89,28 +89,21 @@ class PlgSystemJLess extends JPlugin
 		
 		$less->setFormatter(new lessc_formatter_compressed());
 			
-		$this->_compile($less);
+		$this->_compile($less, $this->_getCssCompressed());
 	}
 	
-	private function _compile($less)
+	private function _compile($less, $dest)
 	{
-		error_log(get_class($less->getFormatter()));
-		if (get_class($less->getFormatter()) == 'lessc_formatter_compressed') {
-			$dest = $this->_getCssCompressed();
-		} else {
-			$dest = $this->_getCssUncompressed();
-		}
-		
 		$src = $this->_getLess();
-		
+	
 		$cache = JFactory::getCache('jless', '');
 		$cache->setCaching(true);
 			
 		if ($current = $cache->get($src)) {
 			$src = $current;
 		}
-			
-		$new = $less->cachedCompile($src);
+
+		$new = $less->cachedCompile($src, $this->params->get('force'));
 			
 		$currentUpdated = JArrayHelper::getValue($current, "updated");
 		$newUpdated = JArrayHelper::getValue($new, "updated");
@@ -118,7 +111,7 @@ class PlgSystemJLess extends JPlugin
 		if (!JFile::exists($dest) || !$current || $newUpdated > $currentUpdated) {
 			$cache->store($new, $src);
 			JFile::write($dest, JArrayHelper::getValue($new, "compiled"));
-		}	
+		}
 	}
 	
 	private function _deleteCssFiles()

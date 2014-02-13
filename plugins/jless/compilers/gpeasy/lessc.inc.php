@@ -32,11 +32,6 @@ class lessc
 	{
 		$this->formatterName = $name;
 	}
-	
-	public function getFormatter()
-	{
-		return $this->formatterName;
-	}
 
 	public function setPreserveComments($preserve) {}
 	public function registerFunction($name, $func) {}

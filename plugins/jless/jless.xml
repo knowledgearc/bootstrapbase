@@ -41,6 +41,15 @@
 					<option value="leafo">PLG_SYSTEM_JLESS_COMPILE_LEAFO</option>
 					<option value="less.js">PLG_SYSTEM_JLESS_COMPILE_LESSJS</option>
 				</field>
+
+				<field 
+					name="force"
+					type="list"
+					label="PLG_SYSTEM_JLESS_BASIC_FORCE"
+					default="0">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>				
 			</fieldset>
 		</fields>
 	</config>
