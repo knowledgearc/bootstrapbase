@@ -32,12 +32,28 @@ $bodyClass = ' '.$option.' view-'. $view.
 	($itemid ? ' itemid-' . $itemid : '');
 
 // unload mootools if specified.
-if ($params->get('mootools_load') != 1) {
+if ($params->get('mootools_core_load', 1) != 1) {
 	$headers = $this->getHeadData();
 	
 	$scripts = JArrayHelper::getValue($headers, 'scripts');
 	
 	foreach (preg_grep('/.*mootools.*\.js$/',array_keys($scripts)) as $item) {
+		unset($headers['scripts'][$item]);
+	}
+	
+	$this->setHeadData($headers);
+}
+
+if ($params->get('mootools_more_load', 0) != 1) {
+	$headers = $this->getHeadData();
+
+	$scripts = JArrayHelper::getValue($headers, 'scripts');
+
+	foreach (preg_grep('/.*mootools-more.*\.js$/',array_keys($scripts)) as $item) {
+		unset($headers['scripts'][$item]);
+	}
+	
+	foreach (preg_grep('/.*validate.*\.js$/',array_keys($scripts)) as $item) {
 		unset($headers['scripts'][$item]);
 	}
 	

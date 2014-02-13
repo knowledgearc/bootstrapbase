@@ -9,25 +9,11 @@
 
 defined('_JEXEC') or die;
 
+// initialize the template settings, client side lib loading, page direction, etc.
 require_once (JPATH_ROOT.'/templates/'.$this->template.'/initialize.php');
 
-JHtml::_('bootstrap.framework');
-$this->addStylesheet(JURI::base().'/templates/'.$this->template.'/css/template.min.css');
-
-// load tooltips
-$js = <<<JS
-(function ($) {	
-	$(document).ready(function() {
-		$('[data-toggle="tooltip"]').tooltip();
-	});
-})(jQuery)
-JS;
-
-$this->addScriptDeclaration($js);
-
-if ($googleFont) {
-	$this->addStylesheet('http://fonts.googleapis.com/css?'.implode('&', $googleFont));
-}
+// load the bootstrap support.
+require_once (JPATH_ROOT.'/templates/'.$this->template.'/bootstrapify.php');
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
