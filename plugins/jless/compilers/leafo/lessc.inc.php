@@ -1948,6 +1948,11 @@ class lessc {
 	public function setFormatter($name) {
 		$this->formatterName = $name;
 	}
+	
+	public function getFormatter()
+	{
+		return $this->formatterName;
+	}
 
 	protected function newFormatter() {
 		$className = "lessc_formatter_lessjs";
