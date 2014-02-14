@@ -29,7 +29,7 @@ require_once (JPATH_ROOT.'/templates/'.$this->template.'/bootstrapify.php');
 				<jdoc:include type="message" />
 			
 				<jdoc:include type="modules" name="header" />
-				<jdoc:include type="module" name="hero" title="Hero" />
+				<jdoc:include type="modules" name="hero" />
 				<jdoc:include type="modules" name="top" />
 			</header>
 
