@@ -48,7 +48,7 @@ JHtml::_('behavior.formvalidation');
 	<?php endif;?>
 <?php endforeach;?>
 		<div id="buttons-field" class="form-field">
-			<button type="submit" class="btn btn-primary validate"><?php echo JText::_('JREGISTER');?></button>
+			<button type="submit" class="validate"><?php echo JText::_('JREGISTER');?></button>
 			<a class="btn" href="<?php echo JRoute::_('');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
 			<input type="hidden" name="option" value="com_users" />
 			<input type="hidden" name="task" value="registration.register" />
