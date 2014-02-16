@@ -38,7 +38,6 @@
 					label="PLG_SYSTEM_JLESS_BASIC_COMPILE"
 					default="gpeasy">
 					<option value="gpeasy">PLG_SYSTEM_JLESS_COMPILE_GPEASY</option>
-					<option value="leafo">PLG_SYSTEM_JLESS_COMPILE_LEAFO</option>
 					<option value="less.js">PLG_SYSTEM_JLESS_COMPILE_LESSJS</option>
 				</field>
 
@@ -49,7 +48,25 @@
 					default="0">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>				
+				</field>
+				
+				<field 
+					name="generate_uncompressed"
+					type="list"
+					label="PLG_SYSTEM_JLESS_BASIC_GENERATE_UNCOMPRESSED"
+					default="0">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				<field 
+					name="generate_sourcemap"
+					type="list"
+					label="PLG_SYSTEM_JLESS_BASIC_GENERATE_SOURCEMAP"
+					default="1">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

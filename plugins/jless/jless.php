@@ -14,13 +14,23 @@ jimport('joomla.log.log');
 
 /**
  * Compile LESS files on-the-fly.
- * Less compiler lessphp; see http://leafo.net/lessphp/
+ * Less compiler less.php; see http://github.com/oyejorge/less.php
  */
 class PlgSystemJLess extends JPlugin
 {
 	const LESS_FILE = '/less/template.less';
 	const CSS_FILE_UNCOMPRESSED = '/css/template.css';
 	const CSS_FILE_COMPRESSED = '/css/template.min.css';
+	const CSS_FILE_SOURCEMAP = '/css/template.css.map';
+	const CACHEKEY = 'file.metadata';
+	
+	public function __construct($subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+		
+		$this->_cache = JFactory::getCache('jless', '');
+		$this->_cache->setCaching(true);
+	}
 	
 	/**
 	 * Compile .less files on change
@@ -31,10 +41,11 @@ class PlgSystemJLess extends JPlugin
 		
 		if (JFactory::getApplication()->isSite()) {			
 			if (($compiler = $this->get('params')->get('compile', 'gpeasy')) == 'less.js') {
-				$this->_compileClientSide();		
+				$this->_compileClientSide();
 			} else {					
-				require_once(dirname(__FILE__).'/compilers/'.$compiler.'/lessc.inc.php');
-				
+				require_once(dirname(__FILE__).'/compilers/'.$compiler.'/lib/Less/Autoloader.php');
+				Less_Autoloader::register();
+
 				$this->_compileServerSide();
 			}
 		}
@@ -53,65 +64,81 @@ class PlgSystemJLess extends JPlugin
 	private function _compileServerSide()
 	{
 		try {
-			$this->_compileUncompressed();
-			$this->_compileCompressed();
+			$dest = $this->_getFilePathCssCompressed();
+
+			$force = $this->params->get('force', 0);
 			
-			return true;
+			if (!JFile::exists($dest) || $this->_isLessUpdated() || !$force) {
+				$options = array('compress'=>true);
+				
+				// Build source map with minified code.
+				if ($this->params->get('generate_sourcemap', 1)) {
+					$options['sourceMap']         = true;
+					$options['sourceMapWriteTo']  = $this->_getFilePathSourceMap();
+					$options['sourceMapURL']      = $this->_getUriSourceMap();
+				}
+				
+				$less = new Less_Parser();
+				$less->parseFile($this->_getFilePathLess(), JUri::base());
+				
+				JFile::write($this->_getFilePathCssCompressed(), $less->getCss());
+				$files = $less->allParsedFiles();
+				
+				// Generate uncompressed css.
+				if ($this->params->get('generate_uncompressed', 0)) {
+					$less = new Less_Parser();
+					$less->parseFile($src, '/');
+						
+					JFile::write($this->_getFilePathCssUncompressed(), $less->getCss());
+				}
+				
+				// update cache.
+				$metadata = array();
+					
+				foreach ($files as $file) {
+					$metadata[$file]['filesize'] = filesize($file);
+					$metadata[$file]['modified'] = filemtime($file);
+				}
+
+				$this->_cache->store($metadata, self::CACHEKEY);
+			}
 		} catch (Exception $e) {
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			return false;
 		}
 	}
-
-	/* Produce debug version.
-	 */
-	private function _compileUncompressed()
-	{
-		$less = new lessc;
-		
-		$formatter = new lessc_formatter_classic();
-		$formatter->indentChar = "\t";
-		$formatter->close = "}\n";
-		$formatter->breakSelectors = true;
-		$formatter->disableSingle = true;
-		
-		$less->setFormatter($formatter);
-		$less->setPreserveComments(true);
-
-		$this->_compile($less, $this->_getCssUncompressed());		
-	}
-
-	/* Produce production version.
-	 */
-	private function _compileCompressed()
-	{
-		$less = new lessc;
-		
-		$less->setFormatter(new lessc_formatter_compressed());
-			
-		$this->_compile($less, $this->_getCssCompressed());
-	}
 	
-	private function _compile($less, $dest)
+	/**
+	 * Check the cache against the file system to determine whether the LESS 
+	 * files have been updated.
+	 * 
+	 * @return boolean True if the LESS files have been updated, false 
+	 * otherwise.
+	 */
+	private function _isLessUpdated()
 	{
-		$src = $this->_getLess();
-	
-		$cache = JFactory::getCache('jless', '');
-		$cache->setCaching(true);
-			
-		if ($current = $cache->get($src)) {
-			$src = $current;
-		}
-
-		$new = $less->cachedCompile($src, $this->params->get('force'));
-			
-		$currentUpdated = JArrayHelper::getValue($current, "updated");
-		$newUpdated = JArrayHelper::getValue($new, "updated");
+		$files = $this->_cache->get(self::CACHEKEY);
 		
-		if (!JFile::exists($dest) || !$current || $newUpdated > $currentUpdated) {
-			$cache->store($new, $src);
-			JFile::write($dest, JArrayHelper::getValue($new, "compiled"));
+		$changed = false;
+		
+		while (($metadata = current($files)) !== false && !$changed) {
+			$file = key($files);
+			
+			if (file_exists($file)) {
+				$sizeChanged = filesize($file) != JArrayHelper::getValue($metadata, 'filesize');
+				$modifiedChanged = filemtime($file) != JArrayHelper::getValue($metadata, 'modified');
+				
+				if ($sizeChanged || $modifiedChanged) {
+					$changed = true;
+				}
+			} else {
+				$changed = true;
+			}
+			
+			next($files);
 		}
+		
+		return $changed;
 	}
 	
 	private function _deleteCssFiles()
@@ -127,19 +154,31 @@ class PlgSystemJLess extends JPlugin
 		}
 	}
 	
-	private function _getCssUncompressed()
+	private function _getFilePathCssUncompressed()
 	{
 		$path = JPath::clean(JPATH_ROOT.'/templates/'.$this->_getTemplate());
 		return $path.self::CSS_FILE_UNCOMPRESSED;		
 	}
 	
-	private function _getCssCompressed()
+	private function _getFilePathCssCompressed()
 	{
 		$path = JPath::clean(JPATH_ROOT.'/templates/'.$this->_getTemplate());
 		return $path.self::CSS_FILE_COMPRESSED;
 	}
 	
-	private function _getLess()
+	private function _getFilePathSourceMap()
+	{
+		$path = JPath::clean(JPATH_ROOT.'/templates/'.$this->_getTemplate());
+		return $path.self::CSS_FILE_SOURCEMAP;
+	}
+	
+	private function _getUriSourceMap()
+	{
+		$path = JPath::clean(JURI::base().'/templates/'.$this->_getTemplate());
+		return $path.self::CSS_FILE_SOURCEMAP;
+	}
+	
+	private function _getFilePathLess()
 	{
 		$path = JPath::clean(JPATH_ROOT.'/templates/'.$this->_getTemplate());
 		return $path.self::LESS_FILE;
@@ -152,7 +191,7 @@ class PlgSystemJLess extends JPlugin
 		
 		return $template;
 	}
-	
+
 	public function onAfterRender()
 	{
 		// cannot set rel="stylesheet/less for client side compilation using 
