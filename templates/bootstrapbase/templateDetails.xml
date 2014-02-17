@@ -10,12 +10,6 @@
 	<version>1.0.0</version>
 	<description>TPL_BOOTSTRAPBASE_XML_DESCRIPTION</description>
 	<files>
-		<filename>component.php</filename>
-		<filename>error.php</filename>
-		<filename>index.html</filename>
-		<filename>index.php</filename>
-		<filename>initialize.php</filename>
-		<filename>templateDetails.xml</filename>
 		<folder>css</folder>
 		<folder>fonts</folder>
 		<folder>html</folder>
@@ -23,6 +17,13 @@
 		<folder>js</folder>
 		<folder>language</folder>
 		<folder>less</folder>
+		<filename>bootstrapify.php</filename>
+		<filename>component.php</filename>
+		<filename>error.php</filename>
+		<filename>index.html</filename>
+		<filename>index.php</filename>
+		<filename>initialize.php</filename>
+		<filename>templateDetails.xml</filename>
 	</files>
 	
 	<languages folder="language">
