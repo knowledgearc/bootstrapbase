@@ -117,10 +117,13 @@ class PlgSystemJLess extends JPlugin
 	 */
 	private function _isLessUpdated()
 	{
-		$files = $this->_cache->get(self::CACHEKEY);
+		// if there is no cached item, recompile.
+		if (!is_array($files = $this->_cache->get(self::CACHEKEY))) {
+			return true;
+		}
 		
 		$changed = false;
-		
+				
 		while (($metadata = current($files)) !== false && !$changed) {
 			$file = key($files);
 			
@@ -137,7 +140,7 @@ class PlgSystemJLess extends JPlugin
 			
 			next($files);
 		}
-		
+	
 		return $changed;
 	}
 	
