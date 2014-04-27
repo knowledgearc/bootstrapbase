@@ -10,6 +10,7 @@ defined('_JEXEC') or die;
 
 $application = JFactory::getApplication();
 $document = JFactory::getDocument();
+$menu = $application->getMenu();
 
 $params = $application->getTemplate(true)->params;
 
@@ -26,10 +27,14 @@ $this->language = $document->language;
 $this->direction = $document->direction;
 
 // Set the body class for the overall web page.
-$bodyClass = ' '.$option.' view-'. $view.
-	($layout ? ' layout-' . $layout : ' no-layout').
-	($task ? ' task-' . $task : ' no-task').
+$bodyClass = $option.' view-'. $view.
+	($layout ? ' layout-' . $layout : '').
+	($task ? ' task-' . $task : '').
 	($itemid ? ' itemid-' . $itemid : '');
+
+// append the page class suffix to the correct location.
+$active = $menu->getActive();
+$bodyClass .= $menu->getParams($active->id)->get('pageclass_sfx', '');
 
 // unload mootools if specified.
 if ($params->get('mootools_core_load', 1) != 1) {

@@ -22,7 +22,7 @@ require_once (JPATH_ROOT.'/templates/'.$this->template.'/bootstrapify.php');
 		<jdoc:include type="head" />
 	</head>
 
-	<body<?php $bodyClass ? ' class="'.$bodyClass.'"' : ''; ?>>
+	<body<?php echo $bodyClass ? ' class="'.$bodyClass.'"' : ''; ?>>
 		<div class="container">
 			<header>
 				<jdoc:include type="modules" name="navbar" />
