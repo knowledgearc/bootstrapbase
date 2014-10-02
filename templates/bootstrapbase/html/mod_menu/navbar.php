@@ -18,16 +18,9 @@ if ($params->get('tag_id') != null) {
 	$target = 'navbar-'.$module->id.'-collapse';
 }
 
-$logo = null;
-$brands = JModuleHelper::getModules('navbar-brand');
-
-if (count($brands)) {	
-	$brand = JArrayHelper::getValue($brands, 0);
-	$renderer = JFactory::getDocument()->loadRenderer('module');
-	$logo = $renderer->render($brand);
-}
+$logo = JFactory::getApplication()->getTemplate(true)->params->get('logo');
 ?>
-<nav<?php echo $tag; ?> class="navbar <?php echo $class_sfx; ?>" role="navigation">
+<nav<?php echo $tag; ?> class="navbar<?php echo $class_sfx; ?>" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".<?php echo $target; ?>">
@@ -37,38 +30,45 @@ if (count($brands)) {
 				<span class="icon-bar"></span>
 			</button>
 			<?php if ($logo) : ?>
-			<a class="navbar-brand" href="<?php echo JUri::base(); ?>"><?php echo $logo; ?></a>
+			<a
+                class="navbar-brand"
+                href="<?php echo JUri::base(); ?>"
+                title="<?php echo JFactory::getConfig()->get('sitename'); ?>">
+                <img
+                    itemprop="logo"
+                    src="<?php echo $logo; ?>"
+                    alt="<?php echo JFactory::getConfig()->get('sitename'); ?>"/></a>
 			<?php endif; ?>
 		</div>
-	
+
 		<div class="collapse navbar-collapse <?php echo $target; ?>">
 			<ul class="nav navbar-nav">
 				<?php
 				foreach ($list as $i => &$item) {
 					$class = 'item-'.$item->id;
-					
+
 					if ($item->id == $active_id) {
 						$class .= ' current';
 					}
-					
+
 					if (in_array($item->id, $path)) {
 						$class .= ' active';
 					} elseif ($item->type == 'alias') {
 						$aliasToId = $item->params->get('aliasoptions');
-						
+
 						if (count($path) > 0 && $aliasToId == $path[count($path) - 1]) {
 							$class .= ' active';
 						} elseif (in_array($aliasToId, $path)) {
 							$class .= ' alias-parent-active';
 						}
 					}
-					
+
 					if (!empty($class)) {
 						$class = ' class="'.trim($class) .'"';
 					}
-				
+
 					echo '<li'.$class.'>';
-	
+
 					// Render the menu item.
 					switch ($item->type) {
 						case 'separator':
@@ -77,12 +77,12 @@ if (count($brands)) {
 						case 'heading':
 							require JModuleHelper::getLayoutPath('mod_menu', 'navbar_'.$item->type);
 							break;
-					
+
 						default:
 							require JModuleHelper::getLayoutPath('mod_menu', 'navbar_url');
 							break;
 					}
-	
+
 					// The next item is deeper.
 					if ($item->deeper) {
 						echo '<ul class="dropdown-menu">';

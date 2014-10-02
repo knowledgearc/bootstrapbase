@@ -11,7 +11,11 @@
 // Core variables and mixins
 @import "./bootstrap/bootstrap.less";	// The bootstrap css.
 
+// 3rd party
+@import "./3rdparty/font-awesome/font-awesome.less";   // font awesomeness
+
 // Overrides
+@import "./overrides/fonts.less";       // Fix incorrect font paths in 3rd party less libs.
 @import "./overrides/variables.less";	// Modify this for custom colors, font-sizes, etc
 @import "./overrides/theme.less";		// theme-specific css for template developers.
 @import "./overrides/custom.less";		// customization for webmasters/site managers.

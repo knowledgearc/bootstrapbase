@@ -1,0 +1,19 @@
+/**
+Use for fixing 3rd party font inclusions via the Bootstrapbase/fonts directory.
+**/
+
+/**
+Need to override the Font Awesome paths as they are referencing the top of the url and not the current path (which is this template). Do this here so that we don't overwrite changes when we update the
+Font Awesome library.
+**/
+@font-face {
+  font-family: 'FontAwesome';
+  src: ~"url('@{fa-font-path}/fontawesome-webfont.eot?v=@{fa-version}')";
+  src: ~"url('@{fa-font-path}/fontawesome-webfont.eot?#iefix&v=@{fa-version}') format('embedded-opentype')",
+    ~"url('@{fa-font-path}/fontawesome-webfont.woff?v=@{fa-version}') format('woff')",
+    ~"url('@{fa-font-path}/fontawesome-webfont.ttf?v=@{fa-version}') format('truetype')",
+    ~"url('@{fa-font-path}/fontawesome-webfont.svg?v=@{fa-version}#fontawesomeregular') format('svg')";
+//  src: url('@{fa-font-path}/FontAwesome.otf') format('opentype'); // used when developing fonts
+  font-weight: normal;
+  font-style: normal;
+}

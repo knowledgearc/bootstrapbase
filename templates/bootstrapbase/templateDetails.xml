@@ -1,102 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.2" type="template" client="site" method="upgrade">
-	<name>bootstrapbase</name>
-	<creationDate>2013-10-02</creationDate>
-	<author>KnowledgeARC</author>
+    <name>bootstrapbase</name>
+    <creationDate>2013-10-02</creationDate>
+    <author>KnowledgeARC</author>
     <authorEmail>development@knowledgearc.com</authorEmail>
-	<authorUrl>http://www.knowledgearc.com</authorUrl>
-	<copyright>Copyright (C) 2013-2014 KnowledgeARC Ltd. All rights reserved.</copyright>
-	<license>GNU/GPL</license>
-	<version>1.0.0</version>
-	<description>TPL_BOOTSTRAPBASE_XML_DESCRIPTION</description>
-	<files>
-		<folder>css</folder>
-		<folder>fonts</folder>
-		<folder>html</folder>
-		<folder>images</folder>
-		<folder>js</folder>
-		<folder>language</folder>
-		<folder>less</folder>
-		<filename>bootstrapify.php</filename>
-		<filename>component.php</filename>
-		<filename>error.php</filename>
-		<filename>index.html</filename>
-		<filename>index.php</filename>
-		<filename>initialize.php</filename>
-		<filename>template_thumbnail.png</filename>
-		<filename>templateDetails.xml</filename>
-	</files>
-	
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.tpl_bootstrapbase.ini</language>
-		<language tag="en-GB">en-GB/en-GB.tpl_bootstrapbase.sys.ini</language>
-	</languages>
+    <authorUrl>http://www.knowledgearc.com</authorUrl>
+    <copyright>Copyright (C) 2013-2014 KnowledgeARC Ltd. All rights reserved.</copyright>
+    <license>GNU/GPL</license>
+    <version>1.0.0</version>
+    <description>TPL_BOOTSTRAPBASE_XML_DESCRIPTION</description>
+    <files>
+        <folder>css</folder>
+        <folder>fonts</folder>
+        <folder>html</folder>
+        <folder>images</folder>
+        <folder>js</folder>
+        <folder>language</folder>
+        <folder>less</folder>
+        <filename>bootstrapify.php</filename>
+        <filename>component.php</filename>
+        <filename>error.php</filename>
+        <filename>index.html</filename>
+        <filename>index.php</filename>
+        <filename>initialize.php</filename>
+        <filename>template_thumbnail.png</filename>
+        <filename>templateDetails.xml</filename>
+    </files>
 
-	<positions>
-		<position>navbar</position>
-		<position>header</position>	
-		<position>hero</position>
-		<position>top</position>
-		<position>above-content</position>
-		<position>breadcrumb</position>
-		<position>component</position>
-		<position>below-content</position>
-		<position>bottom</position>
-		<position>left</position>
-		<position>right</position>
-		<position>footer</position>
-	</positions>
-	
-	<config>
-		<fields name="params">
-			<fieldset name="advanced" label="TPL_BOOTSTRAPBASE_FIELDSET_ADVANCED">
-				<field 
-					name="mootools_core_load" 
-					type="radio" 
-					default="1" 
-					label="TPL_BOOTSTRAPBASE_MOOTOOLS_CORE_LOAD_LABEL" 
-					description="TPL_BOOTSTRAPBASE_MOOTOOLS_CORE_LOAD_DESC"
-					class="btn-group btn-group-yesno">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field 
-					name="mootools_more_load" 
-					type="radio" 
-					default="0" 
-					label="TPL_BOOTSTRAPBASE_MOOTOOLS_MORE_LOAD_LABEL" 
-					description="TPL_BOOTSTRAPBASE_MOOTOOLS_MORE_LOAD_DESC"
-					class="btn-group btn-group-yesno">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field 
-					name="googlefonts_load" 
-					type="radio" 
-					default="0" 
-					label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_LABEL" 
-					description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_DESC"
-					class="btn-group btn-group-yesno">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="googlefonts_load_family"  type="text" default="ABeeZee|Abel"
-					label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_FAMILY_LABEL"
-					description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_FAMILY_DESC"
-					filter="string"/>
-				<field name="googlefonts_load_subsets"  type="text" default=""
-					label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_SUBSETS_LABEL"
-					description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_SUBSETS_DESC"
-					filter="string"/>
-				<field name="googlefonts_load_text"  type="text" default=""
-					label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_TEXT_LABEL"
-					description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_TEXT_DESC"
-					filter="string"/>
-				<field name="googlefonts_load_effect"  type="text" default=""
-					label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_EFFECT_LABEL"
-					description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_EFFECT_DESC"
-					filter="string"/>
-			</fieldset>
-		</fields>
-	</config>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.tpl_bootstrapbase.ini</language>
+        <language tag="en-GB">en-GB/en-GB.tpl_bootstrapbase.sys.ini</language>
+    </languages>
+
+    <positions>
+        <position>navbar</position>
+        <position>header</position>
+        <position>hero</position>
+        <position>top</position>
+        <position>above-content</position>
+        <position>breadcrumb</position>
+        <position>component</position>
+        <position>below-content</position>
+        <position>bottom</position>
+        <position>left</position>
+        <position>right</position>
+        <position>footer</position>
+    </positions>
+
+    <config>
+        <fields name="params">
+            <fieldset name="advanced" label="TPL_BOOTSTRAPBASE_FIELDSET_ADVANCED">
+                <field name="logo" class="" type="media" default=""
+                    label="TPL_BOOTSTRAPBASE_LOGO_LABEL"
+                    description="TPL_BOOTSTRAPBASE_LOGO_DESC" />
+
+                <field
+                    name="mootools_core_load"
+                    type="radio"
+                    default="1"
+                    label="TPL_BOOTSTRAPBASE_MOOTOOLS_CORE_LOAD_LABEL"
+                    description="TPL_BOOTSTRAPBASE_MOOTOOLS_CORE_LOAD_DESC"
+                    class="btn-group btn-group-yesno">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="mootools_more_load"
+                    type="radio"
+                    default="0"
+                    label="TPL_BOOTSTRAPBASE_MOOTOOLS_MORE_LOAD_LABEL"
+                    description="TPL_BOOTSTRAPBASE_MOOTOOLS_MORE_LOAD_DESC"
+                    class="btn-group btn-group-yesno">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
+                    name="googlefonts_load"
+                    type="radio"
+                    default="0"
+                    label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_LABEL"
+                    description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_DESC"
+                    class="btn-group btn-group-yesno">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="googlefonts_load_family" type="text" default="ABeeZee|Abel"
+                    label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_FAMILY_LABEL"
+                    description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_FAMILY_DESC"
+                    filter="string"/>
+                <field name="googlefonts_load_subsets" type="text" default=""
+                    label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_SUBSETS_LABEL"
+                    description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_SUBSETS_DESC"
+                    filter="string"/>
+                <field name="googlefonts_load_text" type="text" default=""
+                    label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_TEXT_LABEL"
+                    description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_TEXT_DESC"
+                    filter="string"/>
+                <field name="googlefonts_load_effect" type="text" default=""
+                    label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_EFFECT_LABEL"
+                    description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_EFFECT_DESC"
+                    filter="string"/>
+            </fieldset>
+        </fields>
+    </config>
 </extension>
