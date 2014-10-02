@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="System - JLess" default="">
+    <property file="build.properties"/>
+
     <target name="package" description="Create an installable package.">
-        <copy todir="/home/haydenyoung/Desktop/plg_system_jless">
-            <fileset dir="./" defaultexcludes="true">
-                <include name="**/**"/>
+        <copy todir="${package.dest}plg_system_jless">
+            <fileset dir="${src}" defaultexcludes="false">
                 <exclude name="build*.xml"/>
+                <exclude name="build.properties*"/>
             </fileset>
         </copy>
 
-        <composer command="install" composer="/opt/composer.phar/composer.phar">
+        <composer command="install" composer="${composer.phar}">
             <arg value="--optimize-autoloader"/>
             <arg value="--working-dir"/>
-            <arg path="/home/haydenyoung/Desktop/plg_system_jless"/>
+            <arg path="${package.dest}plg_system_jless"/>
         </composer>
 
         <!-- We use Joomla's autoloader so we remove composer's autoload funcitonality. -->
-        <delete dir="/home/haydenyoung/Desktop/plg_system_jless/compilers/composer"/>
-        <delete dir="/home/haydenyoung/Desktop/plg_system_jless/compilers/bin"/>
-        <delete dir="/home/haydenyoung/Desktop/plg_system_jless/compilers/oyejorge/less.php/bin"/>
-        <delete dir="/home/haydenyoung/Desktop/plg_system_jless/compilers/oyejorge/less.php/test"/>
-        <delete dir="/home/haydenyoung/Desktop/plg_system_jless/compilers/oyejorge/less.php/lib/.easymin"/>
+        <delete dir="${package.dest}plg_system_jless/compilers/composer"/>
+        <delete dir="${package.dest}plg_system_jless/compilers/bin"/>
+        <delete dir="${package.dest}plg_system_jless/compilers/oyejorge/less.php/bin"/>
+        <delete dir="${package.dest}plg_system_jless/compilers/oyejorge/less.php/test"/>
+        <delete dir="${package.dest}plg_system_jless/compilers/oyejorge/less.php/lib/Less/.easymin"/>
 
         <delete>
-            <fileset dir="/home/haydenyoung/Desktop/plg_system_jless/compilers" defaultexcludes="false">
+            <fileset dir="${package.dest}plg_system_jless/compilers" defaultexcludes="false">
                 <exclude name="**/lib/**/*.php"/>
             </fileset>
         </delete>
+
+        <delete>
+            <fileset dir="${package.dest}plg_system_jless" defaultexcludes="true">
+                <include name="composer.*"/>
+            </fileset>
+        </delete>
+
+        <delete file="${package.dest}plg_system_jless.zip"/>
+
+        <zip destfile="${package.dest}plg_system_jless.zip"
+               basedir="${package.dest}plg_system_jless/"
+               excludes="build*.xml"/>
+
+        <delete dir="${package.dest}plg_system_jless"/>
     </target>
 </project>

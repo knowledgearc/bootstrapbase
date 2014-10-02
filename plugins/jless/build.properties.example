@@ -1,0 +1,4 @@
+src=.
+dest=/var/www/html/
+package.dest=~/Desktop/
+composer.phar=/opt/composer.phar/composer.phar
