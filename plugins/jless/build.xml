@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="System - JLess" default="">
+    <target name="package" description="Create an installable package.">
+        <copy todir="/home/haydenyoung/Desktop/plg_system_jless">
+            <fileset dir="./" defaultexcludes="true">
+                <include name="**/**"/>
+                <exclude name="build*.xml"/>
+            </fileset>
+        </copy>
+
+        <composer command="install" composer="/opt/composer.phar/composer.phar">
+            <arg value="--optimize-autoloader"/>
+            <arg value="--working-dir"/>
+            <arg path="/home/haydenyoung/Desktop/plg_system_jless"/>
+        </composer>
+
+        <!-- We use Joomla's autoloader so we remove composer's autoload funcitonality. -->
+        <delete dir="/home/haydenyoung/Desktop/plg_system_jless/compilers/composer"/>
+        <delete dir="/home/haydenyoung/Desktop/plg_system_jless/compilers/bin"/>
+        <delete dir="/home/haydenyoung/Desktop/plg_system_jless/compilers/oyejorge/less.php/bin"/>
+        <delete dir="/home/haydenyoung/Desktop/plg_system_jless/compilers/oyejorge/less.php/test"/>
+        <delete dir="/home/haydenyoung/Desktop/plg_system_jless/compilers/oyejorge/less.php/lib/.easymin"/>
+
+        <delete>
+            <fileset dir="/home/haydenyoung/Desktop/plg_system_jless/compilers" defaultexcludes="false">
+                <exclude name="**/lib/**/*.php"/>
+            </fileset>
+        </delete>
+    </target>
+</project>
