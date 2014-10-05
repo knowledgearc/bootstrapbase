@@ -3,6 +3,18 @@ Use for fixing 3rd party font inclusions via the Bootstrapbase/fonts directory.
 **/
 
 /**
+Override Bootstrap Glyphicon includes.
+**/
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: ~"url('@{icon-font-path}@{icon-font-name}.eot')";
+  src: ~"url('@{icon-font-path}@{icon-font-name}.eot?#iefix') format('embedded-opentype')",
+       ~"url('@{icon-font-path}@{icon-font-name}.woff') format('woff')",
+       ~"url('@{icon-font-path}@{icon-font-name}.ttf') format('truetype')",
+       ~"url('@{icon-font-path}@{icon-font-name}.svg#@{icon-font-svg-id}') format('svg')";
+}
+
+/**
 Need to override the Font Awesome paths as they are referencing the top of the url and not the current path (which is this template). Do this here so that we don't overwrite changes when we update the
 Font Awesome library.
 **/
