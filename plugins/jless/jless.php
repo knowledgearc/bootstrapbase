@@ -40,12 +40,15 @@ class PlgSystemJLess extends JPlugin
         $document = JFactory::getDocument();
 
         if (JFactory::getApplication()->isSite()) {
-            if (($compiler = $this->get('params')->get('compile', 'gpeasy')) == 'less.js') {
-                $this->_compileClientSide();
-            } else {
-                JLoader::registerNamespace('Less', __DIR__.'/compilers/oyejorge/less.php/lib');
+            if ($this->_getTemplate())
+            {
+                if (($compiler = $this->get('params')->get('compile', 'gpeasy')) == 'less.js') {
+                    $this->_compileClientSide();
+                } else {
+                    JLoader::registerNamespace('Less', __DIR__.'/compilers/oyejorge/less.php/lib');
 
-                $this->_compileServerSide();
+                    $this->_compileServerSide();
+                }
             }
         }
     }
@@ -66,7 +69,7 @@ class PlgSystemJLess extends JPlugin
         {
             $dest = $this->_getFilePathCssCompressed();
 
-            $force = $this->params->get('force', 0);
+            $force = (bool)$this->params->get('force', false);
 
             if (!JFile::exists($dest) || $this->_isLessUpdated() || $force)
             {
@@ -78,9 +81,15 @@ class PlgSystemJLess extends JPlugin
                     $options['sourceMap']         = true;
                     $options['sourceMapWriteTo']  = $this->_getFilePathSourceMap();
                     $options['sourceMapURL']      = $this->_getUriSourceMap();
+                    $options['sourceMapBasepath'] = JPATH_ROOT;
+                }
+                else
+                {
+                    JFile::delete($this->_getFilePathSourceMap());
                 }
 
-                $less = new Less_Parser();
+
+                $less = new Less_Parser($options);
                 $less->parseFile($this->_getFilePathLess(), JUri::base());
 
                 JFile::write($this->_getFilePathCssCompressed(), $less->getCss());
@@ -93,6 +102,10 @@ class PlgSystemJLess extends JPlugin
                     $less->parseFile($src, '/');
 
                     JFile::write($this->_getFilePathCssUncompressed(), $less->getCss());
+                }
+                else
+                {
+                    JFile::delete($this->_getFilePathCssUncompressed());
                 }
 
                 // update cache.
@@ -123,24 +136,41 @@ class PlgSystemJLess extends JPlugin
      */
     private function _isLessUpdated()
     {
-        // if there is no cached item, recompile.
-        if (!is_array($files = $this->_cache->get(self::CACHEKEY))) {
-            return true;
-        }
-
         $changed = false;
 
-        while (($metadata = current($files)) !== false && !$changed) {
+        // if there is no cached item, recompile.
+        if (!is_array($files = $this->_cache->get(self::CACHEKEY)))
+        {
+            $changed = true;
+        }
+
+        // if the source map still exists but shouldn't be created, just recompile.
+        $sourceMap = $this->_getFilePathSourceMap();
+        if (JFile::exists($sourceMap) && !$this->params->get('generate_sourcemap', false)) {
+            $changed = true;
+        }
+
+        // if the source map doesn't exist but should, just recompile.
+        if (!JFile::exists($sourceMap) && $this->params->get('generate_sourcemap', false)) {
+            $changed = true;
+        }
+
+        while (($metadata = current($files)) !== false && !$changed)
+        {
             $file = key($files);
 
-            if (file_exists($file)) {
+            if (file_exists($file))
+            {
                 $sizeChanged = filesize($file) != JArrayHelper::getValue($metadata, 'filesize');
                 $modifiedChanged = filemtime($file) != JArrayHelper::getValue($metadata, 'modified');
 
-                if ($sizeChanged || $modifiedChanged) {
+                if ($sizeChanged || $modifiedChanged)
+                {
                     $changed = true;
                 }
-            } else {
+            }
+            else
+            {
                 $changed = true;
             }
 
@@ -183,7 +213,7 @@ class PlgSystemJLess extends JPlugin
 
     private function _getUriSourceMap()
     {
-        $path = JPath::clean(JURI::base().'/templates/'.$this->_getTemplate());
+        $path = JURI::base().'templates/'.$this->_getTemplate();
         return $path.self::CSS_FILE_SOURCEMAP;
     }
 
@@ -196,8 +226,13 @@ class PlgSystemJLess extends JPlugin
     private function _getTemplate()
     {
         $application = JFactory::getApplication();
-        $template = $this->get('params')->get('template', $application->getTemplate());
+        $templates = $this->get('params')->get('templates', array());
+        $template = null;
 
+        if (array_search($application->getTemplate(), $templates) !== false)
+        {
+            $template = $application->getTemplate();
+        }
         return $template;
     }
 

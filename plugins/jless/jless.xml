@@ -24,45 +24,51 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field 
-					name="template" 
-					type="sql" 
-					label="PLG_SYSTEM_JLESS_BASIC_TEMPLATE" 
-					query="SELECT `template` FROM `#__template_styles` WHERE `client_id` = 0 GROUP BY `template`" 
-					key_field="template" 
-					value_field="template"/>
-				
-				<field 
+				<field
+					name="templates"
+					type="sql"
+					label="PLG_SYSTEM_JLESS_TEMPLATES_LABEL"
+                    description="PLG_SYSTEM_JLESS_TEMPLATES_DESC"
+					query="SELECT `template` FROM `#__template_styles` WHERE `client_id` = 0 GROUP BY `template`"
+					key_field="template"
+					value_field="template"
+                    multiple="true"/>
+
+				<field
 					name="compile"
 					type="list"
-					label="PLG_SYSTEM_JLESS_BASIC_COMPILE"
+					label="PLG_SYSTEM_JLESS_COMPILE_LABEL"
+                    description="PLG_SYSTEM_JLESS_COMPILE_DESC"
 					default="gpeasy">
 					<option value="gpeasy">PLG_SYSTEM_JLESS_COMPILE_GPEASY</option>
 					<option value="less.js">PLG_SYSTEM_JLESS_COMPILE_LESSJS</option>
 				</field>
 
-				<field 
+				<field
 					name="force"
 					type="list"
-					label="PLG_SYSTEM_JLESS_BASIC_FORCE"
+					label="PLG_SYSTEM_JLESS_FORCE_LABEL"
+                    description="PLG_SYSTEM_JLESS_FORCE_DESC"
 					default="0">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				
-				<field 
+
+				<field
 					name="generate_uncompressed"
 					type="list"
-					label="PLG_SYSTEM_JLESS_BASIC_GENERATE_UNCOMPRESSED"
+					label="PLG_SYSTEM_JLESS_GENERATE_UNCOMPRESSED_LABEL"
+                    description="PLG_SYSTEM_JLESS_GENERATE_UNCOMPRESSED_DESC"
 					default="0">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				
-				<field 
+
+				<field
 					name="generate_sourcemap"
 					type="list"
-					label="PLG_SYSTEM_JLESS_BASIC_GENERATE_SOURCEMAP"
+					label="PLG_SYSTEM_JLESS_GENERATE_SOURCEMAP_LABEL"
+                    description="PLG_SYSTEM_JLESS_GENERATE_SOURCEMAP_DESC"
 					default="1">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
