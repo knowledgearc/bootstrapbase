@@ -1,5 +1,7 @@
 #Joomla! Bootstrap Template Framework.
 
+BootstrapBase provides a base for developers who need a fast, light-weight responsive Joomla!-based template. BoostrapBase incorporates the latest JQuery and Bootstrap features so developers can create their templates on the latest web technologies.
+
 ## Installation
 
 1. Install BootstrapBase template and JLess system plugin using the extension manager,
@@ -8,6 +10,10 @@
 4. Select the appropriate template from the template dropdown (this should be BootstrapBase or a derivative) then select Enable. Save the plugin.
 
 Load your web site home page (if BootstrapBase is the default) or browse to a menu item which is assigned BootstrapBase as its style. When the page loads it will create the appropriate CSS files using the BootstrapBase LESS styles.
+
+## JLess
+
+JLess is a Joomla! system plugin which compiles LESS files on-the-fly. It can be configured to only compile when LESS files have changed and can be configured to use either server or client-side compilation.
 
 ## Templates
 All templates are located in the /templates directory.
@@ -46,4 +52,30 @@ Headings provide a quick summary or grab for a page's content. Certain pages can
 - A sub-heading of h1,
 - Use for articles if there are multiple article summaries on a single page (E.g. a list of blog posts).
 
+## Joomla! Integration
 
+### Modules
+
+#### Navbar Menu
+
+BootstrapBase provides functionality to convert the main menu (or any menu) into a Bootstrap navbar.
+
+To convert a menu module to a navbar:
+
+- Select the menu module from Module Manager,
+- Navigate to Advanced Settings,
+- Specify the appropriate navbar CSS class(es) to the Menu Class Suffix setting. See the [Bootstrap Navbar section](http://getbootstrap.com/components/#navbar) for more information and available CSS classes.
+
+Ideally you will want to create your own semantic LESS classes and apply appropriate Bootstrap classes there.
+
+### 3rd Party LESS Addons
+
+There are now a number of CSS developers such as Font Awesome who are providing LESS-based distributions of their libraries. BootstrapBase provides a special area for these LESS files under BootstrapBase/less/3rdparty.
+
+To add a 3rd party LESS library:
+
+- Create a directory in BootstrapBase/less/3rdparty to hold the LESS files (E.g. BootstrapBase/less/3rdparty/fontawesome),
+- Copy the LESS files into this new directory,
+- Include the LESS files in the template.less file so that they are included during LESS compilation (check for a LESS file which includes all other LESS files in the 3rd party library ; this "global" include is part of almost all distributions). Use the @import tag to include the appropriate file(s).
+
+If the 3rd party library includes icons, images or fonts, make sure you copy them to the appropriate location in the BootstrapBase template (for example, fonts are placed in the /fonts directory). However, please note that this will break almost all includes within the LESS files so you will need to override the importing CSS classes using one of the override less files. For your convenience, font locations can be overridden in overrides/fonts.less. Check this file for more information on how to correctly reference other files from CSS.
