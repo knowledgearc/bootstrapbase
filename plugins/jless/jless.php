@@ -155,8 +155,7 @@ class PlgSystemJLess extends JPlugin
             $changed = true;
         }
 
-        while (($metadata = current($files)) !== false && !$changed)
-        {
+        while (!$changed && ($metadata = current($files)) !== false) {
             $file = key($files);
 
             if (file_exists($file))
