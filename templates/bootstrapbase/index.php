@@ -9,15 +9,18 @@
 
 defined('_JEXEC') or die;
 
+JLoader::register('JDocumentRendererHead', JPATH_THEMES.'/'.$this->template.'/libraries/bootstrapbase/document/html/renderer/head.php');
+
+JLoader::register('JDocumentRendererJs', JPATH_THEMES.'/'.$this->template.'/libraries/bootstrapbase/document/html/renderer/js.php');
+
 // initialize the template settings, client side lib loading, page direction, etc.
-require_once (JPATH_ROOT.'/templates/'.$this->template.'/initialize.php');
+require_once (JPATH_THEMES.'/'.$this->template.'/initialize.php');
 
 // load the bootstrap support.
-require_once (JPATH_ROOT.'/templates/'.$this->template.'/bootstrapify.php');
+require_once (JPATH_THEMES.'/'.$this->template.'/bootstrapify.php');
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
-
 	<head>
 		<jdoc:include type="head" />
 	</head>
@@ -67,6 +70,8 @@ require_once (JPATH_ROOT.'/templates/'.$this->template.'/bootstrapify.php');
                 <jdoc:include type="modules" name="footer" />
             </div>
         </footer>
+
+        <jdoc:include type="js" />
 
         <jdoc:include type="modules" name="debug" />
 	</body>

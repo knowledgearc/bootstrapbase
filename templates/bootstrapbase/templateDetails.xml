@@ -17,6 +17,7 @@
         <folder>js</folder>
         <folder>language</folder>
         <folder>less</folder>
+        <folder>libraries</folder>
         <filename>bootstrapify.php</filename>
         <filename>component.php</filename>
         <filename>error.php</filename>
