@@ -39,6 +39,8 @@ class JDocumentRendererHead extends JDocumentRenderer
     /**
      * Generates the head HTML and return the results as a string
      *
+     * Removes Javascript from the head area for better performance/adherence to standards.
+     *
      * @param   JDocument  $document  The document for which the head will be created
      *
      * @return  string  The head hTML

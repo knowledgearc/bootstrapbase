@@ -10,7 +10,10 @@
 defined('JPATH_PLATFORM') or die;
 
 /**
- * JDocument head renderer
+ * JDocument Javascript renderer.
+ *
+ * Provides better performance and adherence to standards by including the javascript just
+ * before the closing body tag.
  *
  * @package     Bootstrapbase
  * @subpackage  Document
@@ -18,9 +21,9 @@ defined('JPATH_PLATFORM') or die;
 class JDocumentRendererJs extends JDocumentRenderer
 {
     /**
-        * Renders the document head and returns the results as a string
+        * Renders the document javascript and returns the results as a string
         *
-        * @param   string  $head     (unused)
+        * @param   string  $js       (unused)
         * @param   array   $params   Associative array of values
         * @param   string  $content  The script
         *
@@ -30,17 +33,17 @@ class JDocumentRendererJs extends JDocumentRenderer
         *
         * @note    Unused arguments are retained to preserve backward compatibility.
         */
-    public function render($head, $params = array(), $content = null)
+    public function render($js, $params = array(), $content = null)
     {
             return $this->fetchJs($this->_doc);
     }
 
     /**
-        * Generates the head HTML and return the results as a string
+        * Generates the javascript HTML and return the results as a string
         *
-        * @param   JDocument  $document  The document for which the head will be created
+        * @param   JDocument  $document  The document for which the javascript will be created
         *
-        * @return  string  The head hTML
+        * @return  string  The javascript hTML
         *
         * @since   11.1
         */
