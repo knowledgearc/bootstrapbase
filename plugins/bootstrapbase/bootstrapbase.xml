@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.2" type="plugin" group="system" method="upgrade">
+	<name>plg_system_bootstrapbase</name>
+	<author>KnowledgeARC</author>
+	<creationDate>2015-01-04</creationDate>
+	<copyright>Copyright (C) 2015 KnowledgeARC Ltd. All rights reserved.</copyright>
+	<license>GNU General Public License v3</license>
+	<authorEmail>development@knowledgearc.com</authorEmail>
+	<authorUrl>www.knowledgearc.com</authorUrl>
+	<version>1.0.0</version>
+	<description>PLG_SYSTEM_BOOTSTRAPBASE_XML_DESC</description>
+	<files>
+		<file plugin="bootstrapbase">bootstrapbase.php</file>
+		<folder>compilers</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_system_bootstrapbase.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_system_bootstrapbase.sys.ini</language>
+	</languages>
+	<media destination="plg_system_bootstrapbase" folder="media">
+		<folder>js</folder>
+	</media>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="templates_ignore"
+					type="sql"
+					label="PLG_SYSTEM_BOOTSTRAPBASE_IGNORE_TEMPLATES_LABEL"
+                    description="PLG_SYSTEM_BOOTSTRAPBASE_IGNORE_TEMPLATES_DESC"
+					query="SELECT `template` FROM `#__template_styles` WHERE `client_id` = 0 GROUP BY `template`"
+					key_field="template"
+					value_field="template"
+                    multiple="true"/>
+
+				<field
+					name="force"
+					type="list"
+					label="PLG_SYSTEM_BOOTSTRAPBASE_FORCE_LABEL"
+                    description="PLG_SYSTEM_BOOTSTRAPBASE_FORCE_DESC"
+					default="0">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="generate_css_uncompressed"
+					type="list"
+					label="PLG_SYSTEM_BOOTSTRAPBASE_GENERATE_UNCOMPRESSED_LABEL"
+                    description="PLG_SYSTEM_BOOTSTRAPBASE_GENERATE_UNCOMPRESSED_DESC"
+					default="0">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="generate_css_sourcemap"
+					type="list"
+					label="PLG_SYSTEM_BOOTSTRAPBASE_GENERATE_SOURCEMAP_LABEL"
+                    description="PLG_SYSTEM_BOOTSTRAPBASE_GENERATE_SOURCEMAP_DESC"
+					default="1">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

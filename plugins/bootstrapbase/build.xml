@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="System - BootstrapBase" default="">
+    <property file="build.properties"/>
+
+    <target name="update" description="Copies System - BootstrapBase to existing Joomla install.">
+        <copy todir="${dest}/plugins/system/bootstrapbase">
+            <fileset dir="${src}" defaultexcludes="true">
+                <include name="**"/>
+                <exclude name="**/language/**"/>
+                <exclude name="**/build*.xml"/>
+            </fileset>
+        </copy>
+        <copy todir="${dest}/administrator/languages">
+            <fileset dir="${src}/language" defaultexcludes="true">
+                <include name="**/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="package" description="Create an installable package.">
+        <copy todir="${package.dest}plg_system_bootstrapbase">
+            <fileset dir="${src}" defaultexcludes="false">
+                <exclude name="build*.xml"/>
+                <exclude name="build.properties*"/>
+            </fileset>
+        </copy>
+
+        <composer command="install" composer="${composer.phar}">
+            <arg value="--optimize-autoloader"/>
+            <arg value="--working-dir"/>
+            <arg path="${package.dest}plg_system_bootstrapbase"/>
+        </composer>
+
+        <!-- We use Joomla's autoloader so we remove composer's autoload funcitonality. -->
+        <delete dir="${package.dest}plg_system_bootstrapbase/compilers/composer"/>
+        <delete dir="${package.dest}plg_system_bootstrapbase/compilers/bin"/>
+        <delete dir="${package.dest}plg_system_bootstrapbase/compilers/oyejorge/less.php/bin"/>
+        <delete dir="${package.dest}plg_system_bootstrapbase/compilers/oyejorge/less.php/test"/>
+        <delete dir="${package.dest}plg_system_bootstrapbase/compilers/oyejorge/less.php/lib/Less/.easymin"/>
+
+        <delete>
+            <fileset dir="${package.dest}plg_system_bootstrapbase/compilers" defaultexcludes="false">
+                <exclude name="**/lib/**/*.php"/>
+            </fileset>
+        </delete>
+
+        <delete>
+            <fileset dir="${package.dest}plg_system_bootstrapbase" defaultexcludes="true">
+                <include name="composer.*"/>
+            </fileset>
+        </delete>
+
+        <delete file="${package.dest}plg_system_bootstrapbase.zip"/>
+
+        <zip destfile="${package.dest}plg_system_bootstrapbase.zip"
+               basedir="${package.dest}plg_system_bootstrapbase/"
+               excludes="build*.xml"/>
+
+        <delete dir="${package.dest}plg_system_bootstrapbase"/>
+    </target>
+</project>
