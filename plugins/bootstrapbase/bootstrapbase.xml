@@ -11,6 +11,7 @@
 	<description>PLG_SYSTEM_BOOTSTRAPBASE_XML_DESC</description>
 	<files>
 		<file plugin="bootstrapbase">bootstrapbase.php</file>
+        <file>jsminplus.php</file>
 		<folder>compilers</folder>
 	</files>
 	<languages>
@@ -31,27 +32,36 @@
 					query="SELECT `template` FROM `#__template_styles` WHERE `client_id` = 0 GROUP BY `template`"
 					key_field="template"
 					value_field="template"
-                    multiple="true"/>
+                    multiple="true"
+                    default="beez3"/>
 
 				<field
-					name="force"
+					name="force_less_compilation"
 					type="list"
-					label="PLG_SYSTEM_BOOTSTRAPBASE_FORCE_LABEL"
-                    description="PLG_SYSTEM_BOOTSTRAPBASE_FORCE_DESC"
+					label="PLG_SYSTEM_BOOTSTRAPBASE_FORCE_LESS_COMPILATION_LABEL"
+                    description="PLG_SYSTEM_BOOTSTRAPBASE_FORCE_LESS_COMPILATION_DESC"
 					default="0">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-				<field
-					name="generate_css_uncompressed"
-					type="list"
-					label="PLG_SYSTEM_BOOTSTRAPBASE_GENERATE_UNCOMPRESSED_LABEL"
-                    description="PLG_SYSTEM_BOOTSTRAPBASE_GENERATE_UNCOMPRESSED_DESC"
-					default="0">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
+                <field
+                    name="force_js_minification"
+                    type="list"
+                    label="PLG_SYSTEM_BOOTSTRAPBASE_FORCE_JS_MINIFICATION_LABEL"
+                    description="PLG_SYSTEM_BOOTSTRAPBASE_FORCE_JS_MINIFICATION_DESC"
+                    default="0">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
+                    name="exclude_js_minification"
+                    type="textarea"
+                    label="PLG_SYSTEM_BOOTSTRAPBASE_EXCLUDE_JS_MINIFICATION_LABEL"
+                    description="PLG_SYSTEM_BOOTSTRAPBASE_EXCLUDE_JS_MINIFICATION_DESC"
+                    default="">
+                </field>
 
 				<field
 					name="generate_css_sourcemap"

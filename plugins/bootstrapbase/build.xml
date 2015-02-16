@@ -2,7 +2,7 @@
 <project name="System - BootstrapBase" default="">
     <property file="build.properties"/>
 
-    <target name="update" description="Copies System - BootstrapBase to existing Joomla install.">
+    <target name="install" description="Copies System - BootstrapBase to existing Joomla install.">
         <copy todir="${dest}/plugins/system/bootstrapbase">
             <fileset dir="${src}" defaultexcludes="true">
                 <include name="**"/>
