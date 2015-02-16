@@ -3,29 +3,22 @@
  * @package     BootstrapBase
  * @subpackage  Template
  *
- * @copyright   Copyright (C) 2013-2014 KnowledgeARC Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2015 KnowledgeARC Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
-JLoader::register('JDocumentRendererHead', JPATH_THEMES.'/'.$this->template.'/libraries/bootstrapbase/document/html/renderer/head.php');
-
-JLoader::register('JDocumentRendererJs', JPATH_THEMES.'/'.$this->template.'/libraries/bootstrapbase/document/html/renderer/js.php');
-
 // initialize the template settings, client side lib loading, page direction, etc.
 require_once (JPATH_THEMES.'/'.$this->template.'/initialize.php');
-
-// load the bootstrap support.
-require_once (JPATH_THEMES.'/'.$this->template.'/bootstrapify.php');
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
-	<head>
-		<jdoc:include type="head" />
-	</head>
+    <head>
+        <jdoc:include type="head" />
+    </head>
 
-	<body<?php echo $bodyClass ? ' class="'.$bodyClass.'"' : ''; ?>>
+    <body<?php echo $bodyClass ? ' class="'.$bodyClass.'"' : ''; ?>>
         <header>
             <jdoc:include type="modules" name="navbar" />
             <div class="container">

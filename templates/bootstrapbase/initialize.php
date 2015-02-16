@@ -3,10 +3,14 @@
  * @package     BootstrapBase
  * @subpackage  Template
  *
- * @copyright   Copyright (C) 2013-2014 KnowledgeARC Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2015 KnowledgeARC Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
+
+JHtml::_('bootstrap.framework');
+
+$templatePath = JPATH_THEMES.'/'.$this->template.'/';
 
 $application = JFactory::getApplication();
 $document = JFactory::getDocument();
@@ -34,12 +38,9 @@ $bodyClass = $option.' view-'. $view.
 // append the page class suffix to the correct location.
 $active = $menu->getActive();
 
-if ($active->id)
-{
+if ($active->id) {
     $bodyClass .= ' '.$active->alias;
-}
-else
-{
+} else {
     $bodyClass .= ($itemid ? ' itemid-' . $itemid : '');
 }
 
@@ -75,8 +76,6 @@ if ($params->get('mootools_more_load', 0) != 1) {
 }
 
 // setup google fonts if required.
-$googleFont = null;
-
 if ($params->get('googlefonts_load') == 1) {
 	$googleFont = array();
 
@@ -92,23 +91,37 @@ if ($params->get('googlefonts_load') == 1) {
 		if (trim($params->get('googlefonts_load_effect'))) {
 			$googleFont[] = 'effect='.$params->get('googlefonts_load_effect');
 		}
+
+        if (count($googleFont)) {
+            $this->addStylesheet('http://fonts.googleapis.com/css?'.implode('&', $googleFont));
+        }
 	}
 }
 
+// load tooltips
+$js = <<<JS
+(function ($) {
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+})(jQuery)
+JS;
+
+$this->addScriptDeclaration($js);
+
 // adjust main content depending on whether right or left modules are being shown.
-if ($this->countModules('left') > 0 && $this->countModules('right') > 0)
-{
+if ($this->countModules('left') > 0 && $this->countModules('right') > 0) {
 	$mainClass = 'both-sidebars';
-}
-elseif ($this->countModules('left') > 0)
-{
+} elseif ($this->countModules('left') > 0) {
 	$mainClass = 'left-sidebar';
-}
-elseif ($this->countModules('right') > 0)
-{
+} elseif ($this->countModules('right') > 0) {
 	$mainClass = 'right-sidebar';
-}
-else
-{
+} else {
 	$mainClass = 'no-sidebars';
 }
+
+// load the customized renderers.
+$rendererPath = $templatePath.'/libraries/bootstrapbase/document/html/renderer/';
+
+JLoader::register('JDocumentRendererHead', $rendererPath.'head.php');
+JLoader::register('JDocumentRendererJs', $rendererPath.'js.php');

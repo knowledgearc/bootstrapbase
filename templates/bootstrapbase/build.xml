@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Template - BootstrapBase" default="">
+    <property file="build.properties"/>
+
+    <target name="install" description="Copies Template - BootstrapBase to existing Joomla install.">
+        <copy todir="${dest}/templates/bootstrapbase">
+            <fileset dir="${src}" defaultexcludes="true">
+                <include name="**"/>
+                <exclude name="**/language/**"/>
+                <exclude name="**/build.xml"/>
+                <exclude name="**/build.properties"/>
+            </fileset>
+        </copy>
+        <copy todir="${dest}/language">
+            <fileset dir="${src}/language" defaultexcludes="true">
+                <include name="**/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="package" description="Create an installable package.">
+        <copy todir="${package.dest}tpl_bootstrapbase.zip">
+            <fileset dir="${src}" defaultexcludes="false">
+                <exclude name="build*.xml"/>
+                <exclude name="build.properties*"/>
+            </fileset>
+        </copy>
+
+        <delete>
+            <fileset dir="${package.dest}plg_system_bootstrapbase" defaultexcludes="true">
+                <include name="composer.*"/>
+            </fileset>
+        </delete>
+
+        <delete file="${package.dest}plg_system_bootstrapbase.zip"/>
+
+        <zip destfile="${package.dest}plg_system_bootstrapbase.zip"
+               basedir="${package.dest}plg_system_bootstrapbase/"
+               excludes="build*.xml"/>
+
+        <delete dir="${package.dest}plg_system_bootstrapbase"/>
+    </target>
+</project>

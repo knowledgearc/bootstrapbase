@@ -1,0 +1,3 @@
+src=.
+dest=/var/www/html/
+package.dest=/home/me/Desktop/
