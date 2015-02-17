@@ -18,9 +18,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.plg_system_bootstrapbase.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.plg_system_bootstrapbase.sys.ini</language>
 	</languages>
-	<media destination="plg_system_bootstrapbase" folder="media">
-		<folder>js</folder>
-	</media>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">

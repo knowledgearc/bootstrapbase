@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 JLoader::import('joomla.filesystem.stream');
 JLoader::import('joomla.log.log');
 
-JLoader::register('JSMinPlus', JPATH_PLUGINS.'/system/jsminify/jsminplus.php');
+JLoader::register('JSMinPlus', JPATH_PLUGINS.'/system/bootstrapbase/jsminplus.php');
 
 /**
  * Compile LESS files and minify Javscript on-the-fly.
