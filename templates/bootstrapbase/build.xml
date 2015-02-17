@@ -19,25 +19,19 @@
     </target>
 
     <target name="package" description="Create an installable package.">
-        <copy todir="${package.dest}tpl_bootstrapbase.zip">
+        <copy todir="${package.dest}tpl_bootstrapbase">
             <fileset dir="${src}" defaultexcludes="false">
                 <exclude name="build*.xml"/>
                 <exclude name="build.properties*"/>
             </fileset>
         </copy>
 
-        <delete>
-            <fileset dir="${package.dest}plg_system_bootstrapbase" defaultexcludes="true">
-                <include name="composer.*"/>
-            </fileset>
-        </delete>
+        <delete file="${package.dest}tpl_bootstrapbase.zip"/>
 
-        <delete file="${package.dest}plg_system_bootstrapbase.zip"/>
-
-        <zip destfile="${package.dest}plg_system_bootstrapbase.zip"
-               basedir="${package.dest}plg_system_bootstrapbase/"
+        <zip destfile="${package.dest}tpl_bootstrapbase.zip"
+               basedir="${package.dest}tpl_bootstrapbase/"
                excludes="build*.xml"/>
 
-        <delete dir="${package.dest}plg_system_bootstrapbase"/>
+        <delete dir="${package.dest}tpl_bootstrapbase"/>
     </target>
 </project>
