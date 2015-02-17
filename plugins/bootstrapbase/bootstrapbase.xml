@@ -46,6 +46,16 @@
 				</field>
 
                 <field
+                    name="generate_css_sourcemap"
+                    type="list"
+                    label="PLG_SYSTEM_BOOTSTRAPBASE_GENERATE_SOURCEMAP_LABEL"
+                    description="PLG_SYSTEM_BOOTSTRAPBASE_GENERATE_SOURCEMAP_DESC"
+                    default="1">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
                     name="force_js_minification"
                     type="list"
                     label="PLG_SYSTEM_BOOTSTRAPBASE_FORCE_JS_MINIFICATION_LABEL"
@@ -62,16 +72,6 @@
                     description="PLG_SYSTEM_BOOTSTRAPBASE_EXCLUDE_JS_MINIFICATION_DESC"
                     default="">
                 </field>
-
-				<field
-					name="generate_css_sourcemap"
-					type="list"
-					label="PLG_SYSTEM_BOOTSTRAPBASE_GENERATE_SOURCEMAP_LABEL"
-                    description="PLG_SYSTEM_BOOTSTRAPBASE_GENERATE_SOURCEMAP_DESC"
-					default="1">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
 			</fieldset>
 		</fields>
 	</config>

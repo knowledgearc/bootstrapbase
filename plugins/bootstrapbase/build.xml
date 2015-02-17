@@ -10,7 +10,7 @@
                 <exclude name="**/build*.xml"/>
             </fileset>
         </copy>
-        <copy todir="${dest}/administrator/languages">
+        <copy todir="${dest}/administrator/language">
             <fileset dir="${src}/language" defaultexcludes="true">
                 <include name="**/**"/>
             </fileset>
