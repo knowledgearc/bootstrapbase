@@ -1,0 +1,24 @@
+{
+    "name": "knowledgearc/bootstrapbase",
+    "description": "BootstrapBase provides a Bootstrap-enabled Joomla! template.",
+    "type": "template",
+    "keywords": ["template", "plugin", "bootstrap", "less", "css", "javascript"],
+    "homepage": "http://knowledgearc.org",
+    "time": "2015-03-04",
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Hayden Young",
+            "email": "hayden@knowledgearc.com"
+        }
+    ],
+    "require": {
+        "PHP" : ">=5.4"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/knowledgearc/bootstrapbase"
+        }
+    ]
+}
