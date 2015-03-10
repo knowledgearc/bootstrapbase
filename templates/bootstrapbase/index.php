@@ -21,7 +21,7 @@ require_once (JPATH_THEMES.'/'.$this->template.'/initialize.php');
     <body<?php echo $bodyClass ? ' class="'.$bodyClass.'"' : ''; ?>>
         <header>
             <jdoc:include type="modules" name="navbar" />
-            <div class="container">
+            <div id="header-container">
                 <jdoc:include type="message" />
 
                 <jdoc:include type="modules" name="header" />
@@ -59,9 +59,11 @@ require_once (JPATH_THEMES.'/'.$this->template.'/initialize.php');
         </div>
 
         <footer>
-            <div class="container">
+            <div id="footer-container">
                 <jdoc:include type="modules" name="footer" />
             </div>
+
+            <jdoc:include type="modules" name="copyright" />
         </footer>
 
         <jdoc:include type="js" />

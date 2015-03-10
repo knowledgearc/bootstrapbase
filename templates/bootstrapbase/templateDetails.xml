@@ -45,6 +45,7 @@
         <position>left</position>
         <position>right</position>
         <position>footer</position>
+        <position>copyright</position>
     </positions>
 
     <config>
