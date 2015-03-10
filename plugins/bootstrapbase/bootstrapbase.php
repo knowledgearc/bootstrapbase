@@ -84,6 +84,7 @@ class PlgSystemBootstrapbase extends JPlugin
                     $options['sourceMapWriteTo']  = $this->paths->get('css.sourcemap');
                     $options['sourceMapURL']      = $cssSourceMapUri;
                     $options['sourceMapBasepath'] = JPATH_ROOT;
+                    $options['sourceMapRootpath'] = JUri::base();
                 } else {
                     JFile::delete($this->paths->get('css.sourcemap'));
                 }
