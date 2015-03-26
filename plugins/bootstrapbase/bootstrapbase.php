@@ -101,7 +101,7 @@ class PlgSystemBootstrapbase extends JPlugin
                 $this->updateCache(self::CACHEKEY.'.files.less', $files);
             }
         } catch (Exception $e) {
-            JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            JLog::add($e->getMessage(), JLog::ERROR, $this->logger);
             return false;
         }
     }
