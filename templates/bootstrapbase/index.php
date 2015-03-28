@@ -24,8 +24,13 @@ require_once (JPATH_THEMES.'/'.$this->template.'/initialize.php');
             <div id="header-container">
                 <jdoc:include type="message" />
 
-                <jdoc:include type="modules" name="header" />
-                <jdoc:include type="modules" name="hero" />
+                <div id="header-modules">
+                    <jdoc:include type="modules" name="header" />
+                </div>
+
+                <div id="hero-modules">
+                    <jdoc:include type="modules" name="hero" />
+                </div>
             </div>
         </header>
 
@@ -41,10 +46,17 @@ require_once (JPATH_THEMES.'/'.$this->template.'/initialize.php');
             <?php endif; ?>
 
             <main role="main" class="<?php echo $mainClass; ?>">
-                <jdoc:include type="modules" name="above-content" />
+                <div id="above-content-modules">
+                    <jdoc:include type="modules" name="above-content" />
+                </div>
+
                 <jdoc:include type="module" name="breadcrumbs" title="Breadcrumbs" />
+
                 <jdoc:include type="component" />
-                <jdoc:include type="modules" name="below-content" />
+
+                <div id="below-content-modules">
+                    <jdoc:include type="modules" name="below-content" />
+                </div>
             </main>
 
             <?php if (array_search($mainClass, array("right-sidebar", "both-sidebars")) !== false) : ?>
@@ -60,7 +72,9 @@ require_once (JPATH_THEMES.'/'.$this->template.'/initialize.php');
 
         <footer>
             <div id="footer-container">
-                <jdoc:include type="modules" name="footer" />
+                <div id="footer-modules">
+                    <jdoc:include type="modules" name="footer" />
+                </div>
             </div>
 
             <jdoc:include type="modules" name="copyright" />
