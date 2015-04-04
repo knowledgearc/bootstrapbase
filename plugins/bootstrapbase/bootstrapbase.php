@@ -71,7 +71,6 @@ class PlgSystemBootstrapbase extends JPlugin
             JLog::add('LESS cache changed: '.((bool)$changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
 
             if (!JFile::exists($dest) || $changed || $force) {
-                JLog::add('Writing CSS to: '.$dest, JLog::DEBUG, $this->logger);
                 JLog::add('Generate CSS sourcemap: '.((bool)$generateSourceMap ? 'true' : 'false'), JLog::DEBUG, $this->logger);
 
                 $options = array('compress'=>true);
@@ -94,7 +93,10 @@ class PlgSystemBootstrapbase extends JPlugin
                 $less->parseFile($this->paths->get('css.less'), JUri::base());
 
                 $css = $less->getCss();
+
+                JLog::add('Writing CSS to: '.$dest, JLog::DEBUG, $this->logger);
                 JFile::write($dest, $css);
+
                 $files = $less->allParsedFiles();
 
                 // update cache.
