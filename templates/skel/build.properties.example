@@ -1,0 +1,5 @@
+src=.
+path.joomla=/var/www/html/
+composer.phar=/opt/composer.phar/composer.phar
+template.name=mytemplate
+template.description=My Template based on BootstrapBase.

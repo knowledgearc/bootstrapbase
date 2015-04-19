@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Custom Template Build" default="help">
+    <property file="build.properties"/>
+    <property name="path.build" value="${src}/build/"/>
+    <property name="path.code" value="${src}/joomla/development/site"/>
+    <property name="path.bootstrapbase" value="${path.build}/knowledgearc/bootstrapbase"/>
+    <property name="path.bootstrapbase.template" value="${path.bootstrapbase}/templates/bootstrapbase"/>
+    <property name="path.bootstrapbase.plugin" value="${path.bootstrapbase}/plugins/bootstrapbase"/>
+
+    <target name="deploy" description="Deploy template code to a pre-existing Joomla site.">
+        <copy todir="${path.joomla}/templates/${template.name}">
+            <fileset dir="${path.code}/templates/${template.name}" defaultexcludes="false">
+                <exclude name="build*.xml"/>
+                <exclude name="build.properties*"/>
+                <exclude name="languages"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${path.joomla}/language">
+            <fileset dir="${path.code}/templates/${template.name}" defaultexcludes="true">
+                <include name="language"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean" description="Cleans the build path.">
+        <delete dir="${path.build}"/>
+    </target>
+
+    <target name="package" description="Create an installable package." depends="clean">
+        <mkdir dir="${path.build}"/>
+
+        <composer command="update" composer="${composer.phar}">
+            <arg value="--optimize-autoloader"/>
+            <arg value="--working-dir"/>
+            <arg path="${src}"/>
+        </composer>
+
+        <move file="${path.bootstrapbase.template}" tofile="${path.build}${template.name}"/>
+
+        <!-- clean up bootstrapbase dir after move. -->
+        <delete>
+            <fileset dir="${path.build}${template.name}">
+                <include name="build.xml"/>
+                <include name="build.properties*"/>
+            </fileset>
+        </delete>
+
+        <copy todir="${path.build}${template.name}" overwrite="true">
+            <fileset dir="${path.code}/templates/${template.name}" defaultexcludes="false">
+                <exclude name="build*.xml"/>
+                <exclude name="build.properties*"/>
+            </fileset>
+        </copy>
+
+        <!-- if the template does not have language overrides just use bootstrapbase's. -->
+        <if>
+            <available file="${path.build}${template.name}/language/en-GB/en-GB.tpl_${template.name}.ini" type="file"/>
+            <then>
+                <delete file="${path.build}${template.name}/language/en-GB/en-GB.tpl_bootstrapbase.ini"/>
+            </then>
+            <else>
+                <move
+                    file="${path.build}${template.name}/language/en-GB/en-GB.tpl_bootstrapbase.ini"
+                    tofile="${path.build}${template.name}/language/en-GB/en-GB.tpl_${template.name}.ini"/>
+            </else>
+        </if>
+
+        <if>
+            <available file="${path.build}${template.name}/language/en-GB/en-GB.tpl_${template.name}.sys.ini" type="file"/>
+            <then>
+                <delete file="${path.build}${template.name}/language/en-GB/en-GB.tpl_bootstrapbase.sys.ini"/>
+            </then>
+            <else>
+                <move
+                    file="${path.build}${template.name}/language/en-GB/en-GB.tpl_bootstrapbase.sys.ini"
+                    tofile="${path.build}${template.name}/language/en-GB/en-GB.tpl_${template.name}.sys.ini"/>
+            </else>
+        </if>
+
+        <php expression="strtoupper(${template.name})" returnProperty="nameUpperCase"/>
+
+        <!-- set the template name in the language files. -->
+        <property name="search_template_name"><![CDATA[^BOOTSTRAPBASE=".*"$]]></property>
+        <property name="replace_template_name">${nameUpperCase}=<![CDATA["]]>${nameUpperCase}<![CDATA["]]></property>
+
+        <exec command="grep -rl '${search_template_name}' ${path.build}/${template.name}/language | xargs sed -i 's/${search_template_name}/${replace_template_name}/g'"/>
+
+        <!-- set the template description in the language files (if specified). -->
+        <if>
+            <isset property="template.description"/>
+            <then>
+                <property name="search_template_description"><![CDATA[^TPL_BOOTSTRAPBASE_XML_DESCRIPTION=".*"$]]></property>
+                <property name="replace_template_description">TPL_${nameUpperCase}_XML_DESCRIPTION=<![CDATA["]]>${template.description}<![CDATA["]]></property>
+
+                <exec command="grep -rl '${search_template_description}' ${path.build}/${template.name}/language | xargs sed -i 's/${search_template_description}/${replace_template_description}/g'"/>
+            </then>
+        </if>
+
+        <exec command="grep -rl 'BOOTSTRAPBASE' ${path.build}${template.name} | xargs sed -i 's/BOOTSTRAPBASE/${nameUpperCase}/g'"/>
+
+        <exec command="grep --exclude=initialize.php -rl 'bootstrapbase' ${path.build}${template.name} | xargs sed -i 's/bootstrapbase/${template.name}/g'" passthru="true"/>
+
+        <!-- Build the BoostrapBase system plugin. -->
+        <phing phingfile="${path.bootstrapbase.plugin}/build.xml" target="package">
+            <property name="src" value="${path.bootstrapbase.plugin}"/>
+            <property name="package.dest" value="${path.build}" />
+            <property name="composer.phar" value="${composer.phar}" />
+        </phing>
+
+        <zip destfile="${path.build}tpl_${template.name}.zip" basedir="${path.build}/${template.name}"/>
+
+        <delete includeemptydirs="true">
+            <fileset dir="${path.build}" includes="**/*">
+                <exclude name="*.zip"/>
+            </fileset>
+        </delete>
+
+        <!-- bug in above fileset not deleting template and knowledgearc dirs. -->
+        <delete dir="${path.build}/knowledgearc"/>
+    </target>
+
+    <target name="help" description="Prints this help.">
+        <exec command="phing -f ${phing.file} -l" outputProperty="phing_targets"/>
+        <echo msg="Call phing with the following targets:"/>
+        <echo>${phing_targets}</echo>
+    </target>
+</project>
