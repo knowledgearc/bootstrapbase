@@ -1,0 +1,16 @@
+{
+    "repositories":
+    [
+        {
+            "type": "vcs",
+            "url": "https://github.com/knowledgearc/bootstrapbase"
+        }
+    ],
+    "require":
+    {
+        "knowledgearc/bootstrapbase": "dev-master"
+    },
+    "config" : {
+        "vendor-dir" : "build"
+    }
+}
