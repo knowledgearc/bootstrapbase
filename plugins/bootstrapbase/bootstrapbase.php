@@ -274,9 +274,16 @@ class PlgSystemBootstrapbase extends JPlugin
         if (JFactory::getApplication()->isSite()) {
             if ($this->getTemplate()) {
                 $template = $this->getTemplate();
+                $templatePath = JPATH_ROOT.'/templates/'.$template;
                 $templateUrl = JUri::base().'templates/'.$template;
 
                 $doc->addStylesheet($templateUrl.'/css/'.$template.'.min.css');
+                
+                // load additional css files directly from CSS directory.
+                foreach (JFolder::files($templatePath.'/css/', ".+\.css") as $file) {
+                    JLog::add($file, JLog::DEBUG, $this->logger);
+                    $doc->addStylesheet($templateUrl.'/css/'.$file);
+                }
 
                 $headers = $doc->getHeadData();
 

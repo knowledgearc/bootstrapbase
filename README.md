@@ -5,6 +5,7 @@ BootstrapBase provides a base for developers who need a fast, light-weight respo
 - [BoostrapBase Plugin](#bootstrapbase-plugin)
     - [LESS CSS](#less-css)
     - [Javascript](#javascript)
+    - [Uncompiled CSS](#uncompiled-css)
 - [BoostrapBase Template](#bootstrapbase-template)
     - [Plugin Installation](#plugin-installation)
     - [Installing BootstrapBase](#installing-boostrapbase)
@@ -24,6 +25,7 @@ BootstrapBase provides a base for developers who need a fast, light-weight respo
 
 The BootstrapBase plugin is a Joomla! system plugin which compiles LESS files and minifies Javascript on-the-fly.
 build.xml
+
 ### <a name="less-css"></a>LESS CSS
 It is strongly recommended all Bootstrap Template Framework templates use LESS to manage and maintain Joomla!'s CSS. LESS improves CSS readability, code re-use and allows for the use of 3rd party tools to cutomize the template via easy-to-use UI tools.
 
@@ -33,6 +35,9 @@ Using LESS also results in a single CSS file being created which reduces traffic
 The Bootstrap framework includes a single bootstrap.js file designed to combined all Bootstrap Javascript functionality (tab.js, scrollspy.js, tooltip.js, dropdown.js, etc). The BoostrapBase plugin will attempt to combine all Javscript files into a single, minified Javscript file for quicker loading although BootstrapBase can be configured to ignore certain Javscript files via the Plugin Manager.
 
 The BoostrapBase plugin will load any Javascript included via the JDocument addScript and addScriptDeclaration methods into the bottom of the web page (before the closing body tag), so it is important to use this method to include Javascript within components, plugins, modules and template overrides.
+
+### <a name="uncompiled-css"></a>Uncompiled CSS
+For convenience you can use uncompiled CSS files. To use uncompiled CSS files, drop them in the template's css directory and they will be automatically included by the BootstrapBase plugin in the template.
 
 ## <a name="bootstrapbase-template"></a>BootstrapBase Template
 The BootstrapBase template provides a simple Joomla! template which has been completely "boostrapified". It includes all the files required for responsive web design using Bootstrap (http://www.getbootstrap.com).
