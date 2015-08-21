@@ -11,6 +11,7 @@
 defined('_JEXEC') or die();
 
 JLoader::import('joomla.filesystem.stream');
+JLoader::import('joomla.filesystem.folder');
 JLoader::import('joomla.log.log');
 
 JLoader::register('JSMinPlus', JPATH_PLUGINS.'/system/bootstrapbase/jsminplus.php');
@@ -278,7 +279,7 @@ class PlgSystemBootstrapbase extends JPlugin
                 $templateUrl = JUri::base().'templates/'.$template;
 
                 $doc->addStylesheet($templateUrl.'/css/'.$template.'.min.css');
-                
+
                 // load additional css files directly from CSS directory.
                 foreach (JFolder::files($templatePath.'/css/', ".+\.css") as $file) {
                     JLog::add($file, JLog::DEBUG, $this->logger);
@@ -295,7 +296,7 @@ class PlgSystemBootstrapbase extends JPlugin
                 $regEx = str_replace("/", "\/", $regEx);
 
                 foreach (array_keys($this->javascripts) as $script) {
-                    if ($regEx && preg_grep("/(".$regEx.")$/", array($script))) {
+                    if (!empty($regEx) && preg_grep("/(".$regEx.")$/", array($script))) {
                         JLog::add('Exclude from minification: '.$script, JLog::DEBUG, $this->logger);
                     } else {
                         unset($headers['scripts'][$script]);
