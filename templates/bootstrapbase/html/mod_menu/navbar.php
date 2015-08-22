@@ -18,12 +18,50 @@ if ($params->get('tag_id') != null) {
 	$target = 'navbar-'.$module->id.'-collapse';
 }
 
-$logo = JFactory::getApplication()->getTemplate(true)->params->get('logo');
+$renderer = JFactory::getDocument()->loadRenderer('module');
+
+// load the search box.
+$metamenu = null;
+$metamenus = JModuleHelper::getModules('navbar-meta');
+
+if (count($metamenus)) {
+    $metamenu = JArrayHelper::getValue($metamenus, 0);
+    $metamenu = $renderer->render($metamenu);
+}
+
+// load the logo.
+$templateParams = JFactory::getApplication()->getTemplate(true)->params;
+
+$logo = null;
+
+if ($templateParams->get('logo')) {
+    $logo = <<<HTML
+<img
+    itemprop="logo"
+    src="{$templateParams->get('logo')}"
+    alt="{JFactory::getConfig()->get('sitename', '')}"/>
+HTML;
+}
+
+// discover module-based logos/branding.
+$brands = JModuleHelper::getModules('navbar-brand');
+
+// override default logo with module-based logo.
+if (count($brands)) {
+    $brand = JArrayHelper::getValue($brands, 0);
+    $logo = $renderer->render($brand);
+}
 ?>
-<nav<?php echo $tag; ?> class="navbar<?php echo $class_sfx; ?>" role="navigation">
+<nav<?php echo $tag; ?>
+    class="navbar<?php echo $class_sfx; ?>"
+    role="navigation">
 	<div class="container">
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".<?php echo $target; ?>">
+			<button
+                type="button"
+                class="navbar-toggle"
+                data-toggle="collapse"
+                data-target=".<?php echo $target; ?>">
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -34,67 +72,74 @@ $logo = JFactory::getApplication()->getTemplate(true)->params->get('logo');
                 class="navbar-brand"
                 href="<?php echo JUri::base(); ?>"
                 title="<?php echo JFactory::getConfig()->get('sitename'); ?>">
-                <img
-                    itemprop="logo"
-                    src="<?php echo $logo; ?>"
-                    alt="<?php echo JFactory::getConfig()->get('sitename'); ?>"/></a>
+                <?php echo $logo; ?>
+            </a>
 			<?php endif; ?>
 		</div>
 
-		<div class="collapse navbar-collapse <?php echo $target; ?>">
-			<ul class="nav navbar-nav">
-				<?php
-				foreach ($list as $i => &$item) {
-					$class = 'item-'.$item->id;
+        <div class="navbar-navs">
 
-					if ($item->id == $active_id) {
-						$class .= ' current';
-					}
+            <?php if ($metamenu) : ?>
+            <div class="navbar-meta">
+                <?php echo $metamenu; ?>
+            </div>
+            <?php endif; ?>
 
-					if (in_array($item->id, $path)) {
-						$class .= ' active';
-					} elseif ($item->type == 'alias') {
-						$aliasToId = $item->params->get('aliasoptions');
+            <div class="collapse navbar-collapse <?php echo $target; ?>">
+                <ul class="nav navbar-nav">
+                    <?php
+                    foreach ($list as $i => &$item) {
+                        $class = 'item-'.$item->id;
 
-						if (count($path) > 0 && $aliasToId == $path[count($path) - 1]) {
-							$class .= ' active';
-						} elseif (in_array($aliasToId, $path)) {
-							$class .= ' alias-parent-active';
-						}
-					}
+                        if ($item->id == $active_id) {
+                            $class .= ' current';
+                        }
 
-					if (!empty($class)) {
-						$class = ' class="'.trim($class) .'"';
-					}
+                        if (in_array($item->id, $path)) {
+                            $class .= ' active';
+                        } elseif ($item->type == 'alias') {
+                            $aliasToId = $item->params->get('aliasoptions');
 
-					echo '<li'.$class.'>';
+                            if (count($path) > 0 && $aliasToId == $path[count($path) - 1]) {
+                                $class .= ' active';
+                            } elseif (in_array($aliasToId, $path)) {
+                                $class .= ' alias-parent-active';
+                            }
+                        }
 
-					// Render the menu item.
-					switch ($item->type) {
-						case 'separator':
-						case 'url':
-						case 'component':
-						case 'heading':
-							require JModuleHelper::getLayoutPath('mod_menu', 'navbar_'.$item->type);
-							break;
+                        if (!empty($class)) {
+                            $class = ' class="'.trim($class) .'"';
+                        }
 
-						default:
-							require JModuleHelper::getLayoutPath('mod_menu', 'navbar_url');
-							break;
-					}
+                        echo '<li'.$class.'>';
 
-					// The next item is deeper.
-					if ($item->deeper) {
-						echo '<ul class="dropdown-menu">';
-					} elseif ($item->shallower) {
-						echo '</li>';
-						echo str_repeat('</ul></li>', $item->level_diff);
-					} else {
-						echo '</li>';
-					}
-				}
-				?>
-			</ul>
-		</div>
+                        // Render the menu item.
+                        switch ($item->type) {
+                            case 'separator':
+                            case 'url':
+                            case 'component':
+                            case 'heading':
+                                require JModuleHelper::getLayoutPath('mod_menu', 'navbar_'.$item->type);
+                                break;
+
+                            default:
+                                require JModuleHelper::getLayoutPath('mod_menu', 'navbar_url');
+                                break;
+                        }
+
+                        // The next item is deeper.
+                        if ($item->deeper) {
+                            echo '<ul class="dropdown-menu">';
+                        } elseif ($item->shallower) {
+                            echo '</li>';
+                            echo str_repeat('</ul></li>', $item->level_diff);
+                        } else {
+                            echo '</li>';
+                        }
+                    }
+                    ?>
+                </ul>
+            </div>
+        </div>
 	</div>
 </nav>
