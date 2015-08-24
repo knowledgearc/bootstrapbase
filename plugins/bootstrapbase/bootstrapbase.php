@@ -196,7 +196,7 @@ class PlgSystemBootstrapbase extends JPlugin
 
         if (!($changed = $this->isCacheChanged($key))) {
             // check if we have the same number of js includes.
-            if (count($cache = $this->cache->get($key, array())) != count($this->javascripts)) {
+            if (count($this->cache->get($key, array())) != count($this->javascripts)) {
                 $changed = true;
             }
         }
@@ -298,6 +298,8 @@ class PlgSystemBootstrapbase extends JPlugin
                 foreach (array_keys($this->javascripts) as $script) {
                     if (!empty($regEx) && preg_grep("/(".$regEx.")$/", array($script))) {
                         JLog::add('Exclude from minification: '.$script, JLog::DEBUG, $this->logger);
+                    } else if (strpos($script, "?", 1)) {
+                        JLog::add('Querystring detected, ignoring: '.$script, JLog::DEBUG, $this->logger);
                     } else {
                         unset($headers['scripts'][$script]);
 
@@ -316,7 +318,9 @@ class PlgSystemBootstrapbase extends JPlugin
                     unset($this->javascripts[$script]);
                 }
 
-                $headers['scripts'][$templateUrl.'/js/jui/'.$template.'.min.js'] = array(
+                $jsUrl = $templateUrl.'/js/jui/'.$template.'.min.js';
+
+                $headers['scripts'][$jsUrl] = array(
                     'mime'=>'text/javascript',
                     'defer'=>false,
                     'async'=>false);
