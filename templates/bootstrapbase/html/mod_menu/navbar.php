@@ -21,12 +21,13 @@ if ($params->get('tag_id') != null) {
 $renderer = JFactory::getDocument()->loadRenderer('module');
 
 // load the search box.
-$metamenu = null;
-$metamenus = JModuleHelper::getModules('navbar-meta');
+$metamenus = array();
+$modules = JModuleHelper::getModules('navbar-meta');
 
-if (count($metamenus)) {
-    $metamenu = JArrayHelper::getValue($metamenus, 0);
-    $metamenu = $renderer->render($metamenu);
+if (count($modules)) {
+    foreach ($modules as $module) {
+        $metamenus[] = $renderer->render($module);
+    }
 }
 
 // load the logo.
@@ -79,11 +80,11 @@ if (count($brands)) {
 
         <div class="navbar-navs">
 
-            <?php if ($metamenu) : ?>
-            <div class="navbar-meta">
-                <?php echo $metamenu; ?>
+            <?php for ($i = 0; $i < count($metamenus); $i++) : ?>
+            <div id="navbar-meta-<?php echo (int)($i+1); ?>" class="navbar-meta">
+                <?php echo $metamenus[$i]; ?>
             </div>
-            <?php endif; ?>
+            <?php endfor; ?>
 
             <div class="collapse navbar-collapse <?php echo $target; ?>">
                 <ul class="nav navbar-nav">
