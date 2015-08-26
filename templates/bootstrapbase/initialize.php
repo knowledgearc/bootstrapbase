@@ -104,7 +104,7 @@ $js = <<<JS
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
     });
-})(jQuery)
+})(jQuery);
 JS;
 
 $this->addScriptDeclaration($js);

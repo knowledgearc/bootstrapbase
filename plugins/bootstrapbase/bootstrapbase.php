@@ -196,7 +196,7 @@ class PlgSystemBootstrapbase extends JPlugin
 
         if (!($changed = $this->isCacheChanged($key))) {
             // check if we have the same number of js includes.
-            if (count($this->cache->get($key, array())) != count($this->javascripts)) {
+            if (count($this->cache->get($key, array())) < count($this->javascripts)) {
                 $changed = true;
             }
         }
