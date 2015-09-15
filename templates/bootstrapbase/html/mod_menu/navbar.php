@@ -36,11 +36,13 @@ $templateParams = JFactory::getApplication()->getTemplate(true)->params;
 $logo = null;
 
 if ($templateParams->get('logo')) {
+    $siteName = JFactory::getConfig()->get('sitename', '');
+
     $logo = <<<HTML
 <img
     itemprop="logo"
     src="{$templateParams->get('logo')}"
-    alt="{JFactory::getConfig()->get('sitename', '')}"/>
+    alt="{$siteName}"/>
 HTML;
 }
 
