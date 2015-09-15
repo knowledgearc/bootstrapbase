@@ -2,3 +2,4 @@ vendor
 *.kdev4
 composer.lock
 templates/jeuropeana/build.properties
+build.properties
