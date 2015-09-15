@@ -46,6 +46,9 @@ if ($active->id) {
 
 $bodyClass .= $menu->getParams($active->id)->get('pageclass_sfx', '');
 
+// Set viewport
+$this->setMetaData("viewport", "width=device-width,initial-scale=1");
+
 // unload mootools if specified.
 if ($params->get('mootools_core_load', 1) != 1) {
 	$headers = $this->getHeadData();
