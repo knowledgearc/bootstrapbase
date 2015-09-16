@@ -1,8 +1,5 @@
 {
     "require": {
         "oyejorge/less.php": "1.7.x"
-    },
-    "config" : {
-        "vendor-dir" : "compilers"
     }
 }

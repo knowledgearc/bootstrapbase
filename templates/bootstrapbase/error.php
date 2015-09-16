@@ -3,7 +3,7 @@
  * @package     BootstrapBase
  * @subpackage  Template
  *
- * @copyright   Copyright (C) 2013-2014 KnowledgeARC Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2015 KnowledgeArc Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -19,10 +19,10 @@ $this->direction = $doc->direction;
 ?>
 
 <!DOCTYPE html>
-<html 
-	xmlns="http://www.w3.org/1999/xhtml" 
-	xml:lang="<?php echo $this->language; ?>" 
-	lang="<?php echo $this->language; ?>" 
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xml:lang="<?php echo $this->language; ?>"
+	lang="<?php echo $this->language; ?>"
 	dir="<?php echo $this->direction; ?>">
 <head>
 	<title><?php echo $this->error->getCode(); ?> - <?php echo $this->title; ?></title>
@@ -37,7 +37,7 @@ $this->direction = $doc->direction;
 				<div class="home-btn">
 					<a style="color:#000;font-size:18px;" href="<?php echo $this->baseurl; ?>/index.php" title="<?php echo JText::_('JERROR_LAYOUT_GO_TO_THE_HOME_PAGE'); ?>"><?php echo JText::_('JERROR_LAYOUT_HOME_PAGE'); ?></a>
 				</div>
-			<p> <?php if ($this->debug) : 
+			<p> <?php if ($this->debug) :
 				echo $this->renderBacktrace();
 				endif; ?>
 			</p>

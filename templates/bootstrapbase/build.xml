@@ -1,37 +1,150 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="Template - BootstrapBase" default="">
     <property file="build.properties"/>
+    <property name="package.dest" value="${src}/build/"/>
 
-    <target name="install" description="Copies Template - BootstrapBase to existing Joomla install.">
-        <copy todir="${dest}/templates/bootstrapbase">
-            <fileset dir="${src}" defaultexcludes="true">
-                <include name="**"/>
-                <exclude name="**/language/**"/>
-                <exclude name="**/build.xml"/>
-                <exclude name="**/build.properties"/>
+    <php expression="strtolower(${template.name})" returnProperty="nameLowerCase"/>
+
+    <target name="deploy" description="Deploy template code to a pre-existing Joomla site.">
+        <copy todir="${path.joomla}/templates/${nameLowerCase}">
+            <fileset dir="${src}" defaultexcludes="false">
+                <exclude name="build*.xml"/>
+                <exclude name="build.properties*"/>
+                <exclude name="languages"/>
             </fileset>
         </copy>
-        <copy todir="${dest}/language">
-            <fileset dir="${src}/language" defaultexcludes="true">
-                <include name="**/**"/>
+
+        <copy todir="${path.joomla}">
+            <fileset dir="${src}" defaultexcludes="true">
+                <include name="language/**"/>
+            </fileset>
+        </copy>
+
+        <phingcall target="prepare_less_parser"/>
+
+        <copy todir="${path.joomla}/templates/${nameLowerCase}/libraries/">
+            <fileset dir="${package.dest}" defaultexcludes="true">
+                <include name="vendor/**"/>
             </fileset>
         </copy>
     </target>
 
-    <target name="package" description="Create an installable package.">
-        <copy todir="${package.dest}tpl_bootstrapbase">
-            <fileset dir="${src}" defaultexcludes="false">
+    <target name="clean" description="Cleans the build path.">
+        <delete dir="${path.build}"/>
+    </target>
+
+    <target name="package" description="Create an installable package." depends="clean">
+        <mkdir dir="${path.build}"/>
+
+        <phingcall target="prepare_less_parser"/>
+
+        <move file="${path.bootstrapbase.template}" tofile="${path.build}${template.name}"/>
+
+        <!-- clean up bootstrapbase dir after move. -->
+        <delete>
+            <fileset dir="${path.build}${template.name}">
+                <include name="build.xml"/>
+                <include name="build.properties*"/>
+            </fileset>
+        </delete>
+
+        <copy todir="${path.build}${template.name}" overwrite="true">
+            <fileset dir="${path.code}/templates/${template.name}" defaultexcludes="false">
                 <exclude name="build*.xml"/>
                 <exclude name="build.properties*"/>
             </fileset>
         </copy>
 
-        <delete file="${package.dest}tpl_bootstrapbase.zip"/>
+        <!-- if the template does not have language overrides just use bootstrapbase's. -->
+        <if>
+            <available file="${path.build}${template.name}/language/en-GB/en-GB.tpl_${template.name}.ini" type="file"/>
+            <then>
+                <delete file="${path.build}${template.name}/language/en-GB/en-GB.tpl_bootstrapbase.ini"/>
+            </then>
+            <else>
+                <move
+                    file="${path.build}${template.name}/language/en-GB/en-GB.tpl_bootstrapbase.ini"
+                    tofile="${path.build}${template.name}/language/en-GB/en-GB.tpl_${template.name}.ini"/>
+            </else>
+        </if>
 
-        <zip destfile="${package.dest}tpl_bootstrapbase.zip"
-               basedir="${package.dest}tpl_bootstrapbase/"
-               excludes="build*.xml"/>
+        <if>
+            <available file="${path.build}${template.name}/language/en-GB/en-GB.tpl_${template.name}.sys.ini" type="file"/>
+            <then>
+                <delete file="${path.build}${template.name}/language/en-GB/en-GB.tpl_bootstrapbase.sys.ini"/>
+            </then>
+            <else>
+                <move
+                    file="${path.build}${template.name}/language/en-GB/en-GB.tpl_bootstrapbase.sys.ini"
+                    tofile="${path.build}${template.name}/language/en-GB/en-GB.tpl_${template.name}.sys.ini"/>
+            </else>
+        </if>
 
-        <delete dir="${package.dest}tpl_bootstrapbase"/>
+        <php expression="strtoupper(${template.name})" returnProperty="nameUpperCase"/>
+
+        <!-- set the template name in the language files. -->
+        <property name="search_template_name"><![CDATA[^BOOTSTRAPBASE=".*"$]]></property>
+        <property name="replace_template_name">${nameUpperCase}=<![CDATA["]]>${nameUpperCase}<![CDATA["]]></property>
+
+        <exec command="grep -rl '${search_template_name}' ${path.build}/${template.name}/language | xargs sed -i 's/${search_template_name}/${replace_template_name}/g'"/>
+
+        <!-- set the template description in the language files (if specified). -->
+        <if>
+            <isset property="template.description"/>
+            <then>
+                <property name="search_template_description"><![CDATA[^TPL_BOOTSTRAPBASE_XML_DESCRIPTION=".*"$]]></property>
+                <property name="replace_template_description">TPL_${nameUpperCase}_XML_DESCRIPTION=<![CDATA["]]>${template.description}<![CDATA["]]></property>
+
+                <exec command="grep -rl '${search_template_description}' ${path.build}/${template.name}/language | xargs sed -i 's/${search_template_description}/${replace_template_description}/g'"/>
+            </then>
+        </if>
+
+        <exec command="grep -rl 'BOOTSTRAPBASE' ${path.build}${template.name} | xargs sed -i 's/BOOTSTRAPBASE/${nameUpperCase}/g'"/>
+
+        <exec command="grep --exclude=initialize.php -rl 'bootstrapbase' ${path.build}${template.name} | xargs sed -i 's/bootstrapbase/${template.name}/g'" passthru="true"/>
+
+        <!-- Build the BoostrapBase system plugin. -->
+        <phing phingfile="${path.bootstrapbase.plugin}/build.xml" target="package">
+            <property name="src" value="${path.bootstrapbase.plugin}"/>
+            <property name="package.dest" value="${path.build}" />
+            <property name="composer.phar" value="${composer.phar}" />
+        </phing>
+
+        <zip destfile="${path.build}tpl_${template.name}.zip" basedir="${path.build}/${template.name}"/>
+
+        <delete includeemptydirs="true">
+            <fileset dir="${path.build}" includes="**/*">
+                <exclude name="*.zip"/>
+            </fileset>
+        </delete>
+
+        <!-- bug in above fileset not deleting template and knowledgearc dirs. -->
+        <delete dir="${path.build}/knowledgearc"/>
+    </target>
+
+    <target name="prepare_less_parser" hidden="true">
+        <mkdir dir="${package.dest}"/>
+        <copy file="${src}/composer.json" todir="${package.dest}"/>
+
+        <composer command="install" composer="${composer.phar}">
+            <arg value="--optimize-autoloader"/>
+            <arg value="--working-dir"/>
+            <arg path="${package.dest}"/>
+        </composer>
+
+        <!-- We use Joomla's autoloader so we remove composer's autoload funcitonality. -->
+        <delete includeemptydirs="true">
+        <fileset dir="${package.dest}vendor" defaultexcludes="false">
+            <include name="**/**"/>
+            <include name="oyejorge/less.php/lib/Less/.easymin/**"/>
+            <exclude name="oyejorge/less.php/lib/Less/**/*.php"/>
+        </fileset>
+        </delete>
+    </target>
+
+    <target name="help" description="Prints this help.">
+        <exec command="phing -f ${phing.file} -l" outputProperty="phing_targets"/>
+        <echo msg="Call phing with the following targets:"/>
+        <echo>${phing_targets}</echo>
     </target>
 </project>

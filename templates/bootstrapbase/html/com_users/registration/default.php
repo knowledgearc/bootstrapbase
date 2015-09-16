@@ -3,7 +3,7 @@
  * @package     BootstrapBase
  * @subpackage  Template
  *
- * @copyright   Copyright (C) 2013-2014 KnowledgeARC Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2015 KnowledgeArc Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -37,8 +37,8 @@ JHtml::_('behavior.formvalidation');
 					<?php if (!$field->required && $field->type != 'Spacer') : ?>
 						<span class="optional"><?php echo JText::_('COM_USERS_OPTIONAL');?></span>
 					<?php endif; ?>
-					
-					<div class="form-field-input">		
+
+					<div class="form-field-input">
 						<?php echo $field->input;?>
 					</div>
 				</div>

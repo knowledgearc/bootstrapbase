@@ -3,7 +3,7 @@
  * @package     BootstrapBase
  * @subpackage  Template
  *
- * @copyright   Copyright (C) 2013-2014 KnowledgeARC Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2015 KnowledgeArc Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -15,7 +15,7 @@ $attrs = array();
 $caret = '';
 
 if ($item->anchor_css) {
-	$classes[] = $item->anchor_css; 	
+	$classes[] = $item->anchor_css;
 }
 
 if ($item->deeper == 1) {
@@ -25,14 +25,14 @@ if ($item->deeper == 1) {
 }
 
 if ($item->anchor_title) {
-	$attrs['title'] = $item->anchor_title; 
+	$attrs['title'] = $item->anchor_title;
 }
 
 if ($item->menu_image) {
 		$item->params->get('menu_text', 1) ?
 		$linktype = '<img src="'.$item->menu_image.'" alt="'.$item->title.'" /><span class="image-title">'.$item->title.'</span> ' :
 		$linktype = '<img src="'.$item->menu_image.'" alt="'.$item->title.'" />';
-} else { 
+} else {
 	$linktype = $item->title;
 }
 

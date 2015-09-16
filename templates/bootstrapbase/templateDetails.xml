@@ -50,11 +50,13 @@
 
     <config>
         <fields name="params">
-            <fieldset name="advanced" label="TPL_BOOTSTRAPBASE_FIELDSET_ADVANCED">
+            <fieldset name="styles" label="TPL_BOOTSTRAPBASE_FIELDSET_STYLES">
                 <field name="logo" class="" type="media" default=""
                     label="TPL_BOOTSTRAPBASE_LOGO_LABEL"
                     description="TPL_BOOTSTRAPBASE_LOGO_DESC" />
+            </fieldset>
 
+            <fieldset name="advanced" label="TPL_BOOTSTRAPBASE_FIELDSET_ADVANCED">
                 <field
                     name="mootools_core_load"
                     type="radio"
@@ -65,6 +67,7 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
+
                 <field
                     name="mootools_more_load"
                     type="radio"
@@ -77,31 +80,43 @@
                 </field>
 
                 <field
-                    name="googlefonts_load"
+                    name="javascript"
+                    type="textarea"
+                    label="TPL_BOOTSTRAPBASE_JAVASCRIPT_LABEL"
+                    description="TPL_BOOTSTRAPBASE_JAVASCRIPT_DESC"/>
+
+                <field
+                    name="compile_less"
+                    type="list"
+                    label="TPL_BOOTSTRAPBASE_COMPILE_LESS_LABEL"
+                    description="TPL_BOOTSTRAPBASE_COMPILE_LESS_DESC"
+                    default="1">
+                    <option value="0">TPL_BOOTSTRAPBASE_COMPILE_NEVER</option>
+                    <option value="1">TPL_BOOTSTRAPBASE_COMPILE_ONCHANGE</option>
+                    <option value="2">TPL_BOOTSTRAPBASE_COMPILE_ONPAGELOAD</option>
+                </field>
+
+                <field
+                    name="generate_css_sourcemap"
                     type="radio"
+                    label="TPL_BOOTSTRAPBASE_GENERATE_SOURCEMAP_LABEL"
+                    description="TPL_BOOTSTRAPBASE_GENERATE_SOURCEMAP_DESC"
                     default="0"
-                    label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_LABEL"
-                    description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_DESC"
                     class="btn-group btn-group-yesno">
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
-                <field name="googlefonts_load_family" type="text" default="ABeeZee|Abel"
-                    label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_FAMILY_LABEL"
-                    description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_FAMILY_DESC"
-                    filter="string"/>
-                <field name="googlefonts_load_subsets" type="text" default=""
-                    label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_SUBSETS_LABEL"
-                    description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_SUBSETS_DESC"
-                    filter="string"/>
-                <field name="googlefonts_load_text" type="text" default=""
-                    label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_TEXT_LABEL"
-                    description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_TEXT_DESC"
-                    filter="string"/>
-                <field name="googlefonts_load_effect" type="text" default=""
-                    label="TPL_BOOTSTRAPBASE_GOOGLEFONTS_EFFECT_LABEL"
-                    description="TPL_BOOTSTRAPBASE_GOOGLEFONTS_EFFECT_DESC"
-                    filter="string"/>
+
+                <field
+                    name="minify_js"
+                    type="list"
+                    label="TPL_BOOTSTRAPBASE_MINIFY_JS_LABEL"
+                    description="TPL_BOOTSTRAPBASE_MINIFY_JS_DESC"
+                    default="1">
+                    <option value="0">TPL_BOOTSTRAPBASE_COMPILE_NEVER</option>
+                    <option value="1">TPL_BOOTSTRAPBASE_COMPILE_ONCHANGE</option>
+                    <option value="2">TPL_BOOTSTRAPBASE_COMPILE_ONPAGELOAD</option>
+                </field>
             </fieldset>
         </fields>
     </config>

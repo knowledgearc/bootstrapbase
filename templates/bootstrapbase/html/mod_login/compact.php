@@ -3,7 +3,7 @@
  * @package     BootstrapBase
  * @subpackage  Template
  *
- * @copyright   Copyright (C) 2013-2014 KnowledgeARC Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2015 KnowledgeArc Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -27,7 +27,7 @@ defined('_JEXEC') or die;
 		<label for="username"><?php echo JText::_('MOD_LOGIN_VALUE_USERNAME') ?></label>
 		<input id="username" type="text" name="username" tabindex="0" size="18" placeholder="<?php echo JText::_('MOD_LOGIN_VALUE_USERNAME') ?>" />
 		<?php endif; ?>
-		
+
 		<?php
 		$usersConfig = JComponentHelper::getParams('com_users');
 		if ($usersConfig->get('allowUserRegistration')) : ?>
@@ -36,7 +36,7 @@ defined('_JEXEC') or die;
 		</span>
 		<?php endif; ?>
 	</div>
-	
+
 	<div id="password-field" class="form-field">
 		<?php if (!$params->get('usetext')) : ?>
 		<span class="form-field-addon">
@@ -48,7 +48,7 @@ defined('_JEXEC') or die;
 		<label for="password"><?php echo JText::_('JGLOBAL_PASSWORD') ?></label>
 		<input id="password" type="password" name="password" tabindex="0" size="18" placeholder="<?php echo JText::_('JGLOBAL_PASSWORD') ?>" />
 		<?php endif; ?>
-		
+
 		<?php
 		$usersConfig = JComponentHelper::getParams('com_users');
 		if ($usersConfig->get('allowUserRegistration')) : ?>
@@ -57,7 +57,7 @@ defined('_JEXEC') or die;
 		</span>
 		<?php endif; ?>
 	</div>
-	
+
 	<?php if (count($twofactormethods) > 1): ?>
 	<div id="secretkey-field" class="form-field">
 		<?php if (!$params->get('usetext')) : ?>
@@ -76,11 +76,11 @@ defined('_JEXEC') or die;
 		</span>
 	</div>
 	<?php endif; ?>
-	
+
 	<div id="buttons">
 		<button type="submit" tabindex="0" name="Submit"><?php echo JText::_('JLOGIN') ?></button>
 	</div>
-	
+
 	<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
 	<div id="rememberme">
 		<label>
@@ -89,7 +89,7 @@ defined('_JEXEC') or die;
 		</label>
 	</div>
 	<?php endif; ?>
-	
+
 	<?php
 		$usersConfig = JComponentHelper::getParams('com_users');
 		if ($usersConfig->get('allowUserRegistration')) : ?>
@@ -97,17 +97,17 @@ defined('_JEXEC') or die;
 		<a href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>">
 		<?php echo JText::_('MOD_LOGIN_REGISTER'); ?></a>
 	</p>
-	
+
 	<?php endif; ?>
 	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="user.login" />
 	<input type="hidden" name="return" value="<?php echo $return; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
-	
+
 	<?php if ($params->get('posttext')) : ?>
 	<div class="posttext">
 		<p><?php echo $params->get('posttext'); ?></p>
 	</div>
 	<?php endif; ?>
-	
+
 </form>

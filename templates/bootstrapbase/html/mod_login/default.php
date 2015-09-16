@@ -3,7 +3,7 @@
  * @package     BootstrapBase
  * @subpackage  Template
  *
- * @copyright   Copyright (C) 2013-2014 KnowledgeARC Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2015 KnowledgeArc Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -64,11 +64,11 @@ defined('_JEXEC') or die;
 		</label>
 	</div>
 	<?php endif; ?>
-	
+
 	<div id="buttons">
 		<button type="submit" tabindex="0" name="Submit"><?php echo JText::_('JLOGIN') ?></button>
 	</div>
-	
+
 	<?php
 	$usersConfig = JComponentHelper::getParams('com_users');
 	if ($usersConfig->get('allowUserRegistration')) :?>
@@ -86,16 +86,16 @@ defined('_JEXEC') or die;
 		</li>
 	</ul>
 	<?php endif; ?>
-	
+
 	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="user.login" />
 	<input type="hidden" name="return" value="<?php echo $return; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
-	
+
 	<?php if ($params->get('posttext')) : ?>
 	<div class="posttext">
 		<p><?php echo $params->get('posttext'); ?></p>
 	</div>
 	<?php endif; ?>
-	
+
 </form>
