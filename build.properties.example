@@ -1,0 +1,3 @@
+src=.
+path.joomla=/var/www/html/
+composer.phar=/opt/composer.phar/composer.phar

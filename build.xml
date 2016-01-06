@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Template - BootstrapBase" default="">
+    <property file="build.properties"/>
+    <property name="path.build" value="${src}/build"/>
+
+    <target name="deploy" description="Deploy template code to a pre-existing Joomla site.">
+        <copy todir="${path.joomla}/templates/bootstrapbase">
+            <fileset dir="${src}" defaultexcludes="false">
+                <exclude name="build*.xml"/>
+                <exclude name="build.properties*"/>
+                <exclude name="languages"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${path.joomla}">
+            <fileset dir="${src}/templates/bootstrapbase" defaultexcludes="true">
+                <include name="language/**"/>
+            </fileset>
+        </copy>
+
+        <phingcall target="prepare_less_parser"/>
+
+        <copy todir="${path.joomla}/templates/bootstrapbase/libraries/">
+            <fileset dir="${path.build}" defaultexcludes="true">
+                <include name="vendor/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean" description="Cleans the build path.">
+        <delete dir="${path.build}"/>
+    </target>
+
+    <target name="package" description="Create an installable package." depends="clean">
+        <mkdir dir="${path.build}"/>
+
+        <phingcall target="prepare_less_parser"/>
+
+        <copy todir="${path.build}" overwrite="true">
+            <fileset dir="./templates/bootstrapbase" defaultexcludes="false">
+                <exclude name="build/**"/>
+                <exclude name="build*.xml"/>
+                <exclude name="build.properties*"/>
+            </fileset>
+        </copy>
+
+        <zip destfile="${path.build}/tpl_bootstrapbase.zip" basedir="${path.build}"/>
+
+        <delete includeemptydirs="true">
+            <fileset dir="${path.build}" includes="**/*">
+                <exclude name="*.zip"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="prepare_less_parser" hidden="true">
+        <mkdir dir="${path.build}/libraries"/>
+        <copy file="${src}/composer.json" todir="${path.build}/libraries"/>
+
+        <composer command="install" composer="${composer.phar}">
+            <arg value="--optimize-autoloader"/>
+            <arg value="--working-dir"/>
+            <arg path="${path.build}/libraries"/>
+        </composer>
+
+        <!-- We use Joomla's autoloader so we remove composer's autoload funcitonality. -->
+        <delete includeemptydirs="true">
+            <fileset dir="${path.build}/libraries/vendor" defaultexcludes="false">
+                <include name="**/**"/>
+                <include name="oyejorge/less.php/lib/Less/.easymin/**"/>
+                <exclude name="oyejorge/less.php/lib/Less/**/*.php"/>
+                <exclude name="leafo/**/*.php"/>
+            </fileset>
+        </delete>
+
+        <delete includeemptydirs="true">
+            <fileset dir="${path.build}/libraries" defaultexcludes="false">
+                <include name="composer.*"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="help" description="Prints this help.">
+        <exec command="phing -f ${phing.file} -l" outputProperty="phing_targets"/>
+        <echo msg="Call phing with the following targets:"/>
+        <echo>${phing_targets}</echo>
+    </target>
+</project>

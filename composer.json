@@ -13,7 +13,9 @@
         }
     ],
     "require": {
-        "PHP" : ">=5.4"
+        "PHP" : ">=5.4",
+        "oyejorge/less.php": "1.7.x",
+        "leafo/scssphp": "0.6.2"
     },
     "repositories": [
         {

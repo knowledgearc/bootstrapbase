@@ -1,5 +1,0 @@
-src=.
-path.joomla=/var/www/html/
-composer.phar=/opt/composer.phar/composer.phar
-template.name=BootstrapBase
-template.description=A pure Bootstrap implementation for Joomla!. Includes many client side features, JQuery integration and responsive web design.
