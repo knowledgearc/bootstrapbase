@@ -4,11 +4,11 @@
     <property name="path.build" value="${src}/build"/>
 
     <target name="deploy" description="Deploy template code to a pre-existing Joomla site.">
+        <delete dir="${path.joomla}/templates/bootstrapbase" includeemptydirs="true" failonerror="true"/>
+
         <copy todir="${path.joomla}/templates/bootstrapbase">
-            <fileset dir="${src}" defaultexcludes="false">
-                <exclude name="build*.xml"/>
-                <exclude name="build.properties*"/>
-                <exclude name="languages"/>
+            <fileset dir="${src}/templates/bootstrapbase" defaultexcludes="false">
+                <exclude name="language"/>
             </fileset>
         </copy>
 
@@ -43,6 +43,8 @@
                 <exclude name="build.properties*"/>
             </fileset>
         </copy>
+
+        <foreach list="${overrides.exclude}" param="exclude" target="remove_override"/>
 
         <zip destfile="${path.build}/tpl_bootstrapbase.zip" basedir="${path.build}"/>
 
@@ -84,5 +86,9 @@
         <exec command="phing -f ${phing.file} -l" outputProperty="phing_targets"/>
         <echo msg="Call phing with the following targets:"/>
         <echo>${phing_targets}</echo>
+    </target>
+
+    <target name="remove_override">
+        <delete dir="${path.build}/html/${exclude}"/>
     </target>
 </project>

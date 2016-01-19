@@ -15,6 +15,7 @@ JLoader::import('joomla.log.log');
 JLoader::register('BootstrapBaseCompiler', dirname(__FILE__).'/../compiler.php');
 
 JLoader::registerNamespace('Less', dirname(__FILE__).'/../../vendor/oyejorge/less.php/lib');
+JLoader::registerNamespace('Scss', dirname(__FILE__).'/../../vendor/leafo/scssphp/src');
 
 class BootstrapBaseCompilerCss extends BootstrapBaseCompiler
 {
@@ -88,7 +89,7 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler
                 JFile::write($dest, $css);
 
                 $files = $less->allParsedFiles();
-
+// $files = $scss->getParsedFiles()
                 // update cache.
                 $this->updateCache(self::CACHEKEY.'.files.less', $files);
             }

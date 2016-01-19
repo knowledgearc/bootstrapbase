@@ -1,3 +1,4 @@
 src=.
 path.joomla=/var/www/html/
 composer.phar=/opt/composer.phar/composer.phar
+overrides.exclude=com_jsolrsearch,mod_jeuropeana,mod_jsolr_latest,mod_jsolrfilter
