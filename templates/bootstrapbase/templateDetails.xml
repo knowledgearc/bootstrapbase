@@ -137,10 +137,10 @@
                     type="list"
                     label="TPL_BOOTSTRAPBASE_MINIFY_JS_LABEL"
                     description="TPL_BOOTSTRAPBASE_MINIFY_JS_DESC"
-                    default="1">
-                    <option value="0">TPL_BOOTSTRAPBASE_COMPILE_NEVER</option>
-                    <option value="1">TPL_BOOTSTRAPBASE_COMPILE_ONCHANGE</option>
-                    <option value="2">TPL_BOOTSTRAPBASE_COMPILE_ONPAGELOAD</option>
+                    default="onchange">
+                    <option value="never">TPL_BOOTSTRAPBASE_COMPILE_NEVER</option>
+                    <option value="onchange">TPL_BOOTSTRAPBASE_COMPILE_ONCHANGE</option>
+                    <option value="onpageload">TPL_BOOTSTRAPBASE_COMPILE_ONPAGELOAD</option>
                 </field>
             </fieldset>
         </fields>

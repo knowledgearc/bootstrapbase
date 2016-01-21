@@ -15,13 +15,22 @@ JLoader::import('joomla.log.log');
 JLoader::register('BootstrapBaseCompiler', dirname(__FILE__).'/../compiler.php');
 
 JLoader::registerNamespace('Less', dirname(__FILE__).'/../../vendor/oyejorge/less.php/lib');
-JLoader::registerNamespace('Scss', dirname(__FILE__).'/../../vendor/leafo/scssphp/src');
+//JLoader::registerNamespace('Leafo', dirname(__FILE__).'/../../vendor/leafo');
+require_once dirname(__FILE__).'/../../vendor/leafo/scssphp/scss.inc.php';
+
+use Leafo\ScssPhp\Compiler;
 
 class BootstrapBaseCompilerCss extends BootstrapBaseCompiler
 {
+    const SASS_FILE = '/scss/_template.scss';
+
     const LESS_FILE = '/less/template.less';
 
     private $paths;
+
+    private $compiler;
+
+    private $frequency;
 
     public function __construct()
     {
@@ -38,60 +47,77 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler
         $template = $app->getTemplate();
         $css = $templatePath.'/css/'.$template;
 
+        $this->paths->set('css.sass', $templatePath.self::SASS_FILE);
         $this->paths->set('css.less', $templatePath.self::LESS_FILE);
         $this->paths->set('css.compressed', $css.'.min.css');
         $this->paths->set('css.sourcemap', $css.'.css.map');
+
+        $this->compiler = $this->params->get('css_compiler', 'sass');
+        $this->frequency = $this->params->get('compile_frequency', 'onchange');
     }
 
     /**
-     * Compiles the LESS code into a single CSS file.
+     * Compiles the CSS source code into a single CSS file.
      */
     public function compile()
     {
         try {
             $dest = $this->paths->get('css.compressed');
-            $compile = $this->params->get('compile_less', 1);
-            $changed = (bool)$this->isLessUpdated();
-            $generateSourceMap = $this->params->get('generate_css_sourcemap', false);
+            $compile = $this->frequency;
+            $changed = (bool)$this->isCssUpdated();
 
-            JLog::add('LESS cache changed: '.((bool)$changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+            JLog::add('CSS cache changed: '.((bool)$changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
 
-            $force = (bool)($compile == 2);
-            $changed = (bool)($compile == 1 && $changed);
+            $force = (bool)($compile == "onpageload");
+            $changed = (bool)($compile == "onchange" && $changed);
 
-            JLog::add('Force LESS compilation: '.((bool)$force ? 'true' : 'false'), JLog::DEBUG, $this->logger);
-            JLog::add('Compiling LESS: '.((bool)$changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+            JLog::add('Force CSS compilation: '.((bool)$force ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+            JLog::add('Compiling CSS: '.((bool)$changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
 
             if (!JFile::exists($dest) || $changed || $force) {
-                JLog::add('Generate CSS sourcemap: '.((bool)$generateSourceMap ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+                if ($this->compiler == 'less') {
+                    $generateSourceMap = $this->params->get('generate_css_sourcemap', false);
 
-                $options = array('compress'=>true);
+                    JLog::add('Generate CSS sourcemap: '.((bool)$generateSourceMap ? 'true' : 'false'), JLog::DEBUG, $this->logger);
 
-                $cssSourceMapUri = str_replace(JPATH_ROOT, JURI::base(), $this->paths->get('css.sourcemap'));
+                    $options = array('compress'=>true);
 
-                // Build source map with minified code.
-                if ($this->params->get('generate_css_sourcemap', false)) {
-                    $options['sourceMap']         = true;
-                    $options['sourceMapWriteTo']  = $this->paths->get('css.sourcemap');
-                    $options['sourceMapURL']      = $cssSourceMapUri;
-                    $options['sourceMapBasepath'] = JPATH_ROOT;
-                    $options['sourceMapRootpath'] = JUri::base();
+                    $cssSourceMapUri = str_replace(JPATH_ROOT, JURI::base(), $this->paths->get('css.sourcemap'));
+
+                    // Build source map with minified code.
+                    if ($this->params->get('generate_css_sourcemap', false)) {
+                        $options['sourceMap']         = true;
+                        $options['sourceMapWriteTo']  = $this->paths->get('css.sourcemap');
+                        $options['sourceMapURL']      = $cssSourceMapUri;
+                        $options['sourceMapBasepath'] = JPATH_ROOT;
+                        $options['sourceMapRootpath'] = JUri::base();
+                    } else {
+                        JFile::delete($this->paths->get('css.sourcemap'));
+                    }
+
+                    $less = new Less_Parser($options);
+                    $less->parseFile($this->paths->get('css.less'), JUri::base());
+
+                    $css = $less->getCss();
+
+                    $files = $less->allParsedFiles();
                 } else {
-                    JFile::delete($this->paths->get('css.sourcemap'));
+                    $scss = new Compiler();
+
+                    $scss->addImportPath(function($path) {
+                        return __DIR__.'/../../../scss';
+                    });
+
+                    $css = $scss->compile(file_get_contents(__DIR__.'/../../../scss/_template.scss'));
+
+                    $files = $scss->getParsedFiles();
                 }
-
-                $less = new Less_Parser($options);
-                $less->parseFile($this->paths->get('css.less'), JUri::base());
-
-                $css = $less->getCss();
 
                 JLog::add('Writing CSS to: '.$dest, JLog::DEBUG, $this->logger);
                 JFile::write($dest, $css);
 
-                $files = $less->allParsedFiles();
-// $files = $scss->getParsedFiles()
                 // update cache.
-                $this->updateCache(self::CACHEKEY.'.files.less', $files);
+                $this->updateCache(self::CACHEKEY.'.files.css', $files);
             }
         } catch (Exception $e) {
             JLog::add($e->getMessage(), JLog::ERROR, $this->logger);
@@ -100,13 +126,13 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler
     }
 
     /**
-     * Check the cache against the file system to determine whether the LESS
+     * Check the cache against the file system to determine whether the CSS
      * files have been updated.
      *
-     * @return boolean True if the LESS files have been updated, false
+     * @return boolean True if the CSS files have been updated, false
      * otherwise.
      */
-    private function isLessUpdated()
+    private function isCssUpdated()
     {
         $changed = false;
 
@@ -123,7 +149,7 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler
         }
 
         if (!$changed) {
-            $changed = $this->isCacheChanged(self::CACHEKEY.'.files.less');
+            $changed = $this->isCacheChanged(self::CACHEKEY.'.files.css');
         }
 
         return $changed;
