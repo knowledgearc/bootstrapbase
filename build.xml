@@ -21,7 +21,7 @@
         <phingcall target="prepare_less_parser"/>
 
         <copy todir="${path.joomla}/templates/bootstrapbase/libraries/">
-            <fileset dir="${path.build}" defaultexcludes="true">
+            <fileset dir="${path.build}/libraries" defaultexcludes="true">
                 <include name="vendor/**"/>
             </fileset>
         </copy>
