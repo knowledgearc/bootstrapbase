@@ -1,0 +1,14 @@
+// variables,functions,mixins and anything that won't create css in itself will go here
+@import "helpers/helpers";
+// base files like typograhy, headings, links, resets etc
+@import "base/base";
+// buttons, carousels, navigations, thumbnails etc specially for small part of the layout
+@import "components/components";
+// theme specific styles...only usefull if there is multiple theme developed
+@import "themes/themes";
+//pages sepecific styles
+@import "pages/pages";
+//vendors styles like bootstrap, jqueryUi etc
+@import "vendors/vendors";
+//overrides to the predefined styles..use this file to override the vendores aswell or a specific override file can be created inside the vendor folder to modify vendor styles
+@import "overrides/overrides";
