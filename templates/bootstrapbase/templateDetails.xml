@@ -95,13 +95,13 @@
                     type="list"
                     label="TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_LABEL"
                     description="TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_DESC"
-                    default="nested"
+                    default="crunched"
                     showon="css_compiler:sass">
                     <option value="expanded">TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_EXPANDED</option>
                     <option value="nested">TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_NESTED</option>
                     <option value="compressed">TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_COMPRESSED</option>
                     <option value="compact">TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_COMPACT</option>
-                    <option value="crunched">TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_CRUNCHED</option>
+                    <option value="crunched" >TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_CRUNCHED</option>
                 </field>
 
                 <field

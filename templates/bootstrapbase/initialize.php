@@ -100,13 +100,14 @@ JLoader::register('JDocumentRendererJs', $rendererPath.'js.php');
 
 // load compilers.
 $compilerPath = $librariesPath.'/compiler/';
+//$scsscompilerPath = $librariesPath.'/scsscompiler/';
 
 JLoader::register('BootstrapBaseCompilerCss', $compilerPath.'css.php');
 JLoader::register('BootstrapBaseCompilerJs', $compilerPath.'js.php');
 
+
 BootstrapBaseCompilerCss::run();
 BootstrapBaseCompilerJs::run();
-
 $templateUrl = JUri::base().'templates/'.$this->template;
 
 $jsCompiled = '/js/jui/'.$application->getTemplate().'.min.js';
@@ -132,3 +133,19 @@ if (JFile::exists($templatePath.$cssCompiled)) {
 foreach (JFolder::files($templatePath.'/css/', ".+\.css") as $file) {
     $this->addStylesheet($templateUrl.'/css/'.$file);
 }
+//require_once 'scss.inc.php';
+//
+////use Leafo\ScssPhp\Compiler;
+////use Leafo\ScssPhp\Formatter\Expanded;
+//
+////$formatterName = "Leafo\ScssPhp\Formatter\Expanded";
+//$scss = new scssc();
+////$scss->setFormatter($formatterName);
+//require_once 'scss.inc.php';
+//$scss = new scssc();
+//$imported_scss_file = array();
+//foreach (glob("templates/bootstrapbase/scss/*.scss") as $file) {
+// $imported_scss_file[] = $scss->compile('@import "'.$file.'";');
+//}
+//$file =  file_put_contents("templates/bootstrapbase/css/navigation.css", $imported_scss_file);
+////

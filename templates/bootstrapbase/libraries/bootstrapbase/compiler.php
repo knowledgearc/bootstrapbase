@@ -73,5 +73,6 @@ abstract class BootstrapBaseCompiler
     {
         $compiler = new static();
         $compiler->compile();
+     
     }
 }
