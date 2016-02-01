@@ -74,12 +74,6 @@
                 <exclude name="leafo/**/*.php"/>
             </fileset>
         </delete>
-
-        <delete includeemptydirs="true">
-            <fileset dir="${path.build}/libraries" defaultexcludes="false">
-                <include name="composer.*"/>
-            </fileset>
-        </delete>
     </target>
 
     <target name="help" description="Prints this help.">
