@@ -16,9 +16,10 @@ JLoader::import('joomla.log.log');
 JLoader::register('BootstrapBaseCompiler', dirname(__FILE__) . '/../compiler.php');
 
 JLoader::registerNamespace('Less', dirname(__FILE__) . '/../../vendor/oyejorge/less.php/lib');
-JLoader::registerNamespace('Leafo', dirname(__FILE__).'/../../vendor/leafo');
+//JLoader::registerNamespace('Leafo', dirname(__FILE__).'/../../vendor/leafo/scssphp/src');
+require_once(dirname(__FILE__).'/../../vendor/leafo/scssphp/scss.inc.php');
 
-use Leafo\ScssPhp;
+use Leafo\ScssPhp\Compiler;
 
 class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
 
@@ -73,9 +74,9 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
             JLog::add('Compiling CSS: ' . ((bool) $changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
 
             if (!JFile::exists($dest) || $changed || $force) {
-                
+
                 if ($this->compiler == 'less') {
-                    
+
                     $generateSourceMap = $this->params->get('generate_css_sourcemap', false);
 
                     JLog::add('Generate CSS sourcemap: ' . ((bool) $generateSourceMap ? 'true' : 'false'), JLog::DEBUG, $this->logger);
@@ -102,15 +103,14 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
 
                     $files = $less->allParsedFiles();
                 } else {
-                   
+
                     $formatterName = "Leafo\ScssPhp\Formatter\\" . $this->compilers;
 
                     $scss = new Compiler();
                     $scss->setFormatter($formatterName);
 
-                    $css = $scss->compile($this->paths->get('css.sass'));
-                    $files = $scss->getParsedFiles();
-                    $outfile = file_put_contents($this->paths->get('css.compressed'), $css);
+                    $css = $scss->compile("@import \"".$this->paths->get('css.sass')."\"");
+                    $files = array_keys($scss->getParsedFiles());
                 }
 
                 JLog::add('Writing CSS to: ' . $dest, JLog::DEBUG, $this->logger);
