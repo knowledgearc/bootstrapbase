@@ -13,12 +13,13 @@ JLoader::import('joomla.filesystem.stream');
 JLoader::import('joomla.filesystem.folder');
 JLoader::import('joomla.log.log');
 
-JLoader::register('BootstrapBaseCompiler', dirname(__FILE__) . '/../compiler.php');
+JLoader::register('BootstrapBaseCompiler', dirname(__FILE__) .'/../compiler.php');
 
-JLoader::registerNamespace('Less', dirname(__FILE__) . '/../../vendor/oyejorge/less.php/lib');
-JLoader::registerNamespace('Leafo', dirname(__FILE__).'/../../vendor/leafo');
+JLoader::registerNamespace('Less', dirname(__FILE__) .'/../../vendor/oyejorge/less.php/lib');
+//JLoader::registerNamespace('Leafo', dirname(__FILE__).'/../../vendor/leafo/scssphp/src');
+require_once(dirname(__FILE__).'/../../vendor/leafo/scssphp/scss.inc.php');
 
-use Leafo\ScssPhp;
+use Leafo\ScssPhp\Compiler;
 
 class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
 
@@ -35,7 +36,7 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
         $app = JFactory::getApplication();
 
         JLog::addLogger(array());
-        $this->logger = 'bootstrapbase';
+       $this->logger = 'bootstrapbase';
 
         $this->paths = new JRegistry;
 
@@ -61,24 +62,24 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
         try {
             $dest = $this->paths->get('css.compressed');
             $compile = $this->frequency;
+ 
+            $changed = (bool)$this->isCssUpdated();
 
-            $changed = (bool) $this->isCssUpdated();
+            JLog::add('CSS cache changed: ' . ((bool)$changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
 
-            JLog::add('CSS cache changed: ' . ((bool) $changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+            $force = (bool) ($compile == 2);
+            $changed = (bool) ($compile == 1 && $changed);
 
-            $force = (bool) ($compile == "onpageload");
-            $changed = (bool) ($compile == "onchange" && $changed);
-
-            JLog::add('Force CSS compilation: ' . ((bool) $force ? 'true' : 'false'), JLog::DEBUG, $this->logger);
-            JLog::add('Compiling CSS: ' . ((bool) $changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+            JLog::add('Force CSS compilation: ' . ((bool)$force ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+            JLog::add('Compiling CSS: ' . ((bool)$changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
 
             if (!JFile::exists($dest) || $changed || $force) {
-                
-                if ($this->compiler == 'less') {
-                    
-                    $generateSourceMap = $this->params->get('generate_css_sourcemap', false);
 
-                    JLog::add('Generate CSS sourcemap: ' . ((bool) $generateSourceMap ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+                if ($this->compiler == 'less') {
+					
+                   $generateSourceMap = $this->params->get('generate_css_sourcemap', false);
+
+                    JLog::add('Generate CSS sourcemap: ' . ((bool)$generateSourceMap ? 'true' : 'false'), JLog::DEBUG, $this->logger);
 
                     $options = array('compress' => true);
 
@@ -97,21 +98,18 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
 
                     $less = new Less_Parser($options);
                     $less->parseFile($this->paths->get('css.less'), JUri::base());
-
                     $css = $less->getCss();
-
                     $files = $less->allParsedFiles();
                 } else {
                    
-                    $formatterName = "Leafo\ScssPhp\Formatter\\" . $this->compilers;
-
-                    $scss = new Compiler();
-                    $scss->setFormatter($formatterName);
-
-                    $css = $scss->compile($this->paths->get('css.sass'));
-                    $files = $scss->getParsedFiles();
-                    $outfile = file_put_contents($this->paths->get('css.compressed'), $css);
+                   $formatterName = "Leafo\ScssPhp\Formatter\\" . $this->compilers;
+				   $this->cache->store($this->compilers,self::CACHEKEY . '.sass.sass_output_formatting');
+                    $scss = new Compiler();				
+                    $scss->setFormatter($formatterName);				
+                    $css = $scss->compile("@import \"".$this->paths->get('css.sass')."\"");               
+                    $files = array_keys($scss->getParsedFiles());
                 }
+				
 
                 JLog::add('Writing CSS to: ' . $dest, JLog::DEBUG, $this->logger);
                 JFile::write($dest, $css);
@@ -133,6 +131,7 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
      * otherwise.
      */
     private function isCssUpdated() {
+		
         $changed = false;
 
         $generateSourceMap = $this->params->get('generate_css_sourcemap', false);
@@ -150,8 +149,13 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
         if (!$changed) {
             $changed = $this->isCacheChanged(self::CACHEKEY . '.files.css');
         }
+		if (!$changed) {
+			if($this->cache->get(self::CACHEKEY . '.sass.sass_output_formatting')!==$this->compilers){
+				$changed = true;
+			}
+		}
 
         return $changed;
     }
-
+	
 }
