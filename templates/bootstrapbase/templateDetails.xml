@@ -64,7 +64,7 @@
                     description="TPL_BOOTSTRAPBASE_CSS_COMPILER_DESC"
                     default="sass">
                     <option value="less">TPL_BOOTSTRAPBASE_CSS_COMPILER_LESS</option>
-                    <option value="sass">TPL_BOOTSTRAPBASE_CSS_COMPILER_SASS</option>
+                    <option value="scss">TPL_BOOTSTRAPBASE_CSS_COMPILER_SASS</option>
                 </field>
 
                 <field
@@ -91,12 +91,12 @@
                 </field>
 
                 <field
-                    name="sass_output_formatting"
+                    name="scss_output_formatting"
                     type="list"
                     label="TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_LABEL"
                     description="TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_DESC"
                     default="crunched"
-                    showon="css_compiler:sass">
+                    showon="css_compiler:scss">
                     <option value="expanded">TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_EXPANDED</option>
                     <option value="nested">TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_NESTED</option>
                     <option value="compressed">TPL_BOOTSTRAPBASE_SASS_OUTPUT_FORMATTING_COMPRESSED</option>

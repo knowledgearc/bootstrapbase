@@ -13,7 +13,7 @@ JLoader::import('joomla.filesystem.stream');
 JLoader::import('joomla.filesystem.folder');
 JLoader::import('joomla.log.log');
 
-JLoader::register('BootstrapBaseCompiler', dirname(__FILE__) .'/../compiler.php');
+JLoader::register('BootstrapBaseCompiler', dirname(__FILE__).'/../compiler.php');
 
 JLoader::registerNamespace('Less', dirname(__FILE__) .'/../../vendor/oyejorge/less.php/lib');
 //JLoader::registerNamespace('Leafo', dirname(__FILE__).'/../../vendor/leafo/scssphp/src');
@@ -23,12 +23,12 @@ use Leafo\ScssPhp\Compiler;
 
 class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
 
-    const SASS_FILE = '/scss/template.scss';
-    const LESS_FILE = '/less/template.less';
+    const LOGGER = 'bootstrapbase';
 
     private $paths;
     private $compiler;
     private $frequency;
+    private $formatting;
 
     public function __construct() {
         parent::__construct();
@@ -36,23 +36,22 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
         $app = JFactory::getApplication();
 
         JLog::addLogger(array());
-       $this->logger = 'bootstrapbase';
+
+        $this->compiler = $this->params->get('css_compiler', 'scss');
+        $this->frequency = $this->params->get('compile_frequency', 'onchange');
+        $this->formatting = $this->params->get("scss_output_formatting", "crunched");
 
         $this->paths = new JRegistry;
 
-        $templatePath = JPATH_THEMES . '/' . $app->getTemplate();
+        $templatePath = JPATH_THEMES.'/'.$app->getTemplate();
         $template = $app->getTemplate();
-        $css = $templatePath . '/css/' . $template;
 
-        $this->paths->set('css.sass', $templatePath . self::SASS_FILE);
+        $in = $templatePath.'/'.$this->compiler.'/template.'.$this->compiler;
+        $out = $templatePath.'/css/'.$template.'.css';
 
-        $this->paths->set('css.less', $templatePath . self::LESS_FILE);
-        $this->paths->set('css.compressed', $css . '.css');
-        $this->paths->set('css.sourcemap', $css . '.css.map');
-
-        $this->compiler = $this->params->get('css_compiler', 'sass');
-        $this->frequency = $this->params->get('compile_frequency', 'onchange');
-        $this->compilers = $this->params->get("sass_output_formatting", "crunched");
+        $this->paths->set('css.in', $in);
+        $this->paths->set('css.out', $out);
+        $this->paths->set('css.sourcemap', $out.'.map');
     }
 
     /**
@@ -60,27 +59,28 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
      */
     public function compile() {
         try {
-            $dest = $this->paths->get('css.compressed');
+            $dest = $this->paths->get('css.out');
             $compile = $this->frequency;
- 
+
             $changed = (bool)$this->isCssUpdated();
 
-            JLog::add('CSS cache changed: ' . ((bool)$changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+            JLog::add('CSS cache changed: '.((bool)$changed ? 'true' : 'false'), JLog::DEBUG, self::LOGGER);
 
-            $force = (bool) ($compile == 2);
-            $changed = (bool) ($compile == 1 && $changed);
+            $changed = (bool)(($compile == 2) || ($compile == 1 && $changed));
 
-            JLog::add('Force CSS compilation: ' . ((bool)$force ? 'true' : 'false'), JLog::DEBUG, $this->logger);
-            JLog::add('Compiling CSS: ' . ((bool)$changed ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+            $doCompile = (!JFile::exists($dest) || $changed);
 
-            if (!JFile::exists($dest) || $changed || $force) {
+            JLog::add('Force CSS compilation: '.($compile == 2 ? 'true' : 'false'), JLog::DEBUG, self::LOGGER);
+            JLog::add('CSS file exists: '.((bool)JFile::exists($dest) ? 'true' : 'false'), JLog::DEBUG, self::LOGGER);
+            JLog::add('Compiling CSS: '.((bool)$doCompile ? 'true' : 'false'), JLog::DEBUG, self::LOGGER);
 
+            if ($doCompile) {
                 if ($this->compiler == 'less') {
-					$generateSourceMap = $this->params->get('generate_css_sourcemap', false);
+                    $generateSourceMap = $this->params->get('generate_css_sourcemap', false);
 
-                    JLog::add('Generate CSS sourcemap: ' . ((bool)$generateSourceMap ? 'true' : 'false'), JLog::DEBUG, $this->logger);
+                    JLog::add('Generate CSS sourcemap: '.((bool)$generateSourceMap ? 'true' : 'false'), JLog::DEBUG, self::LOGGER);
 
-                    $options = array('compress' => true);
+                    $options = array('compress'=>true);
 
                     $cssSourceMapUri = str_replace(JPATH_ROOT, JURI::base(), $this->paths->get('css.sourcemap'));
 
@@ -96,27 +96,29 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
                     }
 
                     $less = new Less_Parser($options);
-                    $less->parseFile($this->paths->get('css.less'), JUri::base());
+                    $less->parseFile($this->paths->get('css.in'), JUri::base());
                     $css = $less->getCss();
                     $files = $less->allParsedFiles();
                 } else {
-                   $formatterName = "Leafo\ScssPhp\Formatter\\" . $this->compilers;
-				   $this->cache->store($this->compilers,self::CACHEKEY . '.sass.sass_output_formatting');
-                    $scss = new Compiler();				
-                    $scss->setFormatter($formatterName);				
-                    $css = $scss->compile("@import \"".$this->paths->get('css.sass')."\"");  
+                    $formatter = "Leafo\ScssPhp\Formatter\\".$this->formatting;
+                    $this->cache->store($this->formatting, self::CACHEKEY.'.scss.formatter');
+
+                    $scss = new Compiler();
+                    $scss->setFormatter($formatter);
+                    $css = $scss->compile('@import "'.$this->paths->get('css.in').'";');
+
                     $files = array_keys($scss->getParsedFiles());
                 }
-				
 
-                JLog::add('Writing CSS to: ' . $dest, JLog::DEBUG, $this->logger);
+                JLog::add('Writing CSS to: '.$dest, JLog::DEBUG, self::LOGGER);
                 JFile::write($dest, $css);
 
                 // update cache.
-                $this->updateCache(self::CACHEKEY . '.files.css', $files);
+                $this->updateCache(self::CACHEKEY.'.files.css', $files);
+                $this->cache->store($this->compiler, self::CACHEKEY.'.compiler');
             }
         } catch (Exception $e) {
-            JLog::add($e->getMessage(), JLog::ERROR, $this->logger);
+            JLog::add($e->getMessage(), JLog::ERROR, self::LOGGER);
             return false;
         }
     }
@@ -129,31 +131,40 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
      * otherwise.
      */
     private function isCssUpdated() {
-		
+
         $changed = false;
 
-        $generateSourceMap = $this->params->get('generate_css_sourcemap', false);
+        if ($this->compiler == 'less') {
+            $generateSourceMap = $this->params->get('generate_css_sourcemap', false);
 
-        // if the source map still exists but shouldn't be created, just recompile.
-        if (JFile::exists($this->paths->get('css.sourcemap')) && !$generateSourceMap) {
-            $changed = true;
-        }
+            // if the source map still exists but shouldn't be created, just recompile.
+            if (JFile::exists($this->paths->get('css.sourcemap')) && !$generateSourceMap) {
+                $changed = true;
+            }
 
-        // if the source map doesn't exist but should, just recompile.
-        if (!JFile::exists($this->paths->get('css.sourcemap')) && $generateSourceMap) {
-            $changed = true;
+            // if the source map doesn't exist but should, just recompile.
+            if (!JFile::exists($this->paths->get('css.sourcemap')) && $generateSourceMap) {
+                $changed = true;
+            }
+        } else {
+            if (!$changed) {
+                if ($this->cache->get(self::CACHEKEY.'.scss.formatter') !== $this->formatting) {
+                    $changed = true;
+                }
+            }
         }
 
         if (!$changed) {
-            $changed = $this->isCacheChanged(self::CACHEKEY . '.files.css');
+            if ($this->cache->get(self::CACHEKEY.'.compiler') !== $this->compiler) {
+                $changed = true;
+            }
         }
-		if (!$changed) {
-			if($this->cache->get(self::CACHEKEY . '.sass.sass_output_formatting')!==$this->compilers){
-				$changed = true;
-			}
-		}
+
+        if (!$changed) {
+            $changed = $this->isCacheChanged(self::CACHEKEY.'.files.css');
+        }
 
         return $changed;
     }
-	
+
 }
