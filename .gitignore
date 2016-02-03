@@ -4,3 +4,4 @@ composer.lock
 templates/jeuropeana/build.properties
 build.properties
 bootstrapbase.css
+bootstrapbase.min.js

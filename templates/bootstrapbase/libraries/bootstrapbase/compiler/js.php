@@ -13,6 +13,8 @@ JLoader::register('JsMinPlus', dirname(__FILE__).'/jsminplus.php');
 
 class BootstrapBaseCompilerJs extends BootstrapBaseCompiler
 {
+    const LOGGER = 'bootstrapbase';
+
     private $paths;
 
     public function __construct()
@@ -22,7 +24,6 @@ class BootstrapBaseCompilerJs extends BootstrapBaseCompiler
         $app = JFactory::getApplication();
 
         JLog::addLogger(array());
-        $this->logger = 'bootstrapbase';
 
         $this->paths = new JRegistry;
 
@@ -56,7 +57,7 @@ class BootstrapBaseCompilerJs extends BootstrapBaseCompiler
         JLog::add(
             'Javascript cache changed: '.((bool)$changed ? 'true' : 'false'),
             JLog::DEBUG,
-            $this->logger);
+            self::LOGGER);
 
         $force = (bool)($compile == 2);
         $changed = (bool)($compile == 1 && $changed);
@@ -64,12 +65,12 @@ class BootstrapBaseCompilerJs extends BootstrapBaseCompiler
         JLog::add(
             'Force Javascript minification: '.((bool)$force ? 'true' : 'false'),
             JLog::DEBUG,
-            $this->logger);
+            self::LOGGER);
 
         JLog::add(
             'Minify Javascript: '.((bool)$changed ? 'true' : 'false'),
             JLog::DEBUG,
-            $this->logger);
+            self::LOGGER);
 
         $uncompressed = '';
 
@@ -87,7 +88,7 @@ class BootstrapBaseCompilerJs extends BootstrapBaseCompiler
                 unset($headers['scripts'][$script]);
 
                 if (!JFile::exists($dest) || $changed || $force) {
-                    JLog::add('Compressing: '.$key.' to '.$dest, JLog::DEBUG, $this->logger);
+                    JLog::add('Compressing: '.$key.' to '.$dest, JLog::DEBUG, self::LOGGER);
 
                     $stream = new JStream();
                     $stream->open($key);
