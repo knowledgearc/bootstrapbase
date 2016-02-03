@@ -76,8 +76,7 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
             if (!JFile::exists($dest) || $changed || $force) {
 
                 if ($this->compiler == 'less') {
-					
-                   $generateSourceMap = $this->params->get('generate_css_sourcemap', false);
+					$generateSourceMap = $this->params->get('generate_css_sourcemap', false);
 
                     JLog::add('Generate CSS sourcemap: ' . ((bool)$generateSourceMap ? 'true' : 'false'), JLog::DEBUG, $this->logger);
 
@@ -101,12 +100,11 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
                     $css = $less->getCss();
                     $files = $less->allParsedFiles();
                 } else {
-                   
                    $formatterName = "Leafo\ScssPhp\Formatter\\" . $this->compilers;
 				   $this->cache->store($this->compilers,self::CACHEKEY . '.sass.sass_output_formatting');
                     $scss = new Compiler();				
                     $scss->setFormatter($formatterName);				
-                    $css = $scss->compile("@import \"".$this->paths->get('css.sass')."\"");               
+                    $css = $scss->compile("@import \"".$this->paths->get('css.sass')."\"");  
                     $files = array_keys($scss->getParsedFiles());
                 }
 				
