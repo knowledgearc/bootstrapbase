@@ -18,7 +18,7 @@ defined('JPATH_PLATFORM') or die;
  * @package     Bootstrapbase
  * @subpackage  Document
  */
-class JDocumentRendererJs extends JDocumentRenderer
+class JDocumentRendererHtmlJs extends JDocumentRenderer
 {
     /**
         * Renders the document javascript and returns the results as a string
@@ -35,7 +35,7 @@ class JDocumentRendererJs extends JDocumentRenderer
         */
     public function render($js, $params = array(), $content = null)
     {
-            return $this->fetchJs($this->_doc);
+        return $this->fetchJs($this->_doc);
     }
 
     /**
@@ -50,8 +50,9 @@ class JDocumentRendererJs extends JDocumentRenderer
     public function fetchJs($document)
     {
         // Get line endings
-        $lnEnd = $document->_getLineEnd();
-        $tab = $document->_getTab();
+        $lnEnd  = $document->_getLineEnd();
+        $tab    = $document->_getTab();
+        $tagEnd = ' />';
         $buffer = '';
 
         // Generate script file links
@@ -88,7 +89,7 @@ class JDocumentRendererJs extends JDocumentRenderer
             // This is for full XHTML support.
             if ($document->_mime != 'text/html')
             {
-                $buffer .= $tab . $tab . '<![CDATA[' . $lnEnd;
+                $buffer .= $tab . $tab . '//<![CDATA[' . $lnEnd;
             }
 
             $buffer .= $content . $lnEnd;
@@ -96,8 +97,9 @@ class JDocumentRendererJs extends JDocumentRenderer
             // See above note
             if ($document->_mime != 'text/html')
             {
-                $buffer .= $tab . $tab . ']]>' . $lnEnd;
+                $buffer .= $tab . $tab . '//]]>' . $lnEnd;
             }
+
             $buffer .= $tab . '</script>' . $lnEnd;
         }
 
@@ -105,22 +107,22 @@ class JDocumentRendererJs extends JDocumentRenderer
         if (count(JText::script()))
         {
             $buffer .= $tab . '<script type="text/javascript">' . $lnEnd;
-            $buffer .= $tab . $tab . '(function() {' . $lnEnd;
-            $buffer .= $tab . $tab . $tab . 'var strings = ' . json_encode(JText::script()) . ';' . $lnEnd;
-            $buffer .= $tab . $tab . $tab . 'if (typeof Joomla == \'undefined\') {' . $lnEnd;
-            $buffer .= $tab . $tab . $tab . $tab . 'Joomla = {};' . $lnEnd;
-            $buffer .= $tab . $tab . $tab . $tab . 'Joomla.JText = strings;' . $lnEnd;
-            $buffer .= $tab . $tab . $tab . '}' . $lnEnd;
-            $buffer .= $tab . $tab . $tab . 'else {' . $lnEnd;
-            $buffer .= $tab . $tab . $tab . $tab . 'Joomla.JText.load(strings);' . $lnEnd;
-            $buffer .= $tab . $tab . $tab . '}' . $lnEnd;
-            $buffer .= $tab . $tab . '})();' . $lnEnd;
-            $buffer .= $tab . '</script>' . $lnEnd;
-        }
 
-        foreach ($document->_custom as $custom)
-        {
-            $buffer .= $tab . $custom . $lnEnd;
+            if ($document->_mime != 'text/html')
+            {
+                $buffer .= $tab . $tab . '//<![CDATA[' . $lnEnd;
+            }
+
+            $buffer .= $tab . $tab . '(function() {' . $lnEnd;
+            $buffer .= $tab . $tab . $tab . 'Joomla.JText.load(' . json_encode(JText::script()) . ');' . $lnEnd;
+            $buffer .= $tab . $tab . '})();' . $lnEnd;
+
+            if ($document->_mime != 'text/html')
+            {
+                $buffer .= $tab . $tab . '//]]>' . $lnEnd;
+            }
+
+            $buffer .= $tab . '</script>' . $lnEnd;
         }
 
         return $buffer;

@@ -10,7 +10,6 @@ defined('_JEXEC') or die;
 
 JHtml::_('bootstrap.framework');
 JHtml::script('jui/tooltip.min.js', false, true);
-
 $templatePath = JPATH_THEMES.'/'.$this->template.'/';
 
 $application = JFactory::getApplication();
@@ -93,33 +92,19 @@ if ($this->countModules('left') > 0 && $this->countModules('right') > 0) {
 $librariesPath = $templatePath.'/libraries/bootstrapbase/';
 
 // load the customized renderers.
-$rendererPath = $librariesPath.'/document/html/renderer/';
+$rendererPath = $librariesPath.'/document/html/renderer/html/';
 
-JLoader::register('JDocumentRendererHead', $rendererPath.'head.php');
-JLoader::register('JDocumentRendererJs', $rendererPath.'js.php');
+JLoader::register('JDocumentRendererHtmlHead', $rendererPath.'head.php');
+JLoader::register('JDocumentRendererHtmlJs', $rendererPath.'js.php');
 
 // load compilers.
 $compilerPath = $librariesPath.'/compiler/';
 
 JLoader::register('BootstrapBaseCompilerCss', $compilerPath.'css.php');
-JLoader::register('BootstrapBaseCompilerJs', $compilerPath.'js.php');
 
 BootstrapBaseCompilerCss::run();
-BootstrapBaseCompilerJs::run();
+
 $templateUrl = JUri::base().'templates/'.$this->template;
-
-$jsCompiled = '/js/jui/'.$application->getTemplate().'.min.js';
-
-if (JFile::exists($templatePath.$jsCompiled)) {
-    $this->addScript($templateUrl.$jsCompiled);
-}
-
-// include additional javascripts.
-$javascripts = explode("\n", $this->params->get('javascript', ''));
-
-foreach ($javascripts as $javascript) {
-    $this->addScript($javascript);
-}
 
 $cssCompiled = '/css/'.$application->getTemplate().'.css';
 

@@ -3,20 +3,20 @@
  * @package     Joomla.Platform
  * @subpackage  Document
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * JDocument head renderer
  *
- * @package     Joomla.Platform
- * @subpackage  Document
- * @since       11.1
+ * @since  3.5
  */
-class JDocumentRendererHead extends JDocumentRenderer
+class JDocumentRendererHtmlHead extends JDocumentRenderer
 {
     /**
      * Renders the document head and returns the results as a string
@@ -27,9 +27,7 @@ class JDocumentRendererHead extends JDocumentRenderer
      *
      * @return  string  The output of the script
      *
-     * @since   11.1
-     *
-     * @note    Unused arguments are retained to preserve backward compatibility.
+     * @since   3.5
      */
     public function render($head, $params = array(), $content = null)
     {
@@ -39,13 +37,12 @@ class JDocumentRendererHead extends JDocumentRenderer
     /**
      * Generates the head HTML and return the results as a string
      *
-     * Removes Javascript from the head area for better performance/adherence to standards.
-     *
-     * @param   JDocument  $document  The document for which the head will be created
+     * @param   JDocumentHtml  $document  The document for which the head will be created
      *
      * @return  string  The head hTML
      *
-     * @since   11.1
+     * @since   3.5
+     * @deprecated  4.0  Method code will be moved into the render method
      */
     public function fetchHead($document)
     {
@@ -61,8 +58,8 @@ class JDocumentRendererHead extends JDocumentRenderer
         $app->triggerEvent('onBeforeCompileHead');
 
         // Get line endings
-        $lnEnd = $document->_getLineEnd();
-        $tab = $document->_getTab();
+        $lnEnd  = $document->_getLineEnd();
+        $tab    = $document->_getTab();
         $tagEnd = ' />';
         $buffer = '';
 
@@ -74,9 +71,10 @@ class JDocumentRendererHead extends JDocumentRenderer
 
         // Generate base tag (need to happen early)
         $base = $document->getBase();
+
         if (!empty($base))
         {
-            $buffer .= $tab . '<base href="' . $document->getBase() . '" />' . $lnEnd;
+            $buffer .= $tab . '<base href="' . $base . '" />' . $lnEnd;
         }
 
         // Generate META tags (needs to happen as early as possible in the head)
@@ -97,6 +95,7 @@ class JDocumentRendererHead extends JDocumentRenderer
 
         // Don't add empty descriptions
         $documentDescription = $document->getDescription();
+
         if ($documentDescription)
         {
             $buffer .= $tab . '<meta name="description" content="' . htmlspecialchars($documentDescription) . '" />' . $lnEnd;
@@ -104,6 +103,7 @@ class JDocumentRendererHead extends JDocumentRenderer
 
         // Don't add empty generators
         $generator = $document->getGenerator();
+
         if ($generator)
         {
             $buffer .= $tab . '<meta name="generator" content="' . htmlspecialchars($generator) . '" />' . $lnEnd;
@@ -115,10 +115,15 @@ class JDocumentRendererHead extends JDocumentRenderer
         foreach ($document->_links as $link => $linkAtrr)
         {
             $buffer .= $tab . '<link href="' . $link . '" ' . $linkAtrr['relType'] . '="' . $linkAtrr['relation'] . '"';
-            if ($temp = JArrayHelper::toString($linkAtrr['attribs']))
+
+            if (is_array($linkAtrr['attribs']))
             {
-                $buffer .= ' ' . $temp;
+                if ($temp = ArrayHelper::toString($linkAtrr['attribs']))
+                {
+                    $buffer .= ' ' . $temp;
+                }
             }
+
             $buffer .= ' />' . $lnEnd;
         }
 
@@ -137,9 +142,12 @@ class JDocumentRendererHead extends JDocumentRenderer
                 $buffer .= ' media="' . $strAttr['media'] . '"';
             }
 
-            if ($temp = JArrayHelper::toString($strAttr['attribs']))
+            if (is_array($strAttr['attribs']))
             {
-                $buffer .= ' ' . $temp;
+                if ($temp = ArrayHelper::toString($strAttr['attribs']))
+                {
+                    $buffer .= ' ' . $temp;
+                }
             }
 
             $buffer .= $tagEnd . $lnEnd;
@@ -153,7 +161,7 @@ class JDocumentRendererHead extends JDocumentRenderer
             // This is for full XHTML support.
             if ($document->_mime != 'text/html')
             {
-                $buffer .= $tab . $tab . '<![CDATA[' . $lnEnd;
+                $buffer .= $tab . $tab . '/*<![CDATA[*/' . $lnEnd;
             }
 
             $buffer .= $content . $lnEnd;
@@ -161,12 +169,14 @@ class JDocumentRendererHead extends JDocumentRenderer
             // See above note
             if ($document->_mime != 'text/html')
             {
-                $buffer .= $tab . $tab . ']]>' . $lnEnd;
+                $buffer .= $tab . $tab . '/*]]>*/' . $lnEnd;
             }
+
             $buffer .= $tab . '</style>' . $lnEnd;
         }
 
-        foreach ($document->_custom as $custom)
+        // Output the custom tags - array_unique makes sure that we don't output the same tags twice
+        foreach (array_unique($document->_custom) as $custom)
         {
             $buffer .= $tab . $custom . $lnEnd;
         }
