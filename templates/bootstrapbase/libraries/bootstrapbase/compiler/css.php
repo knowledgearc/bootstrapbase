@@ -150,6 +150,8 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
             if (!$changed) {
                 if ($this->cache->get(self::CACHEKEY.'.scss.formatter') !== $this->formatting) {
                     $changed = true;
+
+                    JLog::add('formatter has changed', JLog::DEBUG, self::LOGGER);
                 }
             }
         }
@@ -157,11 +159,14 @@ class BootstrapBaseCompilerCss extends BootstrapBaseCompiler {
         if (!$changed) {
             if ($this->cache->get(self::CACHEKEY.'.compiler') !== $this->compiler) {
                 $changed = true;
+
+                JLog::add('compiler has changed', JLog::DEBUG, self::LOGGER);
             }
         }
 
         if (!$changed) {
             $changed = $this->isCacheChanged(self::CACHEKEY.'.files.css');
+            if ($changed) JLog::add('files have changed', JLog::DEBUG, self::LOGGER);
         }
 
         return $changed;
