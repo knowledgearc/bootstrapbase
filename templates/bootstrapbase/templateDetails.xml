@@ -126,23 +126,6 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
-
-                <field
-                    name="javascript"
-                    type="textarea"
-                    label="TPL_BOOTSTRAPBASE_JAVASCRIPT_LABEL"
-                    description="TPL_BOOTSTRAPBASE_JAVASCRIPT_DESC"/>
-
-                <field
-                    name="minify_js"
-                    type="list"
-                    label="TPL_BOOTSTRAPBASE_MINIFY_JS_LABEL"
-                    description="TPL_BOOTSTRAPBASE_MINIFY_JS_DESC"
-                    default="onchange">
-                    <option value="never">TPL_BOOTSTRAPBASE_COMPILE_NEVER</option>
-                    <option value="onchange">TPL_BOOTSTRAPBASE_COMPILE_ONCHANGE</option>
-                    <option value="onpageload">TPL_BOOTSTRAPBASE_COMPILE_ONPAGELOAD</option>
-                </field>
             </fieldset>
         </fields>
     </config>
