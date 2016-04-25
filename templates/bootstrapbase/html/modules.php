@@ -24,7 +24,7 @@ function modChrome_bootstrapified($module, &$params, &$attribs) {
     }
 
     if ($bootstrapSize != 0) {
-        $moduleClasses[] = 'col-md-'.$bootstrapSize;
+        $moduleClasses[] = 'module-'.$bootstrapSize;
     }
 
     $moduleClass = count($moduleClasses) > 0 ? " class=\"".implode(" ", $moduleClasses)."\"" : "";
