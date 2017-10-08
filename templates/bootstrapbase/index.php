@@ -80,8 +80,6 @@ require_once (JPATH_THEMES.'/'.$this->template.'/initialize.php');
             <jdoc:include type="modules" name="copyright" />
         </footer>
 
-        <jdoc:include type="js" />
-
         <jdoc:include type="modules" name="debug" />
-	</body>
+    </body>
 </html>

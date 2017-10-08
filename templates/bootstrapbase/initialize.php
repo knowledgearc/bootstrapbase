@@ -16,6 +16,9 @@ $application = JFactory::getApplication();
 $document = JFactory::getDocument();
 $menu = $application->getMenu();
 
+// Output as HTML5
+$this->setHtml5(true);
+
 $params = $application->getTemplate(true)->params;
 
 $option = $application->input->getCmd('option', '');
@@ -32,8 +35,8 @@ $this->direction = $document->direction;
 
 // Set the body class for the overall web page.
 $bodyClass = $option.' view-'. $view.
-	($layout ? ' layout-' . $layout : '').
-	($task ? ' task-' . $task : '');
+    ($layout ? ' layout-' . $layout : '').
+    ($task ? ' task-' . $task : '');
 
 // append the page class suffix to the correct location.
 $active = $menu->getActive();
@@ -49,56 +52,19 @@ $bodyClass .= $menu->getParams($active->id)->get('pageclass_sfx', '');
 // Set viewport
 $this->setMetaData("viewport", "width=device-width,initial-scale=1");
 
-// unload mootools if specified.
-if ($params->get('mootools_core_load', 1) != 1) {
-	$headers = $this->getHeadData();
-
-	$scripts = JArrayHelper::getValue($headers, 'scripts');
-
-	foreach (preg_grep('/.*mootools.*\.js$/',array_keys($scripts)) as $item) {
-		unset($headers['scripts'][$item]);
-	}
-
-	foreach (preg_grep('/.*validate.*\.js$/',array_keys($scripts)) as $item) {
-		unset($headers['scripts'][$item]);
-	}
-
-	$this->setHeadData($headers);
-}
-
-if ($params->get('mootools_more_load', 0) != 1) {
-	$headers = $this->getHeadData();
-
-	$scripts = JArrayHelper::getValue($headers, 'scripts');
-
-	foreach (preg_grep('/.*mootools-more.*\.js$/',array_keys($scripts)) as $item) {
-		unset($headers['scripts'][$item]);
-	}
-
-	$this->setHeadData($headers);
-}
-
 // adjust main content depending on whether right or left modules are being shown.
 if ($this->countModules('left') > 0 && $this->countModules('right') > 0) {
-	$mainClass = 'both-sidebars';
+    $mainClass = 'both-sidebars';
 } elseif ($this->countModules('left') > 0) {
-	$mainClass = 'left-sidebar';
+    $mainClass = 'left-sidebar';
 } elseif ($this->countModules('right') > 0) {
-	$mainClass = 'right-sidebar';
+    $mainClass = 'right-sidebar';
 } else {
-	$mainClass = 'no-sidebars';
+    $mainClass = 'no-sidebars';
 }
 
-$librariesPath = $templatePath.'/libraries/bootstrapbase/';
-
-// load the customized renderers.
-$rendererPath = $librariesPath.'/document/html/renderer/html/';
-
-JLoader::register('JDocumentRendererHtmlHead', $rendererPath.'head.php');
-JLoader::register('JDocumentRendererHtmlJs', $rendererPath.'js.php');
-
 // load compilers.
-$compilerPath = $librariesPath.'/compiler/';
+$compilerPath = $templatePath.'/libraries/bootstrapbase/compiler/';
 
 JLoader::register('BootstrapBaseCompilerCss', $compilerPath.'css.php');
 
