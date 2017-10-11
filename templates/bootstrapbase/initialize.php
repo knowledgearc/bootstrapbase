@@ -72,6 +72,8 @@ if (JFile::exists($templatePath.$cssCompiled)) {
 }
 
 // load additional css files directly from CSS directory. Needs to be removed at some stage.
+JLoader::import('joomla.filesystem.folder');
+
 foreach (JFolder::files($templatePath.'/css/', ".+\.css") as $file) {
     $this->addStylesheet($templateUrl.'/css/'.$file);
 }
