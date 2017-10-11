@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="Template - BootstrapBase" default="">
+<project name="Template Build" default="">
     <property file="build.properties"/>
     <property name="path.build" value="${src}/build"/>
     <property name="path.languages" value="${path.joomla}/language"/>
