@@ -63,13 +63,6 @@ if ($this->countModules('left') > 0 && $this->countModules('right') > 0) {
     $mainClass = 'no-sidebars';
 }
 
-// load compilers.
-$compilerPath = $templatePath.'/libraries/bootstrapbase/compiler/';
-
-JLoader::register('BootstrapBaseCompilerCss', $compilerPath.'css.php');
-
-BootstrapBaseCompilerCss::run();
-
 $templateUrl = JUri::base().'templates/'.$this->template;
 
 $cssCompiled = '/css/'.$application->getTemplate().'.css';

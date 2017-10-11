@@ -2,6 +2,7 @@
 <project name="Template - BootstrapBase" default="">
     <property file="build.properties"/>
     <property name="path.build" value="${src}/build"/>
+    <property name="path.languages" value="${path.joomla}/language"/>
 
     <target name="deploy" description="Deploy template code to a pre-existing Joomla site.">
         <delete dir="${path.joomla}/templates/bootstrapbase" includeemptydirs="true" failonerror="true"/>
@@ -18,13 +19,7 @@
             </fileset>
         </copy>
 
-        <phingcall target="prepare_less_parser"/>
-
-        <copy todir="${path.joomla}/templates/bootstrapbase/libraries/">
-            <fileset dir="${path.build}/libraries" defaultexcludes="true">
-                <include name="vendor/**"/>
-            </fileset>
-        </copy>
+        <phingcall target="deploy_plugin"/>
     </target>
 
     <target name="clean" description="Cleans the build path.">
@@ -33,8 +28,6 @@
 
     <target name="package" description="Create an installable package." depends="clean">
         <mkdir dir="${path.build}"/>
-
-        <phingcall target="prepare_less_parser"/>
 
         <copy todir="${path.build}" overwrite="true">
             <fileset dir="./templates/bootstrapbase" defaultexcludes="false">
@@ -48,32 +41,78 @@
 
         <zip destfile="${path.build}/tpl_bootstrapbase.zip" basedir="${path.build}"/>
 
+        <phingcall target="package_plugin"/>
+
         <delete includeemptydirs="true">
-            <fileset dir="${path.build}" includes="**/*">
+            <fileset dir="${path.build}" includes="**/**">
                 <exclude name="*.zip"/>
             </fileset>
         </delete>
     </target>
 
-    <target name="prepare_less_parser" hidden="true">
-        <mkdir dir="${path.build}/libraries"/>
-        <copy file="${src}/composer.json" todir="${path.build}/libraries"/>
+    <target name="deploy_plugin" hidden="true">
+        <copy
+            todir="${path.joomla}/plugins/system/jscss">
+            <fileset dir="${src}/plg_system_jscss">
+                <include name="**/**"/>
+                <exclude name="language/**"/>
+            </fileset>
+        </copy>
+
+        <copy
+            todir="${path.build}/plugins/plg_system_jscss">
+            <fileset dir="${src}/plg_system_jscss">
+                <include name="**/**"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="${path.build}/plugins/plg_system_jscss"/>
 
         <composer command="install" composer="${composer.phar}">
             <arg value="--optimize-autoloader"/>
             <arg value="--working-dir"/>
-            <arg path="${path.build}/libraries"/>
+            <arg path="${path.build}/plugins/plg_system_jscss"/>
         </composer>
 
-        <!-- We use Joomla's autoloader so we remove composer's autoload funcitonality. -->
-        <delete includeemptydirs="true">
-            <fileset dir="${path.build}/libraries/vendor" defaultexcludes="false">
+        <copy todir="${path.joomla}/plugins/system/jscss">
+            <fileset dir="${path.build}/plugins/plg_system_jscss">
                 <include name="**/**"/>
-                <include name="oyejorge/less.php/lib/Less/.easymin/**"/>
-                <exclude name="oyejorge/less.php/lib/Less/**/*.php"/>
-                <exclude name="leafo/**/*.php"/>
+                <exclude name="language/**"/>
             </fileset>
-        </delete>
+        </copy>
+
+        <copy todir="${path.languages}">
+            <fileset dir="${path.build}/plugins/plg_system_jscss/language">
+                <include name="**/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="package_plugin" hidden="true">
+        <copy
+            todir="${path.joomla}/plugins/system/jscss">
+            <fileset dir="${src}/plg_system_jscss">
+                <include name="**/**"/>
+                <exclude name="language/**"/>
+            </fileset>
+        </copy>
+
+        <copy
+            todir="${path.build}/plugins/plg_system_jscss">
+            <fileset dir="${src}/plg_system_jscss">
+                <include name="**/**"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="${path.build}/plugins/plg_system_jscss"/>
+
+        <composer command="install" composer="${composer.phar}">
+            <arg value="--optimize-autoloader"/>
+            <arg value="--working-dir"/>
+            <arg path="${path.build}/plugins/plg_system_jscss"/>
+        </composer>
+
+        <zip destfile="${path.build}/plg_system_jscss.zip" basedir="${path.build}/plugins/plg_system_jscss/"/>
     </target>
 
     <target name="help" description="Prints this help.">

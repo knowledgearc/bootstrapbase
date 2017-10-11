@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="3.7" type="plugin" group="system" method="upgrade">
+    <name>plg_system_jscss</name>
+    <author>KnowledgeArc</author>
+    <creationDate>2017-10-08</creationDate>
+    <copyright>Copyright (C) 2015-2017 KnowledgeArc Ltd. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>development@knowledgearc.com</authorEmail>
+    <authorUrl>www.knowledgearc.org</authorUrl>
+    <version>1.1.0</version>
+    <description>PLG_SYSTEM_JSCSS_XML_DESCRIPTION</description>
+
+    <files>
+        <filename plugin="jscss">jscss.php</filename>
+        <folder>vendor</folder>
+    </files>
+
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_jscss.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_jscss.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="compile_frequency"
+                    type="list"
+                    label="PLG_SYSTEM_JSCSS_COMPILE_FREQUENCY_LABEL"
+                    description="PLG_SYSTEM_JSCSS_COMPILE_FREQUENCY_DESC"
+                    default="1">
+                    <option value="0">PLG_SYSTEM_JSCSS_COMPILE_NEVER</option>
+                    <option value="1">PLG_SYSTEM_JSCSS_COMPILE_ONCHANGE</option>
+                    <option value="2">PLG_SYSTEM_JSCSS_COMPILE_ONPAGELOAD</option>
+                </field>
+
+                <field
+                    name="output_formatting"
+                    type="list"
+                    label="PLG_SYSTEM_JSCSS_OUTPUT_FORMATTING_LABEL"
+                    description="PLG_SYSTEM_JSCSS_OUTPUT_FORMATTING_DESC"
+                    default="crunched">
+                    <option value="expanded">PLG_SYSTEM_JSCSS_OUTPUT_FORMATTING_EXPANDED</option>
+                    <option value="nested">PLG_SYSTEM_JSCSS_OUTPUT_FORMATTING_NESTED</option>
+                    <option value="compressed">PLG_SYSTEM_JSCSS_OUTPUT_FORMATTING_COMPRESSED</option>
+                    <option value="compact">PLG_SYSTEM_JSCSS_OUTPUT_FORMATTING_COMPACT</option>
+                    <option value="crunched" >PLG_SYSTEM_JSCSS_OUTPUT_FORMATTING_CRUNCHED</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+
+    <updateservers>
+        <server type="extension" priority="1" name="System JSCSS Plugin"><![CDATA[https://raw.githubusercontent.com/knowledgearc/bootstrapbase/master/manifest.xml]]></server>
+    </updateservers>
+</extension>
