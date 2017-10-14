@@ -38,14 +38,16 @@ require_once (JPATH_THEMES.'/'.$this->template.'/initialize.php');
             <jdoc:include type="modules" name="top" style="bootstrapified" />
         </div>
 
-        <div id="content">
+        <div
+            id="content"
+            class="content<?php echo $mainClass ? ' content--'.$mainClass : ''; ?>">
             <?php if (array_search($mainClass, array("left-sidebar", "both-sidebars")) !== false) : ?>
             <aside id="sidebar1" class="sidebar">
                 <jdoc:include type="modules" name="left" style="bootstrapified" />
             </aside>
             <?php endif; ?>
 
-            <main role="main" class="<?php echo $mainClass; ?>">
+            <main class="main">
                 <div id="above-content-modules">
                     <jdoc:include type="modules" name="above-content" style="bootstrapified" />
                 </div>

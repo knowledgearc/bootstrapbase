@@ -59,8 +59,6 @@ if ($this->countModules('left') > 0 && $this->countModules('right') > 0) {
     $mainClass = 'left-sidebar';
 } elseif ($this->countModules('right') > 0) {
     $mainClass = 'right-sidebar';
-} else {
-    $mainClass = 'no-sidebars';
 }
 
 $templateUrl = JUri::base().'templates/'.$this->template;
