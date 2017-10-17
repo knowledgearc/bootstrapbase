@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.5" type="template" client="site" method="upgrade">
     <name>bootstrapbase</name>
-    <creationDate>2016-02-04</creationDate>
+    <creationDate>2016-10-11</creationDate>
     <author>KnowledgeArc</author>
     <authorEmail>development@knowledgearc.com</authorEmail>
     <authorUrl>http://www.knowledgearc.com</authorUrl>
@@ -16,7 +16,6 @@
         <folder>images</folder>
         <folder>js</folder>
         <folder>language</folder>
-        <folder>less</folder>
         <folder>scss</folder>
         <filename>component.php</filename>
         <filename>error.php</filename>

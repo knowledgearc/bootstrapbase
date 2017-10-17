@@ -8,5 +8,5 @@ templates/jeuropeana/build.properties
 build.properties
 bootstrapbase.css
 bootstrapbase.min.js
-scss.inc.php
 vendor
+.DS_Store

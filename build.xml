@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="Template - BootstrapBase" default="">
+<project name="Template Build" default="">
     <property file="build.properties"/>
     <property name="path.build" value="${src}/build"/>
     <property name="path.languages" value="${path.joomla}/language"/>
@@ -18,8 +18,6 @@
                 <include name="language/**"/>
             </fileset>
         </copy>
-
-        <phingcall target="deploy_plugin"/>
     </target>
 
     <target name="clean" description="Cleans the build path.">
@@ -41,78 +39,11 @@
 
         <zip destfile="${path.build}/tpl_bootstrapbase.zip" basedir="${path.build}"/>
 
-        <phingcall target="package_plugin"/>
-
         <delete includeemptydirs="true">
             <fileset dir="${path.build}" includes="**/**">
                 <exclude name="*.zip"/>
             </fileset>
         </delete>
-    </target>
-
-    <target name="deploy_plugin" hidden="true">
-        <copy
-            todir="${path.joomla}/plugins/system/jscss">
-            <fileset dir="${src}/plg_system_jscss">
-                <include name="**/**"/>
-                <exclude name="language/**"/>
-            </fileset>
-        </copy>
-
-        <copy
-            todir="${path.build}/plugins/plg_system_jscss">
-            <fileset dir="${src}/plg_system_jscss">
-                <include name="**/**"/>
-            </fileset>
-        </copy>
-
-        <mkdir dir="${path.build}/plugins/plg_system_jscss"/>
-
-        <composer command="install" composer="${composer.phar}">
-            <arg value="--optimize-autoloader"/>
-            <arg value="--working-dir"/>
-            <arg path="${path.build}/plugins/plg_system_jscss"/>
-        </composer>
-
-        <copy todir="${path.joomla}/plugins/system/jscss">
-            <fileset dir="${path.build}/plugins/plg_system_jscss">
-                <include name="**/**"/>
-                <exclude name="language/**"/>
-            </fileset>
-        </copy>
-
-        <copy todir="${path.languages}">
-            <fileset dir="${path.build}/plugins/plg_system_jscss/language">
-                <include name="**/**"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="package_plugin" hidden="true">
-        <copy
-            todir="${path.joomla}/plugins/system/jscss">
-            <fileset dir="${src}/plg_system_jscss">
-                <include name="**/**"/>
-                <exclude name="language/**"/>
-            </fileset>
-        </copy>
-
-        <copy
-            todir="${path.build}/plugins/plg_system_jscss">
-            <fileset dir="${src}/plg_system_jscss">
-                <include name="**/**"/>
-            </fileset>
-        </copy>
-
-        <mkdir dir="${path.build}/plugins/plg_system_jscss"/>
-
-        <composer command="install" composer="${composer.phar}">
-            <arg value="--optimize-autoloader"/>
-            <arg value="--working-dir"/>
-            <arg path="${path.build}/plugins/plg_system_jscss"/>
-        </composer>
-
-        <zip destfile="${path.build}/plg_system_jscss.zip" basedir="${path.build}/plugins/plg_system_jscss/"/>
     </target>
 
     <target name="help" description="Prints this help.">

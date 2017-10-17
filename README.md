@@ -32,7 +32,7 @@ For Sass:
 
 - Download latest Sass tar archive from from http://getbootstrap.com/getting-started/,
 
-- Extract /bootstrap-sass-3.3.6/assets/stylesheets/ to templates/bootstrapbase/scss
+- Extract /bootstrap-sass-x.y.z/assets/stylesheets/ to templates/bootstrapbase/scss
 
 ## Upgrading JQuery
 

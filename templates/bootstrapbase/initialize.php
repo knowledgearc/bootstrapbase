@@ -59,8 +59,6 @@ if ($this->countModules('left') > 0 && $this->countModules('right') > 0) {
     $mainClass = 'left-sidebar';
 } elseif ($this->countModules('right') > 0) {
     $mainClass = 'right-sidebar';
-} else {
-    $mainClass = 'no-sidebars';
 }
 
 $templateUrl = JUri::base().'templates/'.$this->template;
@@ -72,6 +70,8 @@ if (JFile::exists($templatePath.$cssCompiled)) {
 }
 
 // load additional css files directly from CSS directory. Needs to be removed at some stage.
+JLoader::import('joomla.filesystem.folder');
+
 foreach (JFolder::files($templatePath.'/css/', ".+\.css") as $file) {
     $this->addStylesheet($templateUrl.'/css/'.$file);
 }
