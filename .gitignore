@@ -1,4 +1,7 @@
 vendor
+*.DS_Store
+.DS_Store
+**/.DS_Store
 *.kdev4
 composer.lock
 templates/jeuropeana/build.properties
